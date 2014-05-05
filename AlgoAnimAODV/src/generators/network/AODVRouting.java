@@ -1,4 +1,4 @@
-package generators.misc;
+package generators.network;
 
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
