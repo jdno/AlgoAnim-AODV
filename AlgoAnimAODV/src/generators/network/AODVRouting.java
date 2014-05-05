@@ -16,6 +16,12 @@ import java.util.Hashtable;
 import generators.framework.properties.AnimationPropertiesContainer;
 import algoanim.animalscript.AnimalScript;
 
+// TODO: Tabellen anzeigen
+// TODO: Private Klasse für Tabellen
+// TODO: Graphen Properties erkunden
+// TODO: Infobox anzeigen und verändern
+
+
 public class AODVRouting implements Generator {
     private Language lang;
     private int[][] adjacencyMatrix;
