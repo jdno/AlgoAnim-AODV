@@ -13,6 +13,7 @@
 	import algoanim.properties.ArrayProperties;
 	import algoanim.properties.SourceCodeProperties;
 	import algoanim.util.Coordinates;
+	
 
 	/**
 	 * @author Dr. Guido R&ouml;&szlig;ling <roessling@acm.org>
@@ -230,7 +231,7 @@
 		    codeSupport.highlight(5, 0, false);
 				
 		    // Receive the value of the pivot element
-		    pivot = array.getData()[r];
+		    pivot = array.getData(r);
 		    // Move marker to that position
 		    pivotMarker.move(r, null, null);
 				
@@ -248,7 +249,7 @@
 			// Highlight next line
 			codeSupport.toggleHighlight(6, 0, false, 8, 0);
 					
-			while (array.getData()[i] <= pivot && j > i) {
+			while (array.getData(i) <= pivot && j > i) {
 			    lang.nextStep();
 			    i++;
 						
@@ -265,7 +266,7 @@
 			lang.nextStep();
 			// Highlight next line
 			codeSupport.toggleHighlight(8, 0, false, 10, 0);
-			while (pivot < array.getData()[j] && j > i) {
+			while (pivot < array.getData(j) && j > i) {
 			    lang.nextStep();
 
 			    j--;
@@ -305,7 +306,7 @@
 
 				
 		    lang.nextStep();
-		    if (pivot < array.getData()[i]) {
+		    if (pivot < array.getData(i)) {
 			// Highlight next line
 			codeSupport.toggleHighlight(15, 0, false, 16, 0);
 
