@@ -63,11 +63,12 @@
 	    generators.add(new VectorRoutingGenerator(Locale.US,
 	        new PathVectorFactory()));
 
-	    generators.add(new AODVRoutingGenerator());
+	    generators.add(new AODVRouting());
+	    System.out.println("WUHUUU");
 	    
 	    // TODO "under probation"
 	    generators.add(new DistanceVectorRouting());
-
+	    
 	    return generators;
 	  }
 

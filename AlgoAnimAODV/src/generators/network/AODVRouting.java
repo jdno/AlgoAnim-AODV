@@ -2,9 +2,17 @@ package generators.network;
 
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
+
 import java.util.Locale;
+
+import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.GraphProperties;
+import algoanim.util.Coordinates;
+import algoanim.util.Node;
+
 import java.util.Hashtable;
+
 import generators.framework.properties.AnimationPropertiesContainer;
 import algoanim.animalscript.AnimalScript;
 
@@ -19,7 +27,26 @@ public class AODVRouting implements Generator {
     public String generate(AnimationPropertiesContainer props,Hashtable<String, Object> primitives) {
         adjacencyMatrix = (int[][])primitives.get("adjacencyMatrix");
         
+//        GraphProperties graphProps = (GraphProperties) props.getPropertiesByName("graphProps");
+        getDefaultGraph(null);
         return lang.toString();
+    }
+    
+    private Graph getDefaultGraph(GraphProperties graphProps){
+    	Graph defaultGraph;
+    	
+    	Node[] nodes = new Node[4];
+    	nodes[0] = new Coordinates(40, 100);
+	    nodes[1] = new Coordinates(40, 250);
+	    nodes[2] = new Coordinates(190, 100);
+	    nodes[3] = new Coordinates(190, 250);
+	    
+    	String[] graphLabels = {"A", "B", "C", "D"}; 
+	    
+    	defaultGraph = lang.newGraph("AODV-Graph", adjacencyMatrix, nodes, graphLabels, null);
+//    	defaultGraph.hide();
+    	return defaultGraph;
+    	
     }
 
     public String getName() {
@@ -39,7 +66,7 @@ public class AODVRouting implements Generator {
     }
 
     public String getCodeExample(){
-        return "";
+        return "CodeExample";
     }
 
     public String getFileExtension(){
