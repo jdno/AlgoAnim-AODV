@@ -24,7 +24,6 @@
 	 */
 	public class DummyGenerator implements GeneratorBundle {
 
-	  @Override
 	  public Vector<Generator> getGenerators() {
 	    Vector<Generator> generators = new Vector<Generator>(165, 45);
 	    /*
@@ -64,7 +63,7 @@
 	    generators.add(new VectorRoutingGenerator(Locale.US,
 	        new PathVectorFactory()));
 
-	    generators.add(new AODVRoutingGenerator(Locale.GERMANY);
+	    generators.add(new AODVRoutingGenerator());
 	    
 	    // TODO "under probation"
 	    generators.add(new DistanceVectorRouting());

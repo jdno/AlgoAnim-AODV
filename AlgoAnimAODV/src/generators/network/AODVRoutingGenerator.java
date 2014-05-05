@@ -30,7 +30,7 @@ import algoanim.util.Coordinates;
 import algoanim.util.Node;
 import algoanim.util.Offset;
 
-public class AODVRoutingGenerator {
+public class AODVRoutingGenerator implements Generator{
 
 	  /**
 	   * The concrete language object used for creating output
