@@ -3,15 +3,25 @@ package generators.network;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
+import generators.helpers.binarySpacePartitioning.Polygon;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import de.ahrgr.animal.kohnert.asugen.Rectangle;
 import algoanim.animalscript.AnimalScript;
+import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.Graph;
+import algoanim.primitives.Rect;
+import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
+import algoanim.properties.PolygonProperties;
+import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
 
@@ -25,17 +35,56 @@ public class AODVRouting implements Generator {
     private Language lang;
     private int[][] adjacencyMatrix;
 
-    public void init(){
-        lang = new AnimalScript("Ad-hoc Optimized Vector Routing", "Sascha Bleidner, Jan David Nose", 800, 600);
+    Color highlightColor = Color.ORANGE;
+
+    
+    public AODVRouting(Language language) {
+        this.lang = language;
+      }
+    
+    public AODVRouting(){
+    	lang = new AnimalScript("Ad-hoc Optimized Vector Routing", "Sascha Bleidner, Jan David Nose", 800, 600);
     }
+    
+    public void init(){
+    	lang.setStepMode(true);
+    }
+    
 
     public String generate(AnimationPropertiesContainer props,Hashtable<String, Object> primitives) {
         adjacencyMatrix = (int[][])primitives.get("adjacencyMatrix");
-        
-//        GraphProperties graphProps = (GraphProperties) props.getPropertiesByName("graphProps");
-        getDefaultGraph(null);
+                
+        GraphProperties graphProps = new GraphProperties();
+    	graphProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlightColor);
+    	graphProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
+    	graphProps.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
+    	graphProps.set(AnimationPropertiesKeys.EDGECOLOR_PROPERTY, Color.GREEN);
+    	
+        Graph defaultGraph = getDefaultGraph(graphProps);
+
+    	defaultGraph.show();
+    	
+    
+    	defaultGraph.highlightNode(0, null, null);
+    	defaultGraph.highlightNode(3,null,null);
+    	defaultGraph.highlightEdge(0, 1, null, null);
+    	//defaultGraph.showNode(2, null, null);
+    	//defaultGraph.show();
+    	lang.nextStep();
+    	
+    	drawTable(new Coordinates(350,50));
+    	drawTable(new Coordinates(580,50));
+    	drawTable(new Coordinates(350,250));
+    	drawTable(new Coordinates(580,250));
+    	
+    	InfoBox info = new InfoBox("Erläuterung", new Coordinates(40, 420), new Coordinates(660, 600));
+    	info.updateText("Hallo");
+    	lang.nextStep();
+    	info.updateText("Wuhuuu");
         return lang.toString();
     }
+    
+    
     
     private Graph getDefaultGraph(GraphProperties graphProps){
     	Graph defaultGraph;
@@ -47,11 +96,68 @@ public class AODVRouting implements Generator {
 	    nodes[3] = new Coordinates(190, 250);
 	    
     	String[] graphLabels = {"A", "B", "C", "D"}; 
-	    
-    	defaultGraph = lang.newGraph("AODV-Graph", adjacencyMatrix, nodes, graphLabels, null);
-//    	defaultGraph.hide();
-    	return defaultGraph;
     	
+    	defaultGraph = lang.newGraph("AODV-Graph", adjacencyMatrix, nodes, graphLabels, null, graphProps);
+    	defaultGraph.hide();
+    
+    	
+    	return defaultGraph;
+    }
+    
+    private algoanim.primitives.Polygon getVerticalLine(Coordinates startPoint, int length){
+    	return getPolygon(startPoint, length, true);
+    }
+    
+    private algoanim.primitives.Polygon getHorizontalLine(Coordinates startPoint, int length){
+    	return getPolygon(startPoint, length, false);
+    }
+    
+    
+    private algoanim.primitives.Polygon getPolygon(Coordinates startPoint, int length, boolean vertical){
+    	
+    	Node[] nodes = new Node[2];
+    	nodes[0] = startPoint;
+    	if (vertical){
+    		nodes[1] = new Coordinates(startPoint.getX(), startPoint.getY()+length);
+    	} else {
+    		nodes[1] = new Coordinates(startPoint.getX()+length, startPoint.getY());
+    	}
+    	
+    	algoanim.primitives.Polygon line = null;
+    	
+		try {
+			line = lang.newPolygon(nodes, "line", null);
+		} catch (NotEnoughNodesException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return line;
+    }
+    
+    
+    
+    
+    
+    
+    private void drawTable(Coordinates startPoint){
+    	int height = 150;
+    	int upMove = -15;
+    	int[] vAlignment = {0,40,95,165};
+    	
+    	getHorizontalLine(startPoint,220);
+    	// TODO: Node wird nur mit Korrektur um -1 auf richtige Höhe gesetzt??
+    	lang.newText(moveCoordinate(startPoint, vAlignment[0], upMove-1), "Node","", null);
+    	lang.newText(moveCoordinate(startPoint, vAlignment[1], upMove), "Dest SQ","", null);
+    	lang.newText(moveCoordinate(startPoint, vAlignment[2], upMove), "Hop Count","", null);
+    	lang.newText(moveCoordinate(startPoint, vAlignment[3], upMove), "Next Hop","", null);
+    	
+    	getVerticalLine(moveCoordinate(startPoint, vAlignment[1]-5, -15), height);
+    	getVerticalLine(moveCoordinate(startPoint, vAlignment[2]-5, -15), height);
+    	getVerticalLine(moveCoordinate(startPoint, vAlignment[3]-5, -15), height);
+    }
+    
+    private Coordinates moveCoordinate(Coordinates point, int x, int y){
+    	return new Coordinates(point.getX()+x,point.getY()+y);
     }
 
     public String getName() {
@@ -259,5 +365,26 @@ public class AODVRouting implements Generator {
 			return nodeIdentifier;
 		}
     }
+    
+    private class InfoBox{
+
+    	Text displayedText;
+    	
+    	public InfoBox(String title, Coordinates upperLeft, Coordinates lowerRight){
+    		TextProperties textProps = new TextProperties();
+    		textProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", 
+				    Font.PLAIN, 12));
+    		lang.newText(upperLeft, title, "Title", null,textProps);
+    		lang.newRect(moveCoordinate(upperLeft,0,20), lowerRight, "InfoBox", null);
+    		this.displayedText = lang.newText(moveCoordinate(upperLeft, 10, 25), "", "Text", null,textProps);
+    	}
+    	
+    	public void updateText(String text){
+    		displayedText.setText(text, null, null);
+    	}
+
+    }
+
+
 
 }
