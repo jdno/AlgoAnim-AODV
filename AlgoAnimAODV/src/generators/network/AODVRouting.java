@@ -300,7 +300,7 @@ public class AODVRouting implements Generator {
     					// TODO respond with RREP
     				} else {
     					for(AODVNode neighbor: neighbors) {
-    						neighbor.receiveMessage(cachedMessage);
+    						neighbor.receiveMessage(this, cachedMessage);
     					}
     				}
     			} else {
@@ -308,7 +308,7 @@ public class AODVRouting implements Generator {
     					if (entry.nodeIdentifier.equals(cachedMessage.destinationIdentifier)) {
     						for(AODVNode neighbor: neighbors) {
     							if (neighbor.nodeIdentifier.equals(entry.nextHop)) {
-    								neighbor.receiveMessage(cachedMessage);
+    								neighbor.receiveMessage(this, cachedMessage);
     							} else {
     								System.err.println("No neighbor found to forward message to.");
     							}
@@ -328,12 +328,14 @@ public class AODVRouting implements Generator {
     	 * message arrives before the old one was processed, the old one gets overwritten.
     	 * @param message The message to process later
     	 */
-    	public void receiveMessage(AODVMessage message) {
+    	public void receiveMessage(AODVNode sender, AODVMessage message) {
     		if (cachedMessage == null) {
     			cachedMessage = message;
+    			cachedMessageSender = sender.nodeIdentifier;
     		} else {
     			if (cachedMessage.identifier != message.identifier) {
     				cachedMessage = message;
+    				cachedMessageSender = sender.nodeIdentifier;
         		}
     		}
     	}
