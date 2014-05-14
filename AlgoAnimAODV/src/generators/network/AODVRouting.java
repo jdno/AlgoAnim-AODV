@@ -286,12 +286,17 @@ public class AODVRouting implements Generator {
     	 * Process the currently cached message.
     	 */
     	public void process() {
+    		// TODO update routing table
 			// TODO visualize sending of message
     		
     		if (cachedMessage != null) {
     			if (cachedMessage.type.equals("RREQ")) {
-    				for(AODVNode neighbor: neighbors) {
-    					neighbor.receiveMessage(cachedMessage);
+    				if(cachedMessage.destinationIdentifier.equals(nodeIdentifier)) {
+    					// TODO respond with RREP
+    				} else {
+    					for(AODVNode neighbor: neighbors) {
+    						neighbor.receiveMessage(cachedMessage);
+    					}
     				}
     			} else {
     				for(RoutingTableEntry entry: routingTable) {
