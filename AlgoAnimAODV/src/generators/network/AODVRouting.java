@@ -260,6 +260,11 @@ public class AODVRouting implements Generator {
     	 * Nodes save a RREQ or RREP until they get the order to process it.
     	 */
     	private AODVMessage cachedMessage;
+    	
+    	/**
+    	 * A list of the neighbors of the node.
+    	 */
+    	private ArrayList<AODVNode> neighbors = new ArrayList<AODVNode>();
 
 		/**
 		 * The routing table consists of a list of routing table entries.
