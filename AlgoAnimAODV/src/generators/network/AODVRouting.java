@@ -357,13 +357,13 @@ public class AODVRouting implements Generator {
     		if (entry != null) {
     			if (entry.destinationSequence < message.originatorSequence) {
     				entry.destinationSequence = message.originatorSequence;
-    				// TODO set next hop
+    				entry.nextHop = cachedMessageSender;
     			}
     		} else {
     			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
     			newEntry.destinationSequence = message.destinationSequence;
     			newEntry.hopCount = message.hopCount;
-    			// TODO set next hop
+    			newEntry.nextHop = cachedMessageSender;
     			routingTable.add(newEntry);
     		}
     	}
