@@ -269,6 +269,11 @@ public class AODVRouting implements Generator {
     	private AODVMessage cachedMessage;
     	
     	/**
+    	 * The node from which we received the last message.
+    	 */
+    	private String cachedMessageSender;
+    	
+    	/**
     	 * A list of the neighbors of the node.
     	 */
     	private ArrayList<AODVNode> neighbors = new ArrayList<AODVNode>();
@@ -374,6 +379,34 @@ public class AODVRouting implements Generator {
 		 */
 		public void setOriginatorSequence(int originatorSequence) {
 			this.originatorSequence = originatorSequence;
+		}
+
+		/**
+		 * @return the cachedMessage
+		 */
+		public AODVMessage getCachedMessage() {
+			return cachedMessage;
+		}
+
+		/**
+		 * @param cachedMessage the cachedMessage to set
+		 */
+		public void setCachedMessage(AODVMessage cachedMessage) {
+			this.cachedMessage = cachedMessage;
+		}
+
+		/**
+		 * @return the cachedMessageSender
+		 */
+		public String getCachedMessageSender() {
+			return cachedMessageSender;
+		}
+
+		/**
+		 * @param cachedMessageSender the cachedMessageSender to set
+		 */
+		public void setCachedMessageSender(String cachedMessageSender) {
+			this.cachedMessageSender = cachedMessageSender;
 		}
 
 		/**
