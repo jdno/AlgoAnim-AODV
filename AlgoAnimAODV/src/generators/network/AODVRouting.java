@@ -293,75 +293,183 @@ public class AODVRouting implements Generator {
 		public ArrayList<RoutingTableEntry> getRoutingTable() {
 			return routingTable;
 		}
+
 	}
 
-	/**
-	 * A routing table for the AODV routing algorithm holds he following
-	 * information about the nodes in the network:
-	 * 
-	 * - nodeIdenifier: textual representation of a node's name/identifier -
-	 * destinationSequence: this is used to evaluate the freshness of a route -
-	 * hopCount: the distance to the node - nextHop: this is the next node on
-	 * the route to the destination
-	 * 
-	 * @author Jan David
-	 * 
-	 */
-	private class RoutingTableEntry {
+	
+    
+    /**
+     * Representation of the AODV Route Request (RREQ) and Route Response (RREP). See the official RFC for
+     * documentation:
+     * 
+     * http://www.ietf.org/rfc/rfc3561.txt
+     * 
+     * @author Jan David
+     *
+     */
+    private class AODVMessage {
+    	
+    	/**
+    	 * A sequence number uniquely identifying the particular RREQ/RRPE when taken in conjunction with the
+		 * originating node's IP address.
+    	 */
+    	private int messageId;
+    	
+    	/**
+    	 * The destination for which a route is required.
+    	 */
+    	private String destinationIdentifier;
+    	
+    	/**
+    	 * The latest sequence number received in the past by the originator for any route towards the
+		 * destination.
+    	 */
+    	private int destinationSequence;
+    	
+    	/**
+    	 * The originator of the route request.
+    	 */
+    	private String originatorIdentifier;
+    	
+    	/**
+    	 * The current sequence number to be used in the route entry pointing towards the originator of the route
+		 * request.
+    	 */
+    	private int originatorSequence;
+    	
+    	/**
+    	 * The number of hops from the Originator to the node handling the request.
+    	 */
+    	private int hopCount = 0;
+    	
+    	/**
+    	 * Create an AODV message. The message ID should be set to the originator's sequence number or another number
+    	 * that is unique when combined with the originator's identifier.
+    	 * @param messageId The RREQ/RREP's ID
+    	 * @param destinationIdentifier The identifier of the destination
+    	 * @param destinationSequence The last known sequence number of the destination
+    	 * @param originatorIdentifier The identifier of the originator
+    	 * @param originatorSequence The sequence number of the originator
+    	 */
+    	public AODVMessage(int messageId, String destinationIdentifier, int destinationSequence, String originatorIdentifier, int originatorSequence) {
+    		this.messageId = messageId;
+    		this.destinationIdentifier = destinationIdentifier;
+    		this.destinationSequence = destinationSequence;
+    		this.originatorIdentifier = originatorIdentifier;
+    		this.originatorSequence = originatorSequence;
+    	}
 
 		/**
-		 * Textual representation of the destination node.
+		 * @return the hopCount
 		 */
-		private final String nodeIdentifier;
-
-		/**
-		 * Sequence number used to evaluate the freshness of the route. It is
-		 * updated in two cases only: - the route to the destination breaks -
-		 * new information becomes available with a higher sequence number for
-		 * the node
-		 */
-		private int destinationSequence = 0;
-
-		/**
-		 * The hop count to the destination.
-		 */
-		private int hopCount = Integer.MAX_VALUE;
-
-		/**
-		 * This is the next node on the route to the destination.
-		 */
-		private String nextHop = "";
-
-		/**
-		 * Create a new routing table entry with default values. The
-		 * nodeIdentifier must be set though.
-		 * 
-		 * @param nodeIdentifier
-		 *            The node's identifier
-		 */
-		public RoutingTableEntry(String nodeIdentifier) {
-			this.nodeIdentifier = nodeIdentifier;
+		public int getHopCount() {
+			return hopCount;
 		}
 
 		/**
-		 * Create a new routing table entry with custom values.
-		 * 
-		 * @param nodeIdentifier
-		 *            The node's identifier
-		 * @param destinationSequence
-		 *            The node's destination sequence
-		 * @param hopCount
-		 *            The hop count to the node
-		 * @param nextHop
-		 *            The next hop to the node
+		 * @param hopCount the hopCount to set
 		 */
-		public RoutingTableEntry(String nodeIdentifier,
-				int destinationSequence, int hopCount, String nextHop) {
-			this.nodeIdentifier = nodeIdentifier;
-			this.destinationSequence = destinationSequence;
+		public void setHopCount(int hopCount) {
 			this.hopCount = hopCount;
-			this.nextHop = nextHop;
 		}
+
+		/**
+		 * @return the rreqId
+		 */
+		public int getRreqId() {
+			return messageId;
+		}
+
+		/**
+		 * @return the destinationIdentifier
+		 */
+		public String getDestinationIdentifier() {
+			return destinationIdentifier;
+		}
+
+		/**
+		 * @return the destinationSequence
+		 */
+		public int getDestinationSequence() {
+			return destinationSequence;
+		}
+
+		/**
+		 * @return the originatorIdentifier
+		 */
+		public String getOriginatorIdentifier() {
+			return originatorIdentifier;
+		}
+
+		/**
+		 * @return the originatorSequence
+		 */
+		public int getOriginatorSequence() {
+			return originatorSequence;
+		}
+    	
+    }
+    
+    /**
+     * A routing table for the AODV routing algorithm holds he following information about
+     * the nodes in the network:
+     * 
+     * - nodeIdenifier: textual representation of a node's name/identifier
+     * - destinationSequence: this is used to evaluate the freshness of a route
+     * - hopCount: the distance to the node
+     * - nextHop: this is the next node on the route to the destination
+     * 
+     * @author Jan David
+     *
+     */
+    private class RoutingTableEntry {
+    	
+    	/**
+    	 * Textual representation of the destination node.
+    	 */
+    	private final String nodeIdentifier;
+    	
+    	/**
+    	 * Sequence number used to evaluate the freshness of the route. It is updated in
+    	 * two cases only:
+    	 * - the route to the destination breaks
+    	 * - new information becomes available with a higher sequence number for the node
+    	 */
+    	private int destinationSequence = 0;
+    	
+    	/**
+    	 * The hop count to the destination.
+    	 */
+    	private int hopCount = Integer.MAX_VALUE;
+    	
+    	/**
+    	 * This is the next node on the route to the destination.
+    	 */
+    	private String nextHop = "";
+    	
+    	/**
+    	 * Create a new routing table entry with default values. The nodeIdentifier must be
+    	 * set though.
+    	 * @param nodeIdentifier The node's identifier
+    	 */
+    	public RoutingTableEntry(String nodeIdentifier) {
+    		this.nodeIdentifier = nodeIdentifier;
+    	}
+    	
+    	/**
+    	 * Create a new routing table entry with custom values.
+    	 * @param nodeIdentifier The node's identifier
+    	 * @param destinationSequence The node's destination sequence
+    	 * @param hopCount The hop count to the node
+    	 * @param nextHop The next hop to the node
+    	 */
+    	public RoutingTableEntry(String nodeIdentifier, int destinationSequence, int hopCount, String nextHop) {
+    		this.nodeIdentifier = nodeIdentifier;
+    		this.destinationSequence = destinationSequence;
+    		this.hopCount = hopCount;
+    		this.nextHop = nextHop;
+    	}
+
 
 		/**
 		 * @return the destinationSequence
