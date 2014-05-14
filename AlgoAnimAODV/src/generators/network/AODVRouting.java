@@ -257,6 +257,118 @@ public class AODVRouting implements Generator {
     }
     
     /**
+     * Representation of the AODV Route Request (RREQ) and Route Response (RREP). See the official RFC for
+     * documentation:
+     * 
+     * http://www.ietf.org/rfc/rfc3561.txt
+     * 
+     * @author Jan David
+     *
+     */
+    private class AODVMessage {
+    	
+    	/**
+    	 * A sequence number uniquely identifying the particular RREQ/RRPE when taken in conjunction with the
+		 * originating node's IP address.
+    	 */
+    	private int messageId;
+    	
+    	/**
+    	 * The destination for which a route is required.
+    	 */
+    	private String destinationIdentifier;
+    	
+    	/**
+    	 * The latest sequence number received in the past by the originator for any route towards the
+		 * destination.
+    	 */
+    	private int destinationSequence;
+    	
+    	/**
+    	 * The originator of the route request.
+    	 */
+    	private String originatorIdentifier;
+    	
+    	/**
+    	 * The current sequence number to be used in the route entry pointing towards the originator of the route
+		 * request.
+    	 */
+    	private int originatorSequence;
+    	
+    	/**
+    	 * The number of hops from the Originator to the node handling the request.
+    	 */
+    	private int hopCount = 0;
+    	
+    	/**
+    	 * Create an AODV message. The message ID should be set to the originator's sequence number or another number
+    	 * that is unique when combined with the originator's identifier.
+    	 * @param messageId The RREQ/RREP's ID
+    	 * @param destinationIdentifier The identifier of the destination
+    	 * @param destinationSequence The last known sequence number of the destination
+    	 * @param originatorIdentifier The identifier of the originator
+    	 * @param originatorSequence The sequence number of the originator
+    	 */
+    	public AODVMessage(int messageId, String destinationIdentifier, int destinationSequence, String originatorIdentifier, int originatorSequence) {
+    		this.messageId = messageId;
+    		this.destinationIdentifier = destinationIdentifier;
+    		this.destinationSequence = destinationSequence;
+    		this.originatorIdentifier = originatorIdentifier;
+    		this.originatorSequence = originatorSequence;
+    	}
+
+		/**
+		 * @return the hopCount
+		 */
+		public int getHopCount() {
+			return hopCount;
+		}
+
+		/**
+		 * @param hopCount the hopCount to set
+		 */
+		public void setHopCount(int hopCount) {
+			this.hopCount = hopCount;
+		}
+
+		/**
+		 * @return the rreqId
+		 */
+		public int getRreqId() {
+			return messageId;
+		}
+
+		/**
+		 * @return the destinationIdentifier
+		 */
+		public String getDestinationIdentifier() {
+			return destinationIdentifier;
+		}
+
+		/**
+		 * @return the destinationSequence
+		 */
+		public int getDestinationSequence() {
+			return destinationSequence;
+		}
+
+		/**
+		 * @return the originatorIdentifier
+		 */
+		public String getOriginatorIdentifier() {
+			return originatorIdentifier;
+		}
+
+		/**
+		 * @return the originatorSequence
+		 */
+		public int getOriginatorSequence() {
+			return originatorSequence;
+		}
+    	
+    }
+    
+    /**
      * A routing table for the AODV routing algorithm holds he following information about
      * the nodes in the network:
      * 
