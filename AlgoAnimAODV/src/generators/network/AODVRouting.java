@@ -269,6 +269,25 @@ public class AODVRouting implements Generator {
 		public AODVNode(String nodeIdentifier) {
 			this.nodeIdentifier = nodeIdentifier;
 		}
+		
+		/**
+    	 * Receive a new AODV message (either a RREQ or RREP). The message does not get processed
+    	 * automatically, but is cached within the node until you call .process(). If the same 
+    	 * message is received multiple times, only the first occurrence will be saved. If a new
+    	 * message arrives before the old one was processed, the old one gets overwritten.
+    	 * @param message The message to process later
+    	 */
+    	public void receiveMessage(AODVMessage message) {
+    		if (cachedMessage == null) {
+    			cachedMessage = message;
+    			// TODO update routing table
+    		} else {
+    			if (cachedMessage.identifier != message.identifier) {
+    				cachedMessage = message;
+        			// TODO update routing table
+    			}
+    		}
+    	}
 
 		/**
 		 * @return the originatorSequence
