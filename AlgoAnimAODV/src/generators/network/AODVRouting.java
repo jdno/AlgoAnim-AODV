@@ -276,6 +276,11 @@ public class AODVRouting implements Generator {
     	private AODVMessage cachedMessage;
     	
     	/**
+    	 * The node from which we received the last message.
+    	 */
+    	private String cachedMessageSender;
+    	
+    	/**
     	 * A list of the neighbors of the node.
     	 */
     	private ArrayList<AODVNode> neighbors = new ArrayList<AODVNode>();
@@ -293,12 +298,17 @@ public class AODVRouting implements Generator {
     	 * Process the currently cached message.
     	 */
     	public void process() {
+    		// TODO update routing table
 			// TODO visualize sending of message
     		
     		if (cachedMessage != null) {
     			if (cachedMessage.type.equals("RREQ")) {
-    				for(AODVNode neighbor: neighbors) {
-    					neighbor.receiveMessage(cachedMessage);
+    				if(cachedMessage.destinationIdentifier.equals(nodeIdentifier)) {
+    					// TODO respond with RREP
+    				} else {
+    					for(AODVNode neighbor: neighbors) {
+    						neighbor.receiveMessage(cachedMessage);
+    					}
     				}
     			} else {
     				for(RoutingTableEntry entry: routingTable) {
@@ -328,16 +338,42 @@ public class AODVRouting implements Generator {
     	public void receiveMessage(AODVMessage message) {
     		if (cachedMessage == null) {
     			cachedMessage = message;
-    			// TODO update routing table
     		} else {
     			if (cachedMessage.identifier != message.identifier) {
     				cachedMessage = message;
-        			// TODO update routing table
-    			}
+        		}
     		}
     	}
-
-		/**
+    	
+    	/**
+    	 * Update the routing table with the information from the given message.
+    	 * @param message The message to analyze
+    	 */
+    	private void updateRoutingTable(AODVMessage message) {
+    		RoutingTableEntry entry = null;
+    		
+    		for(RoutingTableEntry tableEntry: routingTable) {
+    			if (tableEntry.nodeIdentifier.equals(message.originatorIdentifier)) {
+    				entry = tableEntry;
+    				break;
+    			}
+    		}
+    		
+    		if (entry != null) {
+    			if (entry.destinationSequence < message.originatorSequence) {
+    				entry.destinationSequence = message.originatorSequence;
+    				// TODO set next hop
+    			}
+    		} else {
+    			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
+    			newEntry.destinationSequence = message.destinationSequence;
+    			newEntry.hopCount = message.hopCount;
+    			// TODO set next hop
+    			routingTable.add(newEntry);
+    		}
+    	}
+    	
+  		/**
 		 * @return the originatorSequence
 		 */
 		public int getOriginatorSequence() {
@@ -350,6 +386,34 @@ public class AODVRouting implements Generator {
 		 */
 		public void setOriginatorSequence(int originatorSequence) {
 			this.originatorSequence = originatorSequence;
+		}
+
+		/**
+		 * @return the cachedMessage
+		 */
+		public AODVMessage getCachedMessage() {
+			return cachedMessage;
+		}
+
+		/**
+		 * @param cachedMessage the cachedMessage to set
+		 */
+		public void setCachedMessage(AODVMessage cachedMessage) {
+			this.cachedMessage = cachedMessage;
+		}
+
+		/**
+		 * @return the cachedMessageSender
+		 */
+		public String getCachedMessageSender() {
+			return cachedMessageSender;
+		}
+
+		/**
+		 * @param cachedMessageSender the cachedMessageSender to set
+		 */
+		public void setCachedMessageSender(String cachedMessageSender) {
+			this.cachedMessageSender = cachedMessageSender;
 		}
 
 		/**
