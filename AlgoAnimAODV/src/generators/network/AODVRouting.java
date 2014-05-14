@@ -262,6 +262,16 @@ public class AODVRouting implements Generator {
 		 * before the node answers to a RREP
 		 */
 		private int originatorSequence = 0;
+		
+		/**
+    	 * Nodes save a RREQ or RREP until they get the order to process it.
+    	 */
+    	private AODVMessage cachedMessage;
+    	
+    	/**
+    	 * A list of the neighbors of the node.
+    	 */
+    	private ArrayList<AODVNode> neighbors = new ArrayList<AODVNode>();
 
 		/**
 		 * The routing table consists of a list of routing table entries.
@@ -271,6 +281,54 @@ public class AODVRouting implements Generator {
 		public AODVNode(String nodeIdentifier) {
 			this.nodeIdentifier = nodeIdentifier;
 		}
+		
+		/**
+    	 * Process the currently cached message.
+    	 */
+    	public void process() {
+			// TODO visualize sending of message
+    		
+    		if (cachedMessage != null) {
+    			if (cachedMessage.type.equals("RREQ")) {
+    				for(AODVNode neighbor: neighbors) {
+    					neighbor.receiveMessage(cachedMessage);
+    				}
+    			} else {
+    				for(RoutingTableEntry entry: routingTable) {
+    					if (entry.nodeIdentifier.equals(cachedMessage.destinationIdentifier)) {
+    						for(AODVNode neighbor: neighbors) {
+    							if (neighbor.nodeIdentifier.equals(entry.nextHop)) {
+    								neighbor.receiveMessage(cachedMessage);
+    							} else {
+    								System.err.println("No neighbor found to forward message to.");
+    							}
+    						}
+    					} else {
+    						System.err.println("No route to message destination found.");
+    					}
+    				}
+    			}
+    		}
+    	}
+		
+		/**
+    	 * Receive a new AODV message (either a RREQ or RREP). The message does not get processed
+    	 * automatically, but is cached within the node until you call .process(). If the same 
+    	 * message is received multiple times, only the first occurrence will be saved. If a new
+    	 * message arrives before the old one was processed, the old one gets overwritten.
+    	 * @param message The message to process later
+    	 */
+    	public void receiveMessage(AODVMessage message) {
+    		if (cachedMessage == null) {
+    			cachedMessage = message;
+    			// TODO update routing table
+    		} else {
+    			if (cachedMessage.identifier != message.identifier) {
+    				cachedMessage = message;
+        			// TODO update routing table
+    			}
+    		}
+    	}
 
 		/**
 		 * @return the originatorSequence
@@ -299,6 +357,82 @@ public class AODVRouting implements Generator {
 		 */
 		public ArrayList<RoutingTableEntry> getRoutingTable() {
 			return routingTable;
+		}
+	}
+	
+	/**
+     * Representation of the AODV Route Request (RREQ) and Route Response (RREP). See the official RFC for
+     * documentation:
+     * 
+     * http://www.ietf.org/rfc/rfc3561.txt
+     * 
+     * @author Jan David
+     *
+     */
+    private class AODVMessage {
+    	
+    	/**
+    	 * Can either be "RREQ" or "RREQ".
+    	 */
+    	private String type;
+    	
+    	/**
+    	 * A sequence number uniquely identifying the particular RREQ/RRPE when taken in conjunction with the
+		 * originating node's IP address.
+    	 */
+    	private int identifier;
+    	
+    	/**
+    	 * The destination for which a route is required.
+    	 */
+    	private String destinationIdentifier;
+    	
+    	/**
+    	 * The latest sequence number received in the past by the originator for any route towards the
+		 * destination.
+    	 */
+    	private int destinationSequence;
+    	
+    	/**
+    	 * The originator of the route request.
+    	 */
+    	private String originatorIdentifier;
+    	
+    	/**
+    	 * The current sequence number to be used in the route entry pointing towards the originator of the route
+		 * request.
+    	 */
+    	private int originatorSequence;
+    	
+    	/**
+    	 * The number of hops from the Originator to the node handling the request.
+    	 */
+    	private int hopCount = 0;
+    	
+    	/**
+    	 * Create an AODV message. The message ID should be set to the originator's sequence number or another number
+    	 * that is unique when combined with the originator's identifier.
+    	 * @param type Can either be "RREQ" or "RREP"
+    	 * @param identifier The RREQ/RREP's ID
+    	 * @param destinationIdentifier The identifier of the destination
+    	 * @param destinationSequence The last known sequence number of the destination
+    	 * @param originatorIdentifier The identifier of the originator
+    	 * @param originatorSequence The sequence number of the originator
+    	 */
+    	public AODVMessage(String type, int identifier, String destinationIdentifier, int destinationSequence, String originatorIdentifier, int originatorSequence) {
+    		this.type = type;
+    		this.identifier = identifier;
+    		this.destinationIdentifier = destinationIdentifier;
+    		this.destinationSequence = destinationSequence;
+    		this.originatorIdentifier = originatorIdentifier;
+    		this.originatorSequence = originatorSequence;
+    	}
+
+		/**
+		 * @return the hopCount
+		 */
+		public int getHopCount() {
+			return hopCount;
 		}
 	}
 
