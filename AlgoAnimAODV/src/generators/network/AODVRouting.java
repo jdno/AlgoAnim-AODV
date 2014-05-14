@@ -333,6 +333,34 @@ public class AODVRouting implements Generator {
     		}
     	}
     	
+    	/**
+    	 * Update the routing table with the information from the given message.
+    	 * @param message The message to analyze
+    	 */
+    	private void updateRoutingTable(AODVMessage message) {
+    		RoutingTableEntry entry = null;
+    		
+    		for(RoutingTableEntry tableEntry: routingTable) {
+    			if (tableEntry.nodeIdentifier.equals(message.originatorIdentifier)) {
+    				entry = tableEntry;
+    				break;
+    			}
+    		}
+    		
+    		if (entry != null) {
+    			if (entry.destinationSequence < message.originatorSequence) {
+    				entry.destinationSequence = message.originatorSequence;
+    				// TODO set next hop
+    			}
+    		} else {
+    			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
+    			newEntry.destinationSequence = message.destinationSequence;
+    			newEntry.hopCount = message.hopCount;
+    			// TODO set next hop
+    			routingTable.add(newEntry);
+    		}
+    	}
+    	
   		/**
 		 * @return the originatorSequence
 		 */
