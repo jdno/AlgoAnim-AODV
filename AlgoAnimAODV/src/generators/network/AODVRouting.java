@@ -321,16 +321,14 @@ public class AODVRouting implements Generator {
     	public void receiveMessage(AODVMessage message) {
     		if (cachedMessage == null) {
     			cachedMessage = message;
-    			// TODO update routing table
     		} else {
     			if (cachedMessage.identifier != message.identifier) {
     				cachedMessage = message;
-        			// TODO update routing table
-    			}
+        		}
     		}
     	}
-
-		/**
+    	
+  		/**
 		 * @return the originatorSequence
 		 */
 		public int getOriginatorSequence() {
