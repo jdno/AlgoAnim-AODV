@@ -40,7 +40,7 @@ public class AODVRouting implements Generator {
 
 	public AODVRouting() {
 		lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
-				"Sascha Bleidner, Jan David Nose", 800, 600);
+				"Sascha Bleidner, Jan David Nose", 1200, 800);
 	}
 
 	public void init() {
