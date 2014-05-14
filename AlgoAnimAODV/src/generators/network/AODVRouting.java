@@ -298,10 +298,11 @@ public class AODVRouting implements Generator {
     	 * Process the currently cached message.
     	 */
     	public void process() {
-    		// TODO update routing table
-			// TODO visualize sending of message
+    		// TODO visualize sending of message
     		
     		if (cachedMessage != null) {
+    			updateRoutingTable(cachedMessage);
+    			
     			if (cachedMessage.type.equals("RREQ")) {
     				if(cachedMessage.destinationIdentifier.equals(nodeIdentifier)) {
     					// TODO respond with RREP
