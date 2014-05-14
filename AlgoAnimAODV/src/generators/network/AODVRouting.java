@@ -13,10 +13,12 @@ import java.util.Locale;
 import algoanim.animalscript.AnimalScript;
 import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.Graph;
+import algoanim.primitives.Rect;
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
+import algoanim.properties.RectProperties;
 import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
@@ -102,45 +104,50 @@ public class AODVRouting implements Generator {
 	private class Table {
 
 		int verticalMove = 15;
-		int verticalDistance = 30;
+		int distanceColumns = 30;
 		int numRows = 3;
 		int height = verticalMove * numRows * 2;
 
 		String[] titles = new String[] { "N", "DS", "HC", "NH" };
 		ArrayList<ArrayList<Text>> content;
+		ArrayList<ArrayList<Rect>> cells;
 
-		Coordinates upperLeft;
+		Coordinates startPoint;
 
 		AODVNode ownNode;
 
 		public Table(AODVNode ownNode, Coordinates startPoint) {
 
 			this.ownNode = ownNode;
-			this.upperLeft = startPoint;
-			getHorizontalLine(startPoint, verticalDistance * numRows + 40);
+			this.startPoint = startPoint;
+			getHorizontalLine(startPoint, distanceColumns * numRows + 40);
 			// -2 for correction of the different alignments of the titles.
 			for (int i = 0; i <= numRows; i++) {
 				lang.newText(
-						moveCoordinate(startPoint, verticalDistance * i,
+						moveCoordinate(startPoint, distanceColumns * i,
 								-verticalMove), titles[i], "", null);
 				if (i != 0) {
 					getVerticalLine(
-							moveCoordinate(startPoint,
-									verticalDistance * i - 5, -15), height);
+							moveCoordinate(startPoint, distanceColumns * i - 5,
+									-15), height);
 				}
 			}
 			initContent();
 		}
 
 		private void initContent() {
-			Coordinates contentStart = moveCoordinate(upperLeft, 0, 5);
+
+			Coordinates contentStart = moveCoordinate(startPoint, 0, 5);
 			int numNodes = adjacencyMatrix[0].length;
 			this.content = new ArrayList<ArrayList<Text>>();
+			
 			for (int i = 0; i < numNodes; i++) {
 				ArrayList<Text> currentLine = new ArrayList<Text>();
+				ArrayList<Rect> currentCells = new ArrayList<Rect>();
+
 				for (int z = 0; z <= numRows; z++) {
 					currentLine.add(lang.newText(
-							moveCoordinate(contentStart, verticalDistance * z,
+							moveCoordinate(contentStart, distanceColumns * z,
 									verticalMove * i), "A", "", null));
 				}
 				content.add(currentLine);
