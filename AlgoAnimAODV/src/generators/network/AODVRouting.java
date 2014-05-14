@@ -255,6 +255,11 @@ public class AODVRouting implements Generator {
 		 * before the node answers to a RREP
 		 */
 		private int originatorSequence = 0;
+		
+		/**
+    	 * Nodes save a RREQ or RREP until they get the order to process it.
+    	 */
+    	private AODVMessage cachedMessage;
 
 		/**
 		 * The routing table consists of a list of routing table entries.
