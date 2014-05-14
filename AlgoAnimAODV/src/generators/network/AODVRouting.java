@@ -353,21 +353,37 @@ public class AODVRouting implements Generator {
     	 * @param message The message to analyze
     	 */
     	private void updateRoutingTable(AODVMessage message) {
-    		RoutingTableEntry entry = null;
+    		boolean originatorUpdated = false;
+    		boolean destinationUpdated = false;
     		
-    		for(RoutingTableEntry tableEntry: routingTable) {
-    			if (tableEntry.nodeIdentifier.equals(message.originatorIdentifier)) {
-    				entry = tableEntry;
-    				break;
+    		for(RoutingTableEntry entry: routingTable) {
+    			if (entry.nodeIdentifier.equals(message.originatorIdentifier)) {
+    				// Update originator if its sequence number is more up to date
+    				if (entry.destinationSequence < message.originatorSequence) {
+        				entry.destinationSequence = message.originatorSequence;
+        				entry.nextHop = cachedMessageSender;
+        				originatorUpdated = true;
+        			}
+    			}
+    			if (entry.nodeIdentifier.equals(message.destinationIdentifier)) {
+    				// Update destination if its sequence number is more up to date
+    				if (entry.destinationSequence < message.destinationSequence) {
+        				entry.destinationSequence = message.destinationSequence;
+        				entry.nextHop = cachedMessageSender;
+        				destinationUpdated = true;
+        			}
     			}
     		}
     		
-    		if (entry != null) {
-    			if (entry.destinationSequence < message.originatorSequence) {
-    				entry.destinationSequence = message.originatorSequence;
-    				entry.nextHop = cachedMessageSender;
-    			}
-    		} else {
+    		if (!originatorUpdated) {
+    			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
+    			newEntry.destinationSequence = message.destinationSequence;
+    			newEntry.hopCount = message.hopCount;
+    			newEntry.nextHop = cachedMessageSender;
+    			routingTable.add(newEntry);
+    		}
+    		
+    		if (!destinationUpdated) {
     			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
     			newEntry.destinationSequence = message.destinationSequence;
     			newEntry.hopCount = message.hopCount;
@@ -376,7 +392,7 @@ public class AODVRouting implements Generator {
     		}
     	}
     	
-  		/**
+    	/**
 		 * @return the originatorSequence
 		 */
 		public int getOriginatorSequence() {
