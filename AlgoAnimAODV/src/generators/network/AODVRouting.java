@@ -113,46 +113,53 @@ public class AODVRouting implements Generator {
 		ArrayList<ArrayList<Rect>> cells;
 
 		Coordinates startPoint;
-
+		Coordinates currentLine;
 		AODVNode ownNode;
 
 		public Table(AODVNode ownNode, Coordinates startPoint) {
 
 			this.ownNode = ownNode;
 			this.startPoint = startPoint;
-			getHorizontalLine(startPoint, distanceColumns * numRows + 40);
-			// -2 for correction of the different alignments of the titles.
-			for (int i = 0; i <= numRows; i++) {
-				lang.newText(
-						moveCoordinate(startPoint, distanceColumns * i,
-								-verticalMove), titles[i], "", null);
-				if (i != 0) {
-					getVerticalLine(
-							moveCoordinate(startPoint, distanceColumns * i - 5,
-									-15), height);
-				}
-			}
+			this.currentLine = startPoint;
 			initContent();
 		}
 
 		private void initContent() {
 
-			Coordinates contentStart = moveCoordinate(startPoint, 0, 5);
 			int numNodes = adjacencyMatrix[0].length;
 			this.content = new ArrayList<ArrayList<Text>>();
+			 
+			lang.newText(startPoint, "Node: " + ownNode.getNodeIdentifier(), "Tablename", null);
 			
+			nextLine();
+			for (int i = 0; i <= numRows; i++) {
+				lang.newText(
+						moveCoordinate(currentLine, distanceColumns * i,
+								0), titles[i], "", null);
+				if (i != 0) {
+					getVerticalLine(
+							moveCoordinate(currentLine, distanceColumns * i - 5,
+									0), height);
+				}
+			}
+			// switch to the next line
+			nextLine();
+			getHorizontalLine(currentLine, distanceColumns*(numRows+1));
 			for (int i = 0; i < numNodes; i++) {
-				ArrayList<Text> currentLine = new ArrayList<Text>();
-				ArrayList<Rect> currentCells = new ArrayList<Rect>();
+				ArrayList<Text> lineContent = new ArrayList<Text>();
 
 				for (int z = 0; z <= numRows; z++) {
-					currentLine.add(lang.newText(
-							moveCoordinate(contentStart, distanceColumns * z,
-									verticalMove * i), "A", "", null));
+					lineContent.add(lang.newText(
+							moveCoordinate(currentLine, distanceColumns * z,0), "A", "", null));
 				}
-				content.add(currentLine);
+				content.add(lineContent);
+				nextLine();
 			}
 
+		}
+		
+		private void nextLine(){
+			currentLine = moveCoordinate(currentLine,0,verticalMove);
 		}
 
 		public void updateTable() {
