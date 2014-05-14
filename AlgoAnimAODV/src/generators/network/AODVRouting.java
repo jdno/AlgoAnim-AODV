@@ -276,6 +276,35 @@ public class AODVRouting implements Generator {
 		}
 		
 		/**
+    	 * Process the currently cached message.
+    	 */
+    	public void process() {
+			// TODO visualize sending of message
+    		
+    		if (cachedMessage != null) {
+    			if (cachedMessage.type.equals("RREQ")) {
+    				for(AODVNode neighbor: neighbors) {
+    					neighbor.receiveMessage(cachedMessage);
+    				}
+    			} else {
+    				for(RoutingTableEntry entry: routingTable) {
+    					if (entry.nodeIdentifier.equals(cachedMessage.destinationIdentifier)) {
+    						for(AODVNode neighbor: neighbors) {
+    							if (neighbor.nodeIdentifier.equals(entry.nextHop)) {
+    								neighbor.receiveMessage(cachedMessage);
+    							} else {
+    								System.err.println("No neighbor found to forward message to.");
+    							}
+    						}
+    					} else {
+    						System.err.println("No route to message destination found.");
+    					}
+    				}
+    			}
+    		}
+    	}
+		
+		/**
     	 * Receive a new AODV message (either a RREQ or RREP). The message does not get processed
     	 * automatically, but is cached within the node until you call .process(). If the same 
     	 * message is received multiple times, only the first occurrence will be saved. If a new
