@@ -313,9 +313,9 @@ public class AODVRouting implements Generator {
     				}
     			} else {
     				for(RoutingTableEntry entry: routingTable) {
-    					if (entry.nodeIdentifier.equals(cachedMessage.destinationIdentifier)) {
+    					if (entry.getIdentifier().equals(cachedMessage.destinationIdentifier)) {
     						for(AODVNode neighbor: neighbors) {
-    							if (neighbor.nodeIdentifier.equals(entry.nextHop)) {
+    							if (neighbor.nodeIdentifier.equals(entry.getNextHop())) {
     								neighbor.receiveMessage(this, cachedMessage);
     							} else {
     								System.err.println("No neighbor found to forward message to.");
@@ -357,19 +357,19 @@ public class AODVRouting implements Generator {
     		boolean destinationUpdated = false;
     		
     		for(RoutingTableEntry entry: routingTable) {
-    			if (entry.nodeIdentifier.equals(message.originatorIdentifier)) {
+    			if (entry.getIdentifier().equals(message.originatorIdentifier)) {
     				// Update originator if its sequence number is more up to date
-    				if (entry.destinationSequence < message.originatorSequence) {
-        				entry.destinationSequence = message.originatorSequence;
-        				entry.nextHop = cachedMessageSender;
+    				if (entry.getDestinationSequence() < message.originatorSequence) {
+        				entry.setDestinationSequence(message.originatorSequence);
+        				entry.setNextHop(cachedMessageSender);
         				originatorUpdated = true;
         			}
     			}
-    			if (entry.nodeIdentifier.equals(message.destinationIdentifier)) {
+    			if (entry.getIdentifier().equals(message.destinationIdentifier)) {
     				// Update destination if its sequence number is more up to date
-    				if (entry.destinationSequence < message.destinationSequence) {
-        				entry.destinationSequence = message.destinationSequence;
-        				entry.nextHop = cachedMessageSender;
+    				if (entry.getDestinationSequence() < message.destinationSequence) {
+        				entry.setDestinationSequence(message.destinationSequence);
+        				entry.setNextHop(cachedMessageSender);
         				destinationUpdated = true;
         			}
     			}
@@ -377,17 +377,17 @@ public class AODVRouting implements Generator {
     		
     		if (!originatorUpdated) {
     			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
-    			newEntry.destinationSequence = message.destinationSequence;
-    			newEntry.hopCount = message.hopCount;
-    			newEntry.nextHop = cachedMessageSender;
+    			newEntry.setDestinationSequence(message.destinationSequence);
+    			newEntry.setHopCount(message.hopCount);
+    			newEntry.setNextHop(cachedMessageSender);
     			routingTable.add(newEntry);
     		}
     		
     		if (!destinationUpdated) {
     			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
-    			newEntry.destinationSequence = message.destinationSequence;
-    			newEntry.hopCount = message.hopCount;
-    			newEntry.nextHop = cachedMessageSender;
+    			newEntry.setDestinationSequence(message.destinationSequence);
+    			newEntry.setHopCount(message.hopCount);
+    			newEntry.setNextHop(cachedMessageSender);
     			routingTable.add(newEntry);
     		}
     	}
@@ -526,124 +526,5 @@ public class AODVRouting implements Generator {
 		}
 	}
 
-	/**
-	 * A routing table for the AODV routing algorithm holds he following
-	 * information about the nodes in the network:
-	 * 
-	 * - nodeIdenifier: textual representation of a node's name/identifier -
-	 * destinationSequence: this is used to evaluate the freshness of a route -
-	 * hopCount: the distance to the node - nextHop: this is the next node on
-	 * the route to the destination
-	 * 
-	 * @author Jan David
-	 * 
-	 */
-	private class RoutingTableEntry {
-
-		/**
-		 * Textual representation of the destination node.
-		 */
-		private final String nodeIdentifier;
-
-		/**
-		 * Sequence number used to evaluate the freshness of the route. It is
-		 * updated in two cases only: - the route to the destination breaks -
-		 * new information becomes available with a higher sequence number for
-		 * the node
-		 */
-		private int destinationSequence = 0;
-
-		/**
-		 * The hop count to the destination.
-		 */
-		private int hopCount = Integer.MAX_VALUE;
-
-		/**
-		 * This is the next node on the route to the destination.
-		 */
-		private String nextHop = "";
-
-		/**
-		 * Create a new routing table entry with default values. The
-		 * nodeIdentifier must be set though.
-		 * 
-		 * @param nodeIdentifier
-		 *            The node's identifier
-		 */
-		public RoutingTableEntry(String nodeIdentifier) {
-			this.nodeIdentifier = nodeIdentifier;
-		}
-
-		/**
-		 * Create a new routing table entry with custom values.
-		 * 
-		 * @param nodeIdentifier
-		 *            The node's identifier
-		 * @param destinationSequence
-		 *            The node's destination sequence
-		 * @param hopCount
-		 *            The hop count to the node
-		 * @param nextHop
-		 *            The next hop to the node
-		 */
-		public RoutingTableEntry(String nodeIdentifier,
-				int destinationSequence, int hopCount, String nextHop) {
-			this.nodeIdentifier = nodeIdentifier;
-			this.destinationSequence = destinationSequence;
-			this.hopCount = hopCount;
-			this.nextHop = nextHop;
-		}
-
-		/**
-		 * @return the destinationSequence
-		 */
-		public int getDestinationSequence() {
-			return destinationSequence;
-		}
-
-		/**
-		 * @param destinationSequence
-		 *            the destinationSequence to set
-		 */
-		public void setDestinationSequence(int destinationSequence) {
-			this.destinationSequence = destinationSequence;
-		}
-
-		/**
-		 * @return the hopCount
-		 */
-		public int getHopCount() {
-			return hopCount;
-		}
-
-		/**
-		 * @param hopCount
-		 *            the hopCount to set
-		 */
-		public void setHopCount(int hopCount) {
-			this.hopCount = hopCount;
-		}
-
-		/**
-		 * @return the nextHop
-		 */
-		public String getNextHop() {
-			return nextHop;
-		}
-
-		/**
-		 * @param nextHop
-		 *            the nextHop to set
-		 */
-		public void setNextHop(String nextHop) {
-			this.nextHop = nextHop;
-		}
-
-		/**
-		 * @return the nodeIdentifier
-		 */
-		public String getNodeIdentifier() {
-			return nodeIdentifier;
-		}
-	}
+	
 }
