@@ -3,6 +3,7 @@ package generators.network.aodv;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
+import generators.network.aodv.AODVMessage.MessageType;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -303,8 +304,8 @@ public class AODVRouting implements Generator {
     		if (cachedMessage != null) {
     			updateRoutingTable(cachedMessage);
     			
-    			if (cachedMessage.type.equals("RREQ")) {
-    				if(cachedMessage.destinationIdentifier.equals(nodeIdentifier)) {
+    			if (cachedMessage.getType() == MessageType.RREQ) {
+    				if(cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
     					// TODO respond with RREP
     				} else {
     					for(AODVNode neighbor: neighbors) {
@@ -313,7 +314,7 @@ public class AODVRouting implements Generator {
     				}
     			} else {
     				for(RoutingTableEntry entry: routingTable) {
-    					if (entry.getIdentifier().equals(cachedMessage.destinationIdentifier)) {
+    					if (entry.getIdentifier().equals(cachedMessage.getDestinationIdentifier())) {
     						for(AODVNode neighbor: neighbors) {
     							if (neighbor.nodeIdentifier.equals(entry.getNextHop())) {
     								neighbor.receiveMessage(this, cachedMessage);
@@ -341,7 +342,7 @@ public class AODVRouting implements Generator {
     			cachedMessage = message;
     			cachedMessageSender = sender.nodeIdentifier;
     		} else {
-    			if (cachedMessage.identifier != message.identifier) {
+    			if (cachedMessage.getIdentifier() != message.getIdentifier()) {
     				cachedMessage = message;
     				cachedMessageSender = sender.nodeIdentifier;
         		}
@@ -357,18 +358,18 @@ public class AODVRouting implements Generator {
     		boolean destinationUpdated = false;
     		
     		for(RoutingTableEntry entry: routingTable) {
-    			if (entry.getIdentifier().equals(message.originatorIdentifier)) {
+    			if (entry.getIdentifier().equals(message.getOriginatorIdentifier())) {
     				// Update originator if its sequence number is more up to date
-    				if (entry.getDestinationSequence() < message.originatorSequence) {
-        				entry.setDestinationSequence(message.originatorSequence);
+    				if (entry.getDestinationSequence() < message.getOriginatorSequence()) {
+        				entry.setDestinationSequence(message.getOriginatorSequence());
         				entry.setNextHop(cachedMessageSender);
         				originatorUpdated = true;
         			}
     			}
-    			if (entry.getIdentifier().equals(message.destinationIdentifier)) {
+    			if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
     				// Update destination if its sequence number is more up to date
-    				if (entry.getDestinationSequence() < message.destinationSequence) {
-        				entry.setDestinationSequence(message.destinationSequence);
+    				if (entry.getDestinationSequence() < message.getDestinationSequence()) {
+        				entry.setDestinationSequence(message.getDestinationSequence());
         				entry.setNextHop(cachedMessageSender);
         				destinationUpdated = true;
         			}
@@ -376,17 +377,17 @@ public class AODVRouting implements Generator {
     		}
     		
     		if (!originatorUpdated) {
-    			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
-    			newEntry.setDestinationSequence(message.destinationSequence);
-    			newEntry.setHopCount(message.hopCount);
+    			RoutingTableEntry newEntry = new RoutingTableEntry(message.getOriginatorIdentifier());
+    			newEntry.setDestinationSequence(message.getDestinationSequence());
+    			newEntry.setHopCount(message.getHopCount());
     			newEntry.setNextHop(cachedMessageSender);
     			routingTable.add(newEntry);
     		}
     		
     		if (!destinationUpdated) {
-    			RoutingTableEntry newEntry = new RoutingTableEntry(message.originatorIdentifier);
-    			newEntry.setDestinationSequence(message.destinationSequence);
-    			newEntry.setHopCount(message.hopCount);
+    			RoutingTableEntry newEntry = new RoutingTableEntry(message.getOriginatorIdentifier());
+    			newEntry.setDestinationSequence(message.getDestinationSequence());
+    			newEntry.setHopCount(message.getHopCount());
     			newEntry.setNextHop(cachedMessageSender);
     			routingTable.add(newEntry);
     		}
@@ -450,81 +451,7 @@ public class AODVRouting implements Generator {
 		}
 	}
 	
-	/**
-     * Representation of the AODV Route Request (RREQ) and Route Response (RREP). See the official RFC for
-     * documentation:
-     * 
-     * http://www.ietf.org/rfc/rfc3561.txt
-     * 
-     * @author Jan David
-     *
-     */
-    private class AODVMessage {
-    	
-    	/**
-    	 * Can either be "RREQ" or "RREQ".
-    	 */
-    	private String type;
-    	
-    	/**
-    	 * A sequence number uniquely identifying the particular RREQ/RRPE when taken in conjunction with the
-		 * originating node's IP address.
-    	 */
-    	private int identifier;
-    	
-    	/**
-    	 * The destination for which a route is required.
-    	 */
-    	private String destinationIdentifier;
-    	
-    	/**
-    	 * The latest sequence number received in the past by the originator for any route towards the
-		 * destination.
-    	 */
-    	private int destinationSequence;
-    	
-    	/**
-    	 * The originator of the route request.
-    	 */
-    	private String originatorIdentifier;
-    	
-    	/**
-    	 * The current sequence number to be used in the route entry pointing towards the originator of the route
-		 * request.
-    	 */
-    	private int originatorSequence;
-    	
-    	/**
-    	 * The number of hops from the Originator to the node handling the request.
-    	 */
-    	private int hopCount = 0;
-    	
-    	/**
-    	 * Create an AODV message. The message ID should be set to the originator's sequence number or another number
-    	 * that is unique when combined with the originator's identifier.
-    	 * @param type Can either be "RREQ" or "RREP"
-    	 * @param identifier The RREQ/RREP's ID
-    	 * @param destinationIdentifier The identifier of the destination
-    	 * @param destinationSequence The last known sequence number of the destination
-    	 * @param originatorIdentifier The identifier of the originator
-    	 * @param originatorSequence The sequence number of the originator
-    	 */
-    	public AODVMessage(String type, int identifier, String destinationIdentifier, int destinationSequence, String originatorIdentifier, int originatorSequence) {
-    		this.type = type;
-    		this.identifier = identifier;
-    		this.destinationIdentifier = destinationIdentifier;
-    		this.destinationSequence = destinationSequence;
-    		this.originatorIdentifier = originatorIdentifier;
-    		this.originatorSequence = originatorSequence;
-    	}
-
-		/**
-		 * @return the hopCount
-		 */
-		public int getHopCount() {
-			return hopCount;
-		}
-	}
+	
 
 	
 }
