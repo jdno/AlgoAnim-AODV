@@ -3,24 +3,16 @@ package generators.network.aodv;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
-import generators.network.aodv.AODVMessage.MessageType;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
 
 import algoanim.animalscript.AnimalScript;
-import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.Graph;
-import algoanim.primitives.Rect;
-import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
-import algoanim.properties.RectProperties;
-import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
 
@@ -70,14 +62,15 @@ public class AODVRouting implements Generator {
 		// defaultGraph.show();
 		lang.nextStep();
 
-		Table table1 = new Table(new AODVNode("A"), (new Coordinates(350, 50)));
+		InfoTable table1 = new InfoTable(lang, new AODVNode("A"),
+				(new Coordinates(350, 50)), adjacencyMatrix);
 
 		// drawTable(new Coordinates(580,50));
 		// drawTable(new Coordinates(350,250));
 		// drawTable(new Coordinates(580,250));
 
-		InfoBox info = new InfoBox(lang, "Erläuterung", new Coordinates(40, 420),
-				new Coordinates(660, 600));
+		InfoBox info = new InfoBox(lang, "Erläuterung",
+				new Coordinates(40, 420), new Coordinates(660, 600));
 		info.updateText("Hallo");
 		lang.nextStep();
 		info.updateText("Wuhuuu");
@@ -102,114 +95,8 @@ public class AODVRouting implements Generator {
 		return defaultGraph;
 	}
 
-	private class Table {
-
-		int verticalMove = 15;
-		int distanceColumns = 30;
-		int numRows = 3;
-		int height = verticalMove * numRows * 2;
-
-		String[] titles = new String[] { "N", "DS", "HC", "NH" };
-		ArrayList<ArrayList<Text>> content;
-		ArrayList<ArrayList<Rect>> cells;
-
-		Coordinates startPoint;
-		Coordinates currentLine;
-		AODVNode ownNode;
-
-		public Table(AODVNode ownNode, Coordinates startPoint) {
-
-			this.ownNode = ownNode;
-			this.startPoint = startPoint;
-			this.currentLine = startPoint;
-			initContent();
-		}
-
-		private void initContent() {
-
-			int numNodes = adjacencyMatrix[0].length;
-			this.content = new ArrayList<ArrayList<Text>>();
-			 
-			lang.newText(startPoint, "Node: " + ownNode.getNodeIdentifier(), "Tablename", null);
-			
-			nextLine();
-			for (int i = 0; i <= numRows; i++) {
-				lang.newText(
-						moveCoordinate(currentLine, distanceColumns * i,
-								0), titles[i], "", null);
-				if (i != 0) {
-					getVerticalLine(
-							moveCoordinate(currentLine, distanceColumns * i - 5,
-									0), height);
-				}
-			}
-			// switch to the next line
-			nextLine();
-			getHorizontalLine(currentLine, distanceColumns*(numRows+1));
-			for (int i = 0; i < numNodes; i++) {
-				ArrayList<Text> lineContent = new ArrayList<Text>();
-
-				for (int z = 0; z <= numRows; z++) {
-					lineContent.add(lang.newText(
-							moveCoordinate(currentLine, distanceColumns * z,0), "A", "", null));
-				}
-				content.add(lineContent);
-				nextLine();
-			}
-
-		}
-		
-		private void nextLine(){
-			currentLine = moveCoordinate(currentLine,0,verticalMove);
-		}
-
-		public void updateTable() {
-			ArrayList<RoutingTableEntry> currentRoutingTable = ownNode
-					.getRoutingTable();
-			// for (int i = 0; i < currentRoutingTable.size(); i++){
-			//
-			// lang.newText(upperLeft, text, name,
-			// display)currentEntry.getNodeIdentifier()
-			// }
-
-		}
-
-		private algoanim.primitives.Polygon getVerticalLine(
-				Coordinates startPoint, int length) {
-			return getPolygon(startPoint, length, true);
-		}
-
-		private algoanim.primitives.Polygon getHorizontalLine(
-				Coordinates startPoint, int length) {
-			return getPolygon(startPoint, length, false);
-		}
-
-		private algoanim.primitives.Polygon getPolygon(Coordinates startPoint,
-				int length, boolean vertical) {
-
-			Node[] nodes = new Node[2];
-			nodes[0] = startPoint;
-			if (vertical) {
-				nodes[1] = new Coordinates(startPoint.getX(), startPoint.getY()
-						+ length);
-			} else {
-				nodes[1] = new Coordinates(startPoint.getX() + length,
-						startPoint.getY());
-			}
-
-			algoanim.primitives.Polygon line = null;
-
-			try {
-				line = lang.newPolygon(nodes, "line", null);
-			} catch (NotEnoughNodesException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return line;
-		}
-
-	}
-
+	// TODO refactor as static method in some helper class, and remove from
+	// InfoBox/InfoTable
 	private Coordinates moveCoordinate(Coordinates point, int x, int y) {
 		return new Coordinates(point.getX() + x, point.getY() + y);
 	}
@@ -250,9 +137,4 @@ public class AODVRouting implements Generator {
 		return Generator.JAVA_OUTPUT;
 	}
 
-	
-	
-	
-
-	
 }
