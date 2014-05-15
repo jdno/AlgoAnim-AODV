@@ -1,4 +1,4 @@
-package generators.network;
+package generators.network.aodv;
 
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
