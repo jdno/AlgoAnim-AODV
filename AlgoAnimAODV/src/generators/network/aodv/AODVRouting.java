@@ -75,7 +75,7 @@ public class AODVRouting implements Generator {
 		// drawTable(new Coordinates(350,250));
 		// drawTable(new Coordinates(580,250));
 
-		InfoBox info = new InfoBox("Erläuterung", new Coordinates(40, 420),
+		InfoBox info = new InfoBox(lang, "Erläuterung", new Coordinates(40, 420),
 				new Coordinates(660, 600));
 		info.updateText("Hallo");
 		lang.nextStep();
@@ -646,28 +646,4 @@ public class AODVRouting implements Generator {
 			return nodeIdentifier;
 		}
 	}
-
-	private class InfoBox {
-
-		Text displayedText;
-
-		public InfoBox(String title, Coordinates upperLeft,
-				Coordinates lowerRight) {
-			TextProperties textProps = new TextProperties();
-			textProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
-					"Monospaced", Font.PLAIN, 12));
-			lang.newText(upperLeft, title, "Title", null, textProps);
-			lang.newRect(moveCoordinate(upperLeft, 0, 20), lowerRight,
-					"InfoBox", null);
-			this.displayedText = lang.newText(
-					moveCoordinate(upperLeft, 10, 25), "", "Text", null,
-					textProps);
-		}
-
-		public void updateText(String text) {
-			displayedText.setText(text, null, null);
-		}
-
-	}
-
 }
