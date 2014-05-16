@@ -1,97 +1,187 @@
 package generators.network.aodv;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.Rect;
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.AnimationPropertiesKeys;
+import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
 
 public class InfoTable {
 
-	int verticalMove = 15;
+	int cellHeight = 15;
 	int distanceColumns = 30;
-	int numRows = 3;
-	int height = verticalMove * numRows * 2;
 
+	Color highlightColor = Color.ORANGE;
+	
 	String[] titles = new String[] { "N", "DS", "HC", "NH" };
-	ArrayList<ArrayList<Text>> content;
+	int numRows = titles.length;
+	int height = cellHeight * numRows * 2;
+	ArrayList<ArrayList<Text>> textContent;
 	ArrayList<ArrayList<Rect>> cells;
 
-	Coordinates startPoint;
 	Coordinates currentLine;
 	Language lang;
 	AODVNode ownNode;
-	int[][] adjacencyMatrix;
+	int numNodes;
 
-	public InfoTable(Language lang, AODVNode ownNode, Coordinates startPoint,
-			int[][] adjacencyMatrix) {
+	public InfoTable(Language lang, AODVNode nodeForThisTable, Coordinates startPoint,
+			int numOfNodes) {
 		this.lang = lang;
-		this.ownNode = ownNode;
-		this.startPoint = startPoint;
+		this.ownNode = nodeForThisTable;
 		this.currentLine = startPoint;
-		this.adjacencyMatrix = adjacencyMatrix;
+		this.numNodes = numOfNodes;
 		initContent();
 	}
 
 	private void initContent() {
 
-		int numNodes = adjacencyMatrix[0].length;
-		this.content = new ArrayList<ArrayList<Text>>();
+		this.textContent = new ArrayList<ArrayList<Text>>();
+		this.cells = new ArrayList<ArrayList<Rect>>();
 
-		lang.newText(startPoint, "Node: " + ownNode.getNodeIdentifier(),
+		RectProperties rectProps = new RectProperties();
+		rectProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
+		rectProps.set(AnimationPropertiesKeys.FILL_PROPERTY, highlightColor);
+		rectProps.set(AnimationPropertiesKeys.COLOR_PROPERTY, highlightColor);
+
+		lang.newText(currentLine, "Node: " + ownNode.getNodeIdentifier(),
 				"Tablename", null);
 
 		nextLine();
-		for (int i = 0; i <= numRows; i++) {
+		for (int i = 0; i < numRows; i++) {
 			lang.newText(moveCoordinate(currentLine, distanceColumns * i, 0),
 					titles[i], "", null);
+
 			if (i != 0) {
-				getVerticalLine(
+				drawVerticalLine(
 						moveCoordinate(currentLine, distanceColumns * i - 5, 0),
 						height);
 			}
 		}
 		// switch to the next line
 		nextLine();
-		getHorizontalLine(currentLine, distanceColumns * (numRows + 1));
-		for (int i = 0; i < numNodes; i++) {
-			ArrayList<Text> lineContent = new ArrayList<Text>();
+		drawHorizontalLie(currentLine, distanceColumns * (numRows + 1));
 
-			for (int z = 0; z <= numRows; z++) {
-				lineContent.add(lang.newText(
+		for (int i = 0; i < numNodes; i++) {
+			ArrayList<Text> textInOneLine = new ArrayList<Text>();
+			ArrayList<Rect> cellsInOneLine = new ArrayList<Rect>();
+
+			for (int z = 0; z < numRows; z++) {
+
+				// create rectangles as cells for highlighting
+				Coordinates cellUpperLeft = moveCoordinate(currentLine,
+						distanceColumns * z - 2, -1);
+				Coordinates cellDownRight = moveCoordinate(currentLine,
+						distanceColumns * z + distanceColumns - 10,
+						cellHeight - 1);
+
+				Rect newRect = lang.newRect(cellUpperLeft, cellDownRight, "",
+						null, rectProps);
+				newRect.hide();
+
+				cellsInOneLine.add(newRect);
+
+				// create text inside every cell
+				textInOneLine.add(lang.newText(
 						moveCoordinate(currentLine, distanceColumns * z, 0),
 						"A", "", null));
 			}
-			content.add(lineContent);
+			textContent.add(textInOneLine);
+			cells.add(cellsInOneLine);
 			nextLine();
 		}
 
 	}
 
 	private void nextLine() {
-		currentLine = moveCoordinate(currentLine, 0, verticalMove);
+		currentLine = moveCoordinate(currentLine, 0, cellHeight);
 	}
 
 	public void updateTable() {
 		ArrayList<RoutingTableEntry> currentRoutingTable = ownNode
 				.getRoutingTable();
-		// for (int i = 0; i < currentRoutingTable.size(); i++){
-		//
-		// lang.newText(upperLeft, text, name,
-		// display)currentEntry.getNodeIdentifier()
-		// }
+		for (int i = 0; i < textContent.size(); i++) {
 
+			if (currentRoutingTable.get(i) != null) {
+				// check node identifier
+				if (currentRoutingTable.get(i).getIdentifier() != textContent
+						.get(i).get(0).getText()) {
+					textContent
+							.get(i)
+							.get(0)
+							.setText(
+									currentRoutingTable.get(i).getIdentifier(),
+									null, null);
+					highlightCell(i, 0, true);
+				} else {
+					highlightCell(i, 0, false);
+				}
+
+				// check destination sequence number
+				if (Integer.toString(currentRoutingTable.get(i)
+						.getDestinationSequence()) != textContent.get(i).get(1)
+						.getText()) {
+					textContent
+							.get(i)
+							.get(1)
+							.setText(
+									Integer.toString(currentRoutingTable.get(i)
+											.getDestinationSequence()), null,
+									null);
+					highlightCell(i, 1, true);
+				} else {
+					highlightCell(i, 1, false);
+				}
+
+				// check hop count
+				if (Integer.toString(currentRoutingTable.get(i).getHopCount()) != textContent
+						.get(i).get(2).getText()) {
+					textContent
+							.get(i)
+							.get(2)
+							.setText(
+									Integer.toString(currentRoutingTable.get(i)
+											.getHopCount()), null, null);
+					highlightCell(i, 2, true);
+				} else {
+					highlightCell(i, 2, false);
+				}
+
+				// check next hop
+				if (currentRoutingTable.get(i).getNextHop() != textContent
+						.get(i).get(3).getText()) {
+					textContent
+							.get(i)
+							.get(3)
+							.setText(currentRoutingTable.get(i).getNextHop(),
+									null, null);
+					highlightCell(i, 3, true);
+				} else {
+					highlightCell(i, 3, false);
+				}
+			}
+		}
 	}
 
-	private algoanim.primitives.Polygon getVerticalLine(Coordinates startPoint,
-			int length) {
+	public void highlightCell(int row, int column, boolean highlight) {
+		if (highlight) {
+			cells.get(row).get(column).show();
+		} else {
+			cells.get(row).get(column).hide();
+		}
+	}
+
+	private algoanim.primitives.Polygon drawVerticalLine(
+			Coordinates startPoint, int length) {
 		return getPolygon(startPoint, length, true);
 	}
 
-	private algoanim.primitives.Polygon getHorizontalLine(
+	private algoanim.primitives.Polygon drawHorizontalLie(
 			Coordinates startPoint, int length) {
 		return getPolygon(startPoint, length, false);
 	}
@@ -120,8 +210,8 @@ public class InfoTable {
 		return line;
 	}
 
-	private Coordinates moveCoordinate(Coordinates point, int x, int y) {
-		return new Coordinates(point.getX() + x, point.getY() + y);
+	private Coordinates moveCoordinate(Coordinates point, int moveX, int moveY) {
+		return new Coordinates(point.getX() + moveX, point.getY() + moveY);
 	}
 
 }

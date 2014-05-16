@@ -65,6 +65,10 @@ public class AODVRouting implements Generator {
 		InfoTable table1 = new InfoTable(lang, new AODVNode("A"),
 				(new Coordinates(350, 50)), adjacencyMatrix);
 
+		lang.nextStep();
+		table1.highlightCell(1, 1,true);
+		lang.nextStep();
+		table1.highlightCell(1, 1, false);
 		// drawTable(new Coordinates(580,50));
 		// drawTable(new Coordinates(350,250));
 		// drawTable(new Coordinates(580,250));
