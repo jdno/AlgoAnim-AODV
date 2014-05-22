@@ -15,6 +15,7 @@ import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
+import animal.vhdl.logic.test;
 
 // TODO: Tabellen anzeigen
 // TODO: Private Klasse für Tabellen
@@ -63,7 +64,7 @@ public class AODVRouting implements Generator {
 		lang.nextStep();
 
 		InfoTable table1 = new InfoTable(lang, new AODVNode("A"),
-				(new Coordinates(350, 50)), adjacencyMatrix);
+				(new Coordinates(350, 50)), adjacencyMatrix[0].length);
 
 		lang.nextStep();
 		table1.highlightCell(1, 1,true);
@@ -78,6 +79,8 @@ public class AODVRouting implements Generator {
 		info.updateText("Hallo");
 		lang.nextStep();
 		info.updateText("Wuhuuu");
+		lang.nextStep();
+		
 		return lang.toString();
 	}
 

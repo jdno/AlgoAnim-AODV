@@ -14,24 +14,69 @@ import algoanim.util.Node;
 
 public class InfoTable {
 
-	int cellHeight = 15;
-	int distanceColumns = 30;
 
-	Color highlightColor = Color.ORANGE;
+	 /**
+	   * The concrete language object used for creating output
+	   */
+	private Language lang;
+
+	/**
+	 * ToolBox for basic geometry functionalities. 
+	 */
+	private GeometryToolBox tools;
 	
-	String[] titles = new String[] { "N", "DS", "HC", "NH" };
-	int numRows = titles.length;
-	int height = cellHeight * numRows * 2;
-	ArrayList<ArrayList<Text>> textContent;
-	ArrayList<ArrayList<Rect>> cells;
+	/**
+	 * Height of a cell
+	 */
+	private int cellHeight = 15;
+	
+	/**
+	 * Width of a column
+	 */
+	private int distanceColumns = 30;
 
-	Coordinates currentLine;
-	Language lang;
+	/**
+	 * Color for highlighted cells
+	 */
+	private Color highlightColor = Color.ORANGE;
+	
+	/**
+	 * Strings for the title row 
+	 */
+	private String[] titles = new String[] { "N", "DS", "HC", "NH" };
+	
+	/**
+	 * Shortcut for the number of rows in the table
+	 */
+	private int numRows = titles.length;
+	
+	/** 
+	 * Shortcut for the approx. height of the whole table. 
+	 */
+	private int height = cellHeight * numRows * 2;
+	
+	/**
+	 * List to store the text in
+	 */
+	private ArrayList<ArrayList<Text>> textContent;
+	
+	/**
+	 * List to access the rectangle of each cell for highlight purposes
+	 */
+	private ArrayList<ArrayList<Rect>> cells;
+
+	/**
+	 * Represents the currentLine in the GUI
+	 */
+	private Coordinates currentLine;
+	
+	
 	AODVNode ownNode;
 	int numNodes;
 
 	public InfoTable(Language lang, AODVNode nodeForThisTable, Coordinates startPoint,
 			int numOfNodes) {
+		this.tools = new GeometryToolBox(lang);
 		this.lang = lang;
 		this.ownNode = nodeForThisTable;
 		this.currentLine = startPoint;
@@ -54,18 +99,18 @@ public class InfoTable {
 
 		nextLine();
 		for (int i = 0; i < numRows; i++) {
-			lang.newText(moveCoordinate(currentLine, distanceColumns * i, 0),
+			lang.newText(tools.moveCoordinate(currentLine, distanceColumns * i, 0),
 					titles[i], "", null);
 
 			if (i != 0) {
-				drawVerticalLine(
-						moveCoordinate(currentLine, distanceColumns * i - 5, 0),
+				tools.drawVerticalLine(
+						tools.moveCoordinate(currentLine, distanceColumns * i - 5, 0),
 						height);
 			}
 		}
 		// switch to the next line
 		nextLine();
-		drawHorizontalLie(currentLine, distanceColumns * (numRows + 1));
+		tools.drawHorizontalLie(currentLine, distanceColumns * (numRows + 1));
 
 		for (int i = 0; i < numNodes; i++) {
 			ArrayList<Text> textInOneLine = new ArrayList<Text>();
@@ -74,9 +119,9 @@ public class InfoTable {
 			for (int z = 0; z < numRows; z++) {
 
 				// create rectangles as cells for highlighting
-				Coordinates cellUpperLeft = moveCoordinate(currentLine,
+				Coordinates cellUpperLeft = tools.moveCoordinate(currentLine,
 						distanceColumns * z - 2, -1);
-				Coordinates cellDownRight = moveCoordinate(currentLine,
+				Coordinates cellDownRight = tools.moveCoordinate(currentLine,
 						distanceColumns * z + distanceColumns - 10,
 						cellHeight - 1);
 
@@ -88,8 +133,8 @@ public class InfoTable {
 
 				// create text inside every cell
 				textInOneLine.add(lang.newText(
-						moveCoordinate(currentLine, distanceColumns * z, 0),
-						"A", "", null));
+						tools.moveCoordinate(currentLine, distanceColumns * z, 0),
+						"-", "", null));
 			}
 			textContent.add(textInOneLine);
 			cells.add(cellsInOneLine);
@@ -99,7 +144,7 @@ public class InfoTable {
 	}
 
 	private void nextLine() {
-		currentLine = moveCoordinate(currentLine, 0, cellHeight);
+		currentLine = tools.moveCoordinate(currentLine, 0, cellHeight);
 	}
 
 	public void updateTable() {
@@ -176,42 +221,6 @@ public class InfoTable {
 		}
 	}
 
-	private algoanim.primitives.Polygon drawVerticalLine(
-			Coordinates startPoint, int length) {
-		return getPolygon(startPoint, length, true);
-	}
 
-	private algoanim.primitives.Polygon drawHorizontalLie(
-			Coordinates startPoint, int length) {
-		return getPolygon(startPoint, length, false);
-	}
-
-	private algoanim.primitives.Polygon getPolygon(Coordinates startPoint,
-			int length, boolean vertical) {
-
-		Node[] nodes = new Node[2];
-		nodes[0] = startPoint;
-		if (vertical) {
-			nodes[1] = new Coordinates(startPoint.getX(), startPoint.getY()
-					+ length);
-		} else {
-			nodes[1] = new Coordinates(startPoint.getX() + length,
-					startPoint.getY());
-		}
-
-		algoanim.primitives.Polygon line = null;
-
-		try {
-			line = lang.newPolygon(nodes, "line", null);
-		} catch (NotEnoughNodesException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return line;
-	}
-
-	private Coordinates moveCoordinate(Coordinates point, int moveX, int moveY) {
-		return new Coordinates(point.getX() + moveX, point.getY() + moveY);
-	}
 
 }
