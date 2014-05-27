@@ -76,6 +76,30 @@ public class AODVRoutingGenerator implements Generator {
 		
 		return lang.toString();
 	}
+	
+	public void startAodvRouting() {
+		lang.nextStep();
+		controller.drawInfoBox("Der Startknoten beginnt die Route Discovery, in dem er ein Route Request (RREQ) an seine Nachbarn schickt.");
+		
+		// TODO initialize correctly
+		AODVNode startNode = aodvGraph.getNode(0);
+		AODVNode destinationNode = aodvGraph.getNode(aodvGraph.getAODVNodes().size() - 1);
+		
+		startNode.startRouteDiscovery(destinationNode);
+		int idleNodes = 0;
+		
+		while(idleNodes < aodvGraph.getAODVNodes().size()) {
+			idleNodes = 0;
+			
+			for(AODVNode node: aodvGraph.getAODVNodes()) {
+				if(node.getCachedMessage() != null) {
+					node.process();		
+				} else {
+					idleNodes++;
+				}
+			}
+		}
+	}
 
 
 	public String getName() {
