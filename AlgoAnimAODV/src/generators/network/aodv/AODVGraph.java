@@ -13,7 +13,7 @@ public class AODVGraph {
 	private Graph animalGraph;
 	private Node[] nodesOfGraph;
 	private Language lang;
-	private String[] graphLabels = { "S", "D", "I", "II" , "III", "IV", "V", "VI"};
+	private String[] graphLabels = { "A", "B", "C", "D" , "E", "F", "G", "H"};
 	private ArrayList<AODVNode> aodvNodes;
 
 	public AODVGraph(Language lang, GraphProperties graphProps,
@@ -33,14 +33,14 @@ public class AODVGraph {
 			aodvNodes.add(new AODVNode(graphLabels[i]));
 		}
 		nodesOfGraph = new Node[8];
-		nodesOfGraph[0] = new Coordinates(250, 50);
-		nodesOfGraph[1] = new Coordinates(50, 400);
-		nodesOfGraph[2] = new Coordinates(200, 100);
-		nodesOfGraph[3] = new Coordinates(400, 100);
-		nodesOfGraph[4] = new Coordinates(250, 200);
-		nodesOfGraph[5] = new Coordinates(400, 170);
-		nodesOfGraph[6] = new Coordinates(250, 250);
-		nodesOfGraph[6] = new Coordinates(350, 250);
+		nodesOfGraph[0] = new Coordinates(150, 20);
+		nodesOfGraph[1] = new Coordinates(220, 350);
+		nodesOfGraph[2] = new Coordinates(50, 70);
+		nodesOfGraph[3] = new Coordinates(250, 70);
+		nodesOfGraph[4] = new Coordinates(100, 170);
+		nodesOfGraph[5] = new Coordinates(250, 170);
+		nodesOfGraph[6] = new Coordinates(100, 300);
+		nodesOfGraph[7] = new Coordinates(300, 250);
 		animalGraph = lang.newGraph("AODV-Graph", adjacencyMatrix,
 				nodesOfGraph, graphLabels, null, graphProps);
 		animalGraph.hide();
