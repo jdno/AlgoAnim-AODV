@@ -1,16 +1,17 @@
-package generators.network.aodv;
+package generators.network.aodv.guielements;
+
+import generators.network.aodv.AODVNode;
+import generators.network.aodv.RoutingTableEntry;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
-import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.Rect;
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
-import algoanim.util.Node;
 
 public class InfoTable {
 
@@ -19,11 +20,6 @@ public class InfoTable {
 	   * The concrete language object used for creating output
 	   */
 	private Language lang;
-
-	/**
-	 * ToolBox for basic geometry functionalities. 
-	 */
-	private GeometryToolBox tools;
 	
 	/**
 	 * Height of a cell
@@ -53,7 +49,7 @@ public class InfoTable {
 	/** 
 	 * Shortcut for the approx. height of the whole table. 
 	 */
-	private int height = cellHeight * numRows * 2;
+	private int height;
 	
 	/**
 	 * List to store the text in
@@ -76,11 +72,11 @@ public class InfoTable {
 
 	public InfoTable(Language lang, AODVNode nodeForThisTable, Coordinates startPoint,
 			int numOfNodes) {
-		this.tools = new GeometryToolBox(lang);
 		this.lang = lang;
 		this.ownNode = nodeForThisTable;
 		this.currentLine = startPoint;
 		this.numNodes = numOfNodes;
+		height =  cellHeight * (numNodes+1);
 		initContent();
 	}
 
@@ -99,18 +95,18 @@ public class InfoTable {
 
 		nextLine();
 		for (int i = 0; i < numRows; i++) {
-			lang.newText(tools.moveCoordinate(currentLine, distanceColumns * i, 0),
+			lang.newText(GeometryToolBox.moveCoordinate(currentLine, distanceColumns * i, 0),
 					titles[i], "", null);
 
 			if (i != 0) {
-				tools.drawVerticalLine(
-						tools.moveCoordinate(currentLine, distanceColumns * i - 5, 0),
+				GeometryToolBox.drawVerticalLine(
+						GeometryToolBox.moveCoordinate(currentLine, distanceColumns * i - 5, 0),
 						height);
 			}
 		}
 		// switch to the next line
 		nextLine();
-		tools.drawHorizontalLie(currentLine, distanceColumns * (numRows + 1));
+		GeometryToolBox.drawHorizontalLie(currentLine, distanceColumns * numRows);
 
 		for (int i = 0; i < numNodes; i++) {
 			ArrayList<Text> textInOneLine = new ArrayList<Text>();
@@ -119,9 +115,9 @@ public class InfoTable {
 			for (int z = 0; z < numRows; z++) {
 
 				// create rectangles as cells for highlighting
-				Coordinates cellUpperLeft = tools.moveCoordinate(currentLine,
+				Coordinates cellUpperLeft = GeometryToolBox.moveCoordinate(currentLine,
 						distanceColumns * z - 2, -1);
-				Coordinates cellDownRight = tools.moveCoordinate(currentLine,
+				Coordinates cellDownRight = GeometryToolBox.moveCoordinate(currentLine,
 						distanceColumns * z + distanceColumns - 10,
 						cellHeight - 1);
 
@@ -133,7 +129,7 @@ public class InfoTable {
 
 				// create text inside every cell
 				textInOneLine.add(lang.newText(
-						tools.moveCoordinate(currentLine, distanceColumns * z, 0),
+						GeometryToolBox.moveCoordinate(currentLine, distanceColumns * z, 0),
 						"-", "", null));
 			}
 			textContent.add(textInOneLine);
@@ -144,7 +140,7 @@ public class InfoTable {
 	}
 
 	private void nextLine() {
-		currentLine = tools.moveCoordinate(currentLine, 0, cellHeight);
+		currentLine = GeometryToolBox.moveCoordinate(currentLine, 0, cellHeight);
 	}
 
 	public void updateTable() {
@@ -219,8 +215,15 @@ public class InfoTable {
 		} else {
 			cells.get(row).get(column).hide();
 		}
+		
+		
+		
 	}
-
+	
+	
+	public AODVNode getAODVNode(){
+		return ownNode;
+	}
 
 
 }

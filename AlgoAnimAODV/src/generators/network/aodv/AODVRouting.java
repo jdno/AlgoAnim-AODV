@@ -3,8 +3,13 @@ package generators.network.aodv;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
+import generators.network.aodv.guielements.GUIController;
+import generators.network.aodv.guielements.GeometryToolBox;
+import generators.network.aodv.guielements.InfoBox;
+import generators.network.aodv.guielements.InfoTable;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -25,6 +30,7 @@ import animal.vhdl.logic.test;
 public class AODVRouting implements Generator {
 	private Language lang;
 	private int[][] adjacencyMatrix;
+	private GUIController controller;
 
 	Color highlightColor = Color.ORANGE;
 
@@ -35,6 +41,8 @@ public class AODVRouting implements Generator {
 	public AODVRouting() {
 		lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
 				"Sascha Bleidner, Jan David Nose", 1200, 800);
+		controller = new GUIController(lang);
+		GeometryToolBox.init(lang);
 	}
 
 	public void init() {
@@ -63,22 +71,28 @@ public class AODVRouting implements Generator {
 		// defaultGraph.show();
 		lang.nextStep();
 
-		InfoTable table1 = new InfoTable(lang, new AODVNode("A"),
-				(new Coordinates(350, 50)), adjacencyMatrix[0].length);
+		ArrayList<AODVNode> nodes = new ArrayList<AODVNode>();
+		nodes.add(new AODVNode("A"));
+		nodes.add(new AODVNode("B"));
+		nodes.add(new AODVNode("C"));
+		nodes.add(new AODVNode("D"));
+		nodes.add(new AODVNode("E"));
+		nodes.add(new AODVNode("F"));
+		nodes.add(new AODVNode("G"));
+		nodes.add(new AODVNode("H"));
+		
+		controller.drawInfoTable(nodes, 4, 2);
 
-		lang.nextStep();
-		table1.highlightCell(1, 1,true);
-		lang.nextStep();
-		table1.highlightCell(1, 1, false);
+
+	
 		// drawTable(new Coordinates(580,50));
 		// drawTable(new Coordinates(350,250));
 		// drawTable(new Coordinates(580,250));
 
-		InfoBox info = new InfoBox(lang, "Erläuterung",
-				new Coordinates(40, 420), new Coordinates(660, 600));
-		info.updateText("Hallo");
+		controller.drawInfoBox("Erläuterung");
+		controller.updateInfoBoxText("Hallo");
 		lang.nextStep();
-		info.updateText("Wuhuuu");
+		controller.updateInfoBoxText("Wuhuuu");
 		lang.nextStep();
 		
 		return lang.toString();
@@ -102,11 +116,6 @@ public class AODVRouting implements Generator {
 		return defaultGraph;
 	}
 
-	// TODO refactor as static method in some helper class, and remove from
-	// InfoBox/InfoTable
-	private Coordinates moveCoordinate(Coordinates point, int x, int y) {
-		return new Coordinates(point.getX() + x, point.getY() + y);
-	}
 
 	public String getName() {
 		return "Ad-hoc Optimized Vector Routing";

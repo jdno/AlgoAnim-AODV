@@ -1,4 +1,4 @@
-package generators.network.aodv;
+package generators.network.aodv.guielements;
 
 import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.generators.Language;
@@ -12,23 +12,24 @@ import algoanim.util.Node;
  */
 public class GeometryToolBox {
 
-	private Language lang;
-
-	public GeometryToolBox(Language lang){
-		this.lang = lang;
+	private static Language lang;
+	
+	
+	public static void init(Language language){
+		lang = language;
 	}
 	
-	public algoanim.primitives.Polygon drawVerticalLine(
+	public static algoanim.primitives.Polygon drawVerticalLine(
 			Coordinates startPoint, int length) {
 		return getPolygon(startPoint, length, true);
 	}
 
-	public algoanim.primitives.Polygon drawHorizontalLie(
+	public static algoanim.primitives.Polygon drawHorizontalLie(
 			Coordinates startPoint, int length) {
 		return getPolygon(startPoint, length, false);
 	}
 
-	public algoanim.primitives.Polygon getPolygon(Coordinates startPoint,
+	public static algoanim.primitives.Polygon getPolygon(Coordinates startPoint,
 			int length, boolean vertical) {
 
 		Node[] nodes = new Node[2];
@@ -63,7 +64,7 @@ public class GeometryToolBox {
 	 * @return
 	 * 			moved coordinate
 	 */
-	public Coordinates moveCoordinate(Coordinates point, int moveX, int moveY) {
+	public static Coordinates moveCoordinate(Coordinates point, int moveX, int moveY) {
 		return new Coordinates(point.getX() + moveX, point.getY() + moveY);
 	}
 	
