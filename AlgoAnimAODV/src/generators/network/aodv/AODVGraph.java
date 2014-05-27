@@ -13,7 +13,7 @@ public class AODVGraph {
 	private Graph animalGraph;
 	private Node[] nodesOfGraph;
 	private Language lang;
-	private String[] graphLabels = { "A", "B", "C", "D" , "E", "F", "G", "H"};
+	public static String[] graphLabels = { "A", "B", "C", "D" , "E", "F", "G", "H"};
 	private ArrayList<AODVNode> aodvNodes;
 
 	public AODVGraph(Language lang, GraphProperties graphProps,
@@ -32,6 +32,9 @@ public class AODVGraph {
 		for (int i = 0; i < graphLabels.length; i++) {
 			aodvNodes.add(new AODVNode(graphLabels[i]));
 		}
+		
+		aodvNodes.get(0).setOriginatorSequence(10);
+		
 		nodesOfGraph = new Node[8];
 		nodesOfGraph[0] = new Coordinates(150, 20);
 		nodesOfGraph[1] = new Coordinates(220, 350);

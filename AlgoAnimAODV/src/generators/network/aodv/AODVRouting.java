@@ -58,6 +58,8 @@ public class AODVRouting implements Generator {
 
 		aodvGraph = new AODVGraph(lang,graphProps,adjacencyMatrix);
 
+		
+		
 		aodvGraph.show();
 
 		lang.nextStep();

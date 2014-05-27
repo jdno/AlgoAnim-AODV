@@ -13,7 +13,7 @@ import algoanim.util.Node;
 public class GeometryToolBox {
 
 	private static Language lang;
-	
+
 	
 	public static void init(Language language){
 		lang = language;
