@@ -103,6 +103,34 @@ public class AODVNode {
 	}
 	
 	/**
+	 * A Route Discovery is started by sending a RREQ to all neighbors.
+	 * @param destination The destination for the Route Discovery
+	 */
+	public void startRouteDiscovery(AODVNode destination) {
+		int identifier = originatorSequence;
+		String destinationIdentifier = destination.nodeIdentifier;
+		int destinationSequence = -1;
+		
+		for (RoutingTableEntry entry: routingTable) {
+			if(entry.getIdentifier().equals(destinationIdentifier)) {
+				destinationSequence = entry.getDestinationSequence();
+				break;
+			}
+		}
+		
+		if(destinationSequence == -1) {
+			System.err.println("Destination not found in routing table.");
+			return;
+		}
+		
+		AODVMessage rreq = new AODVMessage(AODVMessage.MessageType.RREQ, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
+		
+		for(AODVNode neighbor: neighbors) {
+			neighbor.receiveMessage(this, rreq);
+		}
+	}
+	
+	/**
 	 * Update the routing table with the information from the given message.
 	 * @param message The message to analyze
 	 */
