@@ -16,23 +16,30 @@ public class GUIController {
 	private Coordinates infoBoxUpperLeft = new Coordinates(40,420);
 	private Coordinates infoBoxLowerRight = new Coordinates(660,600);
 	private Coordinates tableStartingPont = new Coordinates(500,20);
+	private int distanceBetweenTables = 30;
 	
 	public GUIController(Language language){
 		lang = language;
 		tables = new HashMap<AODVNode,InfoTable>();
 	}
 	
-	public void drawInfoTable(ArrayList<AODVNode> nodes, int numOfTablesX, int numOfTablesY){
-		if (numOfTablesX * numOfTablesY != nodes.size()){
-			System.err.println("Number of nodes for table does not fit the target number of tables");
+	public void drawInfoTable(ArrayList<AODVNode> nodes){
+		
+		int numOfTablesX = (int) Math.round((nodes.size()+0.5) / 2);
+		
+		/**
+		 * Draw initial table in order to get the width and height for the following tables
+		 */
+		InfoTable firstTable = new InfoTable(lang, nodes.get(0),tableStartingPont, nodes.size());
+		int offsetX = distanceBetweenTables + firstTable.getWidth();
+		int offsetY = distanceBetweenTables + firstTable.getHeight();
+		
+		for (int i = 1; i < nodes.size(); i++){
+			InfoTable table = new InfoTable(lang, nodes.get(i),
+					(GeometryToolBox.moveCoordinate(tableStartingPont,i%numOfTablesX*offsetX,i/numOfTablesX*offsetY)), nodes.size());
+			tables.put(nodes.get(i),table);
 		}
-		for (int y = 0; y < numOfTablesY; y++){
-			for (int x = 0; x < numOfTablesX; x++){
-			InfoTable table = new InfoTable(lang, nodes.get(x+(y*(numOfTablesX))),
-					(GeometryToolBox.moveCoordinate(tableStartingPont,x*150,y*180)), nodes.size());
-			tables.put(nodes.get(x+y),table);
-			}
-		}
+
 	}
 	
 	public void highlightCell(AODVNode node, int cellX, int cellY){

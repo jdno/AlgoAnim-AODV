@@ -78,13 +78,12 @@ public class InfoTable {
 		this.currentLine = startPoint;
 		this.numNodes = numOfNodes;
 		height =  cellHeight * (numNodes+1);
+		this.textContent = new ArrayList<ArrayList<Text>>();
+		this.cells = new ArrayList<ArrayList<Rect>>();
 		initContent();
 	}
 
 	private void initContent() {
-
-		this.textContent = new ArrayList<ArrayList<Text>>();
-		this.cells = new ArrayList<ArrayList<Rect>>();
 
 		RectProperties rectProps = new RectProperties();
 		rectProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
@@ -231,6 +230,14 @@ public class InfoTable {
 	
 	public AODVNode getAODVNode(){
 		return ownNode;
+	}
+	
+	public int getHeight(){
+		return height;
+	}
+	
+	public int getWidth(){
+		return distanceColumns*numRows;
 	}
 
 
