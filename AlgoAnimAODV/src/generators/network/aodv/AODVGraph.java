@@ -40,9 +40,19 @@ public class AODVGraph {
 		for(int i = 0; i < animalGraph.getSize(); i++) {
 			node = animalGraph.getNode(i);
 			aodv = new AODVNode(animalGraph.getNodeLabel(i));
+			aodvNodes.add(aodv);
 		}
 		
-		// TODO add neighbor relationships
+		int[] neighbors;
+		
+		for(int i = 0; i < animalGraph.getSize(); i++) {
+			neighbors = animalGraph.getEdgesForNode(i);
+			aodv = aodvNodes.get(i);
+			
+			for(int j: neighbors) {
+				aodv.addNeighbor(aodvNodes.get(j));
+			}
+		}
 	}
 
 	public ArrayList<AODVNode> getAODVNodes() {
