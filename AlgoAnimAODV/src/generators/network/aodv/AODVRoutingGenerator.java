@@ -25,7 +25,6 @@ import animal.vhdl.logic.test;
 
 public class AODVRoutingGenerator implements Generator {
 	private Language lang;
-	private int[][] adjacencyMatrix;
 	private GUIController controller;
 	private AODVGraph aodvGraph;
 	
@@ -48,15 +47,14 @@ public class AODVRoutingGenerator implements Generator {
 
 	public String generate(AnimationPropertiesContainer props,
 			Hashtable<String, Object> primitives) {
-		adjacencyMatrix = (int[][]) primitives.get("adjacencyMatrix");
-
+		
 		GraphProperties graphProps = new GraphProperties();
 		graphProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY,
 				highlightColor);
 		graphProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
 		graphProps.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
 
-		aodvGraph = new AODVGraph(lang,graphProps,adjacencyMatrix);
+		aodvGraph = new AODVGraph(lang, (Graph) primitives.get("graph"));
 
 		aodvGraph.show();
 

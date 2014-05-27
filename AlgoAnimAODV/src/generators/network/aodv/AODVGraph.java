@@ -11,47 +11,14 @@ import algoanim.util.Node;
 public class AODVGraph {
 
 	private Graph animalGraph;
-	private Node[] nodesOfGraph;
 	private Language lang;
-	private String[] graphLabels = { "S", "D", "I", "II" , "III", "IV", "V", "VI"};
-	private ArrayList<AODVNode> aodvNodes;
+	private String[] graphLabels = {};
+	private ArrayList<AODVNode> aodvNodes = new ArrayList<AODVNode>();
 
-	public AODVGraph(Language lang, GraphProperties graphProps,
-			int[][] adjacencyMatrix) {
+	public AODVGraph(Language lang, Graph animalGraph) {
 		this.lang = lang;
-		initDefaultGraph(graphProps, adjacencyMatrix);
-	}
-
-	public Graph getGraph() {
-		return animalGraph;
-	}
-
-	private void initDefaultGraph(GraphProperties graphProps,
-			int[][] adjacencyMatrix) {
-		aodvNodes = new ArrayList<AODVNode>();
-		for (int i = 0; i < graphLabels.length; i++) {
-			aodvNodes.add(new AODVNode(graphLabels[i]));
-		}
-		nodesOfGraph = new Node[8];
-		nodesOfGraph[0] = new Coordinates(250, 50);
-		nodesOfGraph[1] = new Coordinates(50, 400);
-		nodesOfGraph[2] = new Coordinates(200, 100);
-		nodesOfGraph[3] = new Coordinates(400, 100);
-		nodesOfGraph[4] = new Coordinates(250, 200);
-		nodesOfGraph[5] = new Coordinates(400, 170);
-		nodesOfGraph[6] = new Coordinates(250, 250);
-		nodesOfGraph[6] = new Coordinates(350, 250);
-		animalGraph = lang.newGraph("AODV-Graph", adjacencyMatrix,
-				nodesOfGraph, graphLabels, null, graphProps);
-		animalGraph.hide();
-	}
-
-	public void show() {
-		animalGraph.show();
-	}
-	
-	public ArrayList<AODVNode> getAODVNodes(){
-		return aodvNodes;
+		this.animalGraph = animalGraph;
+		initialize();
 	}
 
 	public void highlightNode(int index) {
@@ -61,8 +28,32 @@ public class AODVGraph {
 	public void highlightEdge(int startNode, int endNode) {
 		animalGraph.highlightEdge(startNode, endNode, null, null);
 	}
+
+	public void show() {
+		animalGraph.show();
+	}
 	
-	public AODVNode getNode(int index){
+	private void initialize() {
+		Node node;
+		AODVNode aodv;
+		
+		for(int i = 0; i < animalGraph.getSize(); i++) {
+			node = animalGraph.getNode(i);
+			aodv = new AODVNode(animalGraph.getNodeLabel(i));
+		}
+		
+		// TODO add neighbor relationships
+	}
+
+	public ArrayList<AODVNode> getAODVNodes() {
+		return aodvNodes;
+	}
+
+	public Graph getGraph() {
+		return animalGraph;
+	}
+
+	public AODVNode getNode(int index) {
 		return aodvNodes.get(index);
 	}
 
