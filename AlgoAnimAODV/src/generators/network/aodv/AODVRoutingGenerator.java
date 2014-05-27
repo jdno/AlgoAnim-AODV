@@ -66,7 +66,7 @@ public class AODVRoutingGenerator implements Generator {
 		aodvGraph.highlightEdge(0, 1);
 		lang.nextStep();
 
-		controller.drawInfoTable(aodvGraph.getAODVNodes(), 4, 2);
+		controller.drawInfoTable(aodvGraph.getAODVNodes());
 
 		controller.drawInfoBox("Erläuterung");
 		controller.updateInfoBoxText("Hallo");
