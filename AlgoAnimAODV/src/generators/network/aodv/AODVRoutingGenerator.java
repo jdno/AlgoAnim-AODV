@@ -23,7 +23,7 @@ import algoanim.util.Node;
 import animal.vhdl.logic.test;
 
 
-public class AODVRouting implements Generator {
+public class AODVRoutingGenerator implements Generator {
 	private Language lang;
 	private int[][] adjacencyMatrix;
 	private GUIController controller;
@@ -31,11 +31,11 @@ public class AODVRouting implements Generator {
 	
 	Color highlightColor = Color.ORANGE;
 
-	public AODVRouting(Language language) {
+	public AODVRoutingGenerator(Language language) {
 		this.lang = language;
 	}
 
-	public AODVRouting() {
+	public AODVRoutingGenerator() {
 		lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
 				"Sascha Bleidner, Jan David Nose", 1200, 800);
 		controller = new GUIController(lang);
@@ -58,8 +58,6 @@ public class AODVRouting implements Generator {
 
 		aodvGraph = new AODVGraph(lang,graphProps,adjacencyMatrix);
 
-		
-		
 		aodvGraph.show();
 
 		lang.nextStep();
@@ -68,7 +66,7 @@ public class AODVRouting implements Generator {
 		aodvGraph.highlightEdge(0, 1);
 		lang.nextStep();
 
-		controller.drawInfoTable(aodvGraph.getAODVNodes());
+		controller.drawInfoTable(aodvGraph.getAODVNodes(), 4, 2);
 
 		controller.drawInfoBox("Erläuterung");
 		controller.updateInfoBoxText("Hallo");
@@ -77,6 +75,30 @@ public class AODVRouting implements Generator {
 		lang.nextStep();
 		
 		return lang.toString();
+	}
+	
+	public void startAodvRouting() {
+		lang.nextStep();
+		controller.drawInfoBox("Der Startknoten beginnt die Route Discovery, in dem er ein Route Request (RREQ) an seine Nachbarn schickt.");
+		
+		// TODO initialize correctly
+		AODVNode startNode = aodvGraph.getNode(0);
+		AODVNode destinationNode = aodvGraph.getNode(aodvGraph.getAODVNodes().size() - 1);
+		
+		startNode.startRouteDiscovery(destinationNode);
+		int idleNodes = 0;
+		
+		while(idleNodes < aodvGraph.getAODVNodes().size()) {
+			idleNodes = 0;
+			
+			for(AODVNode node: aodvGraph.getAODVNodes()) {
+				if(node.getCachedMessage() != null) {
+					node.process();		
+				} else {
+					idleNodes++;
+				}
+			}
+		}
 	}
 
 

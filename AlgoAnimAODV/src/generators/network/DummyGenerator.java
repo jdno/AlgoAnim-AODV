@@ -2,7 +2,7 @@
 
 	import generators.framework.Generator;
 import generators.framework.GeneratorBundle;
-import generators.network.aodv.AODVRouting;
+import generators.network.aodv.AODVRoutingGenerator;
 import generators.network.dns.DNSQueryGenerator;
 import generators.network.graph.BellmanFordGenerator;
 import generators.network.graph.DijkstraGenerator;
@@ -64,7 +64,7 @@ import java.util.Vector;
 	    generators.add(new VectorRoutingGenerator(Locale.US,
 	        new PathVectorFactory()));
 
-	    generators.add(new AODVRouting());
+	    generators.add(new AODVRoutingGenerator());
 	    
 	    // TODO "under probation"
 	    generators.add(new DistanceVectorRouting());
