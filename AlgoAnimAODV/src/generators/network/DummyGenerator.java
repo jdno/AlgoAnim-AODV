@@ -65,7 +65,6 @@ import java.util.Vector;
 	        new PathVectorFactory()));
 
 	    generators.add(new AODVRouting());
-	    System.out.println("WUHUUU");
 	    
 	    // TODO "under probation"
 	    generators.add(new DistanceVectorRouting());

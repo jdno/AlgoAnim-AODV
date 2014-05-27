@@ -22,16 +22,13 @@ import algoanim.util.Coordinates;
 import algoanim.util.Node;
 import animal.vhdl.logic.test;
 
-// TODO: Tabellen anzeigen
-// TODO: Private Klasse für Tabellen
-// TODO: Graphen Properties erkunden
-// TODO: Infobox anzeigen und verändern
 
 public class AODVRouting implements Generator {
 	private Language lang;
 	private int[][] adjacencyMatrix;
 	private GUIController controller;
-
+	private AODVGraph aodvGraph;
+	
 	Color highlightColor = Color.ORANGE;
 
 	public AODVRouting(Language language) {
@@ -58,36 +55,18 @@ public class AODVRouting implements Generator {
 				highlightColor);
 		graphProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
 		graphProps.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
-		graphProps.set(AnimationPropertiesKeys.EDGECOLOR_PROPERTY, Color.GREEN);
 
-		Graph defaultGraph = getDefaultGraph(graphProps);
+		aodvGraph = new AODVGraph(lang,graphProps,adjacencyMatrix);
 
-		defaultGraph.show();
+		aodvGraph.show();
 
-		defaultGraph.highlightNode(0, null, null);
-		defaultGraph.highlightNode(3, null, null);
-		defaultGraph.highlightEdge(0, 1, null, null);
-		// defaultGraph.showNode(2, null, null);
-		// defaultGraph.show();
+		lang.nextStep();
+		aodvGraph.highlightNode(0);
+		aodvGraph.highlightNode(3);
+		aodvGraph.highlightEdge(0, 1);
 		lang.nextStep();
 
-		ArrayList<AODVNode> nodes = new ArrayList<AODVNode>();
-		nodes.add(new AODVNode("A"));
-		nodes.add(new AODVNode("B"));
-		nodes.add(new AODVNode("C"));
-		nodes.add(new AODVNode("D"));
-		nodes.add(new AODVNode("E"));
-		nodes.add(new AODVNode("F"));
-		nodes.add(new AODVNode("G"));
-		nodes.add(new AODVNode("H"));
-		
-		controller.drawInfoTable(nodes, 4, 2);
-
-
-	
-		// drawTable(new Coordinates(580,50));
-		// drawTable(new Coordinates(350,250));
-		// drawTable(new Coordinates(580,250));
+		controller.drawInfoTable(aodvGraph.getAODVNodes(), 4, 2);
 
 		controller.drawInfoBox("Erläuterung");
 		controller.updateInfoBoxText("Hallo");
@@ -96,24 +75,6 @@ public class AODVRouting implements Generator {
 		lang.nextStep();
 		
 		return lang.toString();
-	}
-
-	private Graph getDefaultGraph(GraphProperties graphProps) {
-		Graph defaultGraph;
-
-		Node[] nodes = new Node[4];
-		nodes[0] = new Coordinates(40, 100);
-		nodes[1] = new Coordinates(40, 250);
-		nodes[2] = new Coordinates(190, 100);
-		nodes[3] = new Coordinates(190, 250);
-
-		String[] graphLabels = { "A", "B", "C", "D" };
-
-		defaultGraph = lang.newGraph("AODV-Graph", adjacencyMatrix, nodes,
-				graphLabels, null, graphProps);
-		defaultGraph.hide();
-
-		return defaultGraph;
 	}
 
 
