@@ -23,7 +23,7 @@ import algoanim.util.Node;
 import animal.vhdl.logic.test;
 
 
-public class AODVRouting implements Generator {
+public class AODVRoutingGenerator implements Generator {
 	private Language lang;
 	private int[][] adjacencyMatrix;
 	private GUIController controller;
@@ -31,11 +31,11 @@ public class AODVRouting implements Generator {
 	
 	Color highlightColor = Color.ORANGE;
 
-	public AODVRouting(Language language) {
+	public AODVRoutingGenerator(Language language) {
 		this.lang = language;
 	}
 
-	public AODVRouting() {
+	public AODVRoutingGenerator() {
 		lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
 				"Sascha Bleidner, Jan David Nose", 1200, 800);
 		controller = new GUIController(lang);
