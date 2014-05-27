@@ -48,6 +48,13 @@ public class AODVNode {
 		this.nodeIdentifier = nodeIdentifier;
 	}
 	
+	/**
+	 * Add a neighbor to this node.
+	 * @param neighbor The neighbor to add
+	 */
+	public void addNeighbor(AODVNode neighbor) {
+		this.neighbors.add(neighbor);
+	}
 	
 	/**
 	 * Process the currently cached message.
