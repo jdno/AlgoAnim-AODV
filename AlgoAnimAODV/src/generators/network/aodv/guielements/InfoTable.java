@@ -1,5 +1,6 @@
 package generators.network.aodv.guielements;
 
+import generators.network.aodv.AODVGraph;
 import generators.network.aodv.AODVNode;
 import generators.network.aodv.RoutingTableEntry;
 
@@ -77,13 +78,12 @@ public class InfoTable {
 		this.currentLine = startPoint;
 		this.numNodes = numOfNodes;
 		height =  cellHeight * (numNodes+1);
+		this.textContent = new ArrayList<ArrayList<Text>>();
+		this.cells = new ArrayList<ArrayList<Rect>>();
 		initContent();
 	}
 
 	private void initContent() {
-
-		this.textContent = new ArrayList<ArrayList<Text>>();
-		this.cells = new ArrayList<ArrayList<Rect>>();
 
 		RectProperties rectProps = new RectProperties();
 		rectProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
@@ -128,9 +128,16 @@ public class InfoTable {
 				cellsInOneLine.add(newRect);
 
 				// create text inside every cell
+				String textToAdd;
+				if (z == 0){
+					textToAdd = AODVGraph.graphLabels[i];
+				} else {
+					textToAdd = "-";
+				}
+				
 				textInOneLine.add(lang.newText(
 						GeometryToolBox.moveCoordinate(currentLine, distanceColumns * z, 0),
-						"-", "", null));
+						textToAdd, "", null));
 			}
 			textContent.add(textInOneLine);
 			cells.add(cellsInOneLine);
@@ -223,6 +230,14 @@ public class InfoTable {
 	
 	public AODVNode getAODVNode(){
 		return ownNode;
+	}
+	
+	public int getHeight(){
+		return height;
+	}
+	
+	public int getWidth(){
+		return distanceColumns*numRows;
 	}
 
 

@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <PropertiesTreeModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PropertiesTreeModel.xsd">
 	<Folder name="Root">
-		<Primitive type="intMatrix">
-			<name>adjacencyMatrix</name>
-			<value><intMatrix>0, 0, 1, 1, 0, 0, 0, 0; 0, 0, 0, 0, 0, 0, 1, 0; 1, 0, 0, 0, 1, 0, 0, 0; 1, 0, 0, 0, 0, 1, 0, 0; 0, 0, 1, 0, 0, 1, 1, 0; 0, 0, 0, 1, 1, 0, 0, 1; 0, 1, 0, 0, 1, 0, 0, 1; 0, 0, 0, 0, 0, 1, 1, 0</intMatrix></value>
+	<Primitive type="Graph">
+			<name>graph</name>
+			<value><Graph>%graphscript
+
+graph 8
+graphcoordinates at 0 0
+
+startknoten A
+zielknoten H
+
+node A at 208 30
+node B at 30 30
+node C at 420 71
+node D at 30 188
+node E at 420 362
+node F at 200 420
+node G at 420 420
+node H at 30 420
+
+edge A B
+edge A C
+edge B D
+edge C E
+edge D F
+edge D E
+edge E G
+edge F G
+edge F H
+
+
+
+</Graph></value>
 		</Primitive>
 	</Folder>
 </PropertiesTreeModel>

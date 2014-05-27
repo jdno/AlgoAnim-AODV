@@ -23,18 +23,19 @@ import algoanim.util.Node;
 import animal.vhdl.logic.test;
 
 
-public class AODVRoutingGenerator implements Generator {
+public class AODVRouting implements Generator {
 	private Language lang;
+	private int[][] adjacencyMatrix;
 	private GUIController controller;
 	private AODVGraph aodvGraph;
 	
 	Color highlightColor = Color.ORANGE;
 
-	public AODVRoutingGenerator(Language language) {
+	public AODVRouting(Language language) {
 		this.lang = language;
 	}
 
-	public AODVRoutingGenerator() {
+	public AODVRouting() {
 		lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
 				"Sascha Bleidner, Jan David Nose", 1200, 800);
 		controller = new GUIController(lang);
@@ -47,15 +48,18 @@ public class AODVRoutingGenerator implements Generator {
 
 	public String generate(AnimationPropertiesContainer props,
 			Hashtable<String, Object> primitives) {
-		
+		adjacencyMatrix = (int[][]) primitives.get("adjacencyMatrix");
+
 		GraphProperties graphProps = new GraphProperties();
 		graphProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY,
 				highlightColor);
 		graphProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
 		graphProps.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
 
-		aodvGraph = new AODVGraph(lang, (Graph) primitives.get("graph"));
+		aodvGraph = new AODVGraph(lang,graphProps,adjacencyMatrix);
 
+		
+		
 		aodvGraph.show();
 
 		lang.nextStep();
@@ -73,30 +77,6 @@ public class AODVRoutingGenerator implements Generator {
 		lang.nextStep();
 		
 		return lang.toString();
-	}
-	
-	public void startAodvRouting() {
-		lang.nextStep();
-		controller.drawInfoBox("Der Startknoten beginnt die Route Discovery, in dem er ein Route Request (RREQ) an seine Nachbarn schickt.");
-		
-		// TODO initialize correctly
-		AODVNode startNode = aodvGraph.getNode(0);
-		AODVNode destinationNode = aodvGraph.getNode(aodvGraph.getAODVNodes().size() - 1);
-		
-		startNode.startRouteDiscovery(destinationNode);
-		int idleNodes = 0;
-		
-		while(idleNodes < aodvGraph.getAODVNodes().size()) {
-			idleNodes = 0;
-			
-			for(AODVNode node: aodvGraph.getAODVNodes()) {
-				if(node.getCachedMessage() != null) {
-					node.process();		
-				} else {
-					idleNodes++;
-				}
-			}
-		}
 	}
 
 
