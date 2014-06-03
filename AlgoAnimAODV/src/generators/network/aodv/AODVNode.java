@@ -103,13 +103,16 @@ public class AODVNode {
                     AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
                     sendMessageToNeighbor(destinationIdentifier, msg);
+                    cachedMessage = null;
                 } else {
                     for (AODVNode neighbor : neighbors) {
                         neighbor.receiveMessage(this, cachedMessage);
                     }
+                    cachedMessage = null;
                 }
             } else {
                 sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
+                cachedMessage = null;
             }
         }
     }
@@ -287,4 +290,9 @@ public class AODVNode {
     public ArrayList<RoutingTableEntry> getRoutingTable() {
         return routingTable;
     }
+
+    /**
+     * @param routingTable the routingTable to set
+     */
+    public void setRoutingTable(ArrayList<RoutingTableEntry> routingTable) { this.routingTable = routingTable; }
 }
