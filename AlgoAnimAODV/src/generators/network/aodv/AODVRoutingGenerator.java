@@ -68,7 +68,8 @@ public class AODVRoutingGenerator implements Generator {
         startNode.startRouteDiscovery(destinationNode);
         int idleNodes = 0;
 
-        while (idleNodes < aodvGraph.getAODVNodes().size()) {
+        for(int i = 0; i < 4; i++) {
+        //while (idleNodes < aodvGraph.getAODVNodes().size()) {
             idleNodes = 0;
 
             for (AODVNode node : aodvGraph.getAODVNodes()) {

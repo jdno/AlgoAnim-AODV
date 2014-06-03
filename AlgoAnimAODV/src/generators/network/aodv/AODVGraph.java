@@ -1,14 +1,13 @@
 package generators.network.aodv;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
-import algoanim.util.Coordinates;
 import algoanim.util.Node;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class AODVGraph {
 
@@ -68,6 +67,7 @@ public class AODVGraph {
         }
 
         int[] neighbors;
+        initializeRoutingTables();
 
         for (int i = 0; i < animalGraph.getSize(); i++) {
             neighbors = animalGraph.getEdgesForNode(i);
@@ -76,6 +76,20 @@ public class AODVGraph {
             for (int j : neighbors) {
                 aodv.addNeighbor(aodvNodes.get(j));
             }
+        }
+    }
+
+    private void initializeRoutingTables() {
+        ArrayList<RoutingTableEntry> routingTable = new ArrayList<RoutingTableEntry>(aodvNodes.size());
+        RoutingTableEntry entry;
+
+        for(AODVNode node: aodvNodes) {
+            entry = new RoutingTableEntry(node.getNodeIdentifier(), 0, Integer.MAX_VALUE, "");
+            routingTable.add(entry);
+        }
+
+        for(AODVNode node: aodvNodes) {
+            node.setRoutingTable(routingTable);
         }
     }
 
