@@ -215,6 +215,8 @@ public class InfoTable {
 				}
 			}
 		}
+
+        lang.nextStep();
 	}
 
 	public void highlightCell(int row, int column, boolean highlight) {
