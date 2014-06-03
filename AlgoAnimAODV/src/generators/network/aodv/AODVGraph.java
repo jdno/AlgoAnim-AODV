@@ -12,86 +12,83 @@ import algoanim.util.Node;
 
 public class AODVGraph {
 
-	private Graph animalGraph;
-	private Language lang;
-	private String[] graphLabels = {};
-	GraphProperties graphProperties;  
-	private ArrayList<AODVNode> aodvNodes = new ArrayList<AODVNode>();
-	Color highlightColor = Color.ORANGE;
+    private Graph animalGraph;
+    private Language lang;
+    private String[] graphLabels = {};
+    GraphProperties graphProperties;
+    private ArrayList<AODVNode> aodvNodes = new ArrayList<AODVNode>();
+    Color highlightColor = Color.ORANGE;
 
-	public AODVGraph(Language lang, Graph animalGraph) {
-		this.lang = lang;
-		graphProperties = new GraphProperties();
-		transformGraph(animalGraph);
-		initialize();
-	}
+    public AODVGraph(Language lang, Graph animalGraph) {
+        this.lang = lang;
+        graphProperties = new GraphProperties();
+        transformGraph(animalGraph);
+        initialize();
+    }
 
-	public void highlightNode(int index) {
-		animalGraph.highlightNode(index, null, null);
-	}
+    public void highlightNode(int index) {
+        animalGraph.highlightNode(index, null, null);
+    }
 
-	public void highlightEdge(int startNode, int endNode) {
-		animalGraph.highlightEdge(startNode, endNode, null, null);
-	}
+    public void highlightEdge(int startNode, int endNode) {
+        animalGraph.highlightEdge(startNode, endNode, null, null);
+    }
 
-	public void show() {
-		animalGraph.show();
-	}
-	
-	
-	private void transformGraph(Graph loadedGraph){
-		
-		graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY,
-				highlightColor);
-		graphProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
-		graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
-		
-		/**
-		 * Extract all information from the given graph object
-		 */
-		Node[] nodes = new Node[loadedGraph.getSize()];
-		graphLabels = new String[loadedGraph.getSize()];
-		for (int i = 0; i < loadedGraph.getSize();i++){
-			nodes[i] = loadedGraph.getNodeForIndex(i);
-			graphLabels[i] = loadedGraph.getNodeLabel(nodes[i]);
-		}
-		
-		animalGraph = lang.newGraph("Graph",loadedGraph.getAdjacencyMatrix(), nodes, graphLabels, null, graphProperties);
-	}
-	
-	private void initialize() {
-		Node node;
-		AODVNode aodv;
-		
-		for(int i = 0; i < animalGraph.getSize(); i++) {
-			node = animalGraph.getNode(i);
-			aodv = new AODVNode(animalGraph.getNodeLabel(i));
-			graphLabels[i] = aodv.getNodeIdentifier();
-			aodvNodes.add(aodv);
-		}
-		
-		int[] neighbors;
-		
-		for(int i = 0; i < animalGraph.getSize(); i++) {
-			neighbors = animalGraph.getEdgesForNode(i);
-			aodv = aodvNodes.get(i);
-			
-			for(int j: neighbors) {
-				aodv.addNeighbor(aodvNodes.get(j));
-			}
-		}
-	}
+    public void show() {
+        animalGraph.show();
+    }
 
-	public ArrayList<AODVNode> getAODVNodes() {
-		return aodvNodes;
-	}
 
-	public Graph getGraph() {
-		return animalGraph;
-	}
+    private void transformGraph(Graph loadedGraph) {
 
-	public AODVNode getNode(int index) {
-		return aodvNodes.get(index);
-	}
+        graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlightColor);
+        graphProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
+        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
+
+        /**
+         * Extract all information from the given graph object
+         */
+        Node[] nodes = new Node[loadedGraph.getSize()];
+        graphLabels = new String[loadedGraph.getSize()];
+        for (int i = 0; i < loadedGraph.getSize(); i++) {
+            nodes[i] = loadedGraph.getNodeForIndex(i);
+            graphLabels[i] = loadedGraph.getNodeLabel(nodes[i]);
+        }
+
+        animalGraph = lang.newGraph("Graph", loadedGraph.getAdjacencyMatrix(), nodes, graphLabels, null, graphProperties);
+    }
+
+    private void initialize() {
+        AODVNode aodv;
+
+        for (int i = 0; i < animalGraph.getSize(); i++) {
+            aodv = new AODVNode(animalGraph.getNodeLabel(i));
+            graphLabels[i] = aodv.getNodeIdentifier();
+            aodvNodes.add(aodv);
+        }
+
+        int[] neighbors;
+
+        for (int i = 0; i < animalGraph.getSize(); i++) {
+            neighbors = animalGraph.getEdgesForNode(i);
+            aodv = aodvNodes.get(i);
+
+            for (int j : neighbors) {
+                aodv.addNeighbor(aodvNodes.get(j));
+            }
+        }
+    }
+
+    public ArrayList<AODVNode> getAODVNodes() {
+        return aodvNodes;
+    }
+
+    public Graph getGraph() {
+        return animalGraph;
+    }
+
+    public AODVNode getNode(int index) {
+        return aodvNodes.get(index);
+    }
 
 }
