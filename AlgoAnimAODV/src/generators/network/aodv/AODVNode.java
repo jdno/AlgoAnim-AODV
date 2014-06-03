@@ -220,6 +220,8 @@ public class AODVNode {
             newEntry.setNextHop(cachedMessageSender);
             routingTable.add(newEntry);
         }
+
+        infoTable.updateTable();
     }
 
     /**
