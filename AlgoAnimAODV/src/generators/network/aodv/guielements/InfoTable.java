@@ -75,6 +75,7 @@ public class InfoTable {
 			int numOfNodes) {
 		this.lang = lang;
 		this.ownNode = nodeForThisTable;
+        this.ownNode.addTable(this);
 		this.currentLine = startPoint;
 		this.numNodes = numOfNodes;
 		height =  cellHeight * (numNodes+1);
