@@ -70,7 +70,6 @@ public class AODVRoutingGenerator implements Generator {
 		lang.nextStep();
 		
 		
-		
 		return lang.toString();
 	}
 	
