@@ -28,7 +28,6 @@ public class AODVRoutingGenerator implements Generator {
 	private GUIController controller;
 	private AODVGraph aodvGraph;
 	
-	Color highlightColor = Color.ORANGE;
 
 	public AODVRoutingGenerator(Language language) {
 		this.lang = language;
@@ -48,14 +47,12 @@ public class AODVRoutingGenerator implements Generator {
 	public String generate(AnimationPropertiesContainer props,
 			Hashtable<String, Object> primitives) {
 		
-		GraphProperties graphProps = new GraphProperties();
-		graphProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY,
-				highlightColor);
-		graphProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
-		graphProps.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
-
-		aodvGraph = new AODVGraph(lang, (Graph) primitives.get("graph"));
-
+		Graph loadedGraph = (Graph) primitives.get("graph");
+		
+		aodvGraph = new AODVGraph(lang, loadedGraph);
+		
+		
+		System.out.println(aodvGraph.getAODVNodes().size());
 		aodvGraph.show();
 
 		lang.nextStep();
@@ -71,6 +68,8 @@ public class AODVRoutingGenerator implements Generator {
 		lang.nextStep();
 		controller.updateInfoBoxText("Wuhuuu");
 		lang.nextStep();
+		
+		
 		
 		return lang.toString();
 	}

@@ -130,7 +130,7 @@ public class InfoTable {
 				// create text inside every cell
 				String textToAdd;
 				if (z == 0){
-					textToAdd = AODVGraph.graphLabels[i];
+					textToAdd = "A";
 				} else {
 					textToAdd = "-";
 				}
@@ -221,10 +221,7 @@ public class InfoTable {
 			cells.get(row).get(column).show();
 		} else {
 			cells.get(row).get(column).hide();
-		}
-		
-		
-		
+		}	
 	}
 	
 	

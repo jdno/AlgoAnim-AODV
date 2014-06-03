@@ -13,7 +13,7 @@ public class GUIController {
 	private static Language lang;
 	private HashMap<AODVNode,InfoTable> tables;
 	private InfoBox info;
-	private Coordinates infoBoxUpperLeft = new Coordinates(40,420);
+	private Coordinates infoBoxUpperLeft = new Coordinates(40,470);
 	private Coordinates infoBoxLowerRight = new Coordinates(660,600);
 	private Coordinates tableStartingPont = new Coordinates(500,20);
 	private int distanceBetweenTables = 30;
@@ -23,19 +23,23 @@ public class GUIController {
 		tables = new HashMap<AODVNode,InfoTable>();
 	}
 	
+	
 	public void drawInfoTable(ArrayList<AODVNode> nodes){
 		
+		/**
+		 * Check how many tables have to be drawn in a row
+		 */
 		int numOfTablesX = (int) Math.round((nodes.size()+0.5) / 2);
 		
 		/**
 		 * Draw initial table in order to get the width and height for the following tables
 		 */
-		InfoTable firstTable = new InfoTable(lang, nodes.get(0),tableStartingPont, nodes.size());
-		int offsetX = distanceBetweenTables + firstTable.getWidth();
-		int offsetY = distanceBetweenTables + firstTable.getHeight();
+		InfoTable table = new InfoTable(lang, nodes.get(0),tableStartingPont, nodes.size());
+		int offsetX = distanceBetweenTables + table.getWidth();
+		int offsetY = distanceBetweenTables + table.getHeight();
 		
 		for (int i = 1; i < nodes.size(); i++){
-			InfoTable table = new InfoTable(lang, nodes.get(i),
+			table = new InfoTable(lang, nodes.get(i),
 					(GeometryToolBox.moveCoordinate(tableStartingPont,i%numOfTablesX*offsetX,i/numOfTablesX*offsetY)), nodes.size());
 			tables.put(nodes.get(i),table);
 		}

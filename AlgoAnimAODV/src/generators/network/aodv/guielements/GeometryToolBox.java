@@ -7,7 +7,7 @@ import algoanim.util.Node;
 
 /**
  * This class provides some basic geometry functionality for processing GUI elements
- * @author sascha
+ * @author Sascha
  *
  */
 public class GeometryToolBox {
