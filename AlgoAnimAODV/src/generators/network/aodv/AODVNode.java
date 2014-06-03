@@ -115,7 +115,7 @@ public class AODVNode {
 	 * @param destination The destination for the Route Discovery
 	 */
 	public void startRouteDiscovery(AODVNode destination) {
-		int identifier = originatorSequence;
+		int identifier = ++originatorSequence;
 		String destinationIdentifier = destination.nodeIdentifier;
 		int destinationSequence = -1;
 		
