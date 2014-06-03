@@ -14,7 +14,7 @@ public class GUIController {
 	private HashMap<AODVNode,InfoTable> tables;
 	private InfoBox info;
 	private Coordinates infoBoxUpperLeft = new Coordinates(40,470);
-	private Coordinates infoBoxLowerRight = new Coordinates(660,600);
+	private Coordinates infoBoxLowerRight = new Coordinates(840,600);
 	private Coordinates tableStartingPont = new Coordinates(500,20);
 	private int distanceBetweenTables = 30;
 	
@@ -62,5 +62,6 @@ public class GUIController {
 	public void updateInfoBoxText(String update){
 		info.updateText(update);
 	}
+	
 	
 }
