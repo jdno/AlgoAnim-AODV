@@ -67,26 +67,20 @@ public class AODVNode {
 			
 			if (cachedMessage.getType() == MessageType.RREQ) {
 				if(cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
-					// TODO respond with RREP
+                    int identifier = ++originatorSequence;
+                    String destinationIdentifier = cachedMessage.getOriginatorIdentifier();
+                    int destinationSequence = -1;
+
+                    AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
+
+					sendMessageToNeighbor(destinationIdentifier, msg);
 				} else {
 					for(AODVNode neighbor: neighbors) {
 						neighbor.receiveMessage(this, cachedMessage);
 					}
 				}
 			} else {
-				for(RoutingTableEntry entry: routingTable) {
-					if (entry.getIdentifier().equals(cachedMessage.getDestinationIdentifier())) {
-						for(AODVNode neighbor: neighbors) {
-							if (neighbor.nodeIdentifier.equals(entry.getNextHop())) {
-								neighbor.receiveMessage(this, cachedMessage);
-							} else {
-								System.err.println("No neighbor found to forward message to.");
-							}
-						}
-					} else {
-						System.err.println("No route to message destination found.");
-					}
-				}
+				sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
 			}
 		}
 	}
@@ -137,6 +131,27 @@ public class AODVNode {
 			neighbor.receiveMessage(this, rreq);
 		}
 	}
+
+    /**
+     * Auxiliary method used to send a message to a given neighbor.
+     * @param destinationIdentifier The neighbor to send to
+     * @param message The message to send
+     */
+    private void sendMessageToNeighbor(String destinationIdentifier, AODVMessage message) {
+        for(RoutingTableEntry entry: routingTable) {
+            if (entry.getIdentifier().equals(destinationIdentifier)) {
+                for(AODVNode neighbor: neighbors) {
+                    if (neighbor.nodeIdentifier.equals(entry.getNextHop())) {
+                        neighbor.receiveMessage(this, message);
+                    } else {
+                        System.err.println("No neighbor found to forward message to.");
+                    }
+                }
+            } else {
+                System.err.println("No route to message destination found.");
+            }
+        }
+    }
 	
 	/**
 	 * Update the routing table with the information from the given message.
