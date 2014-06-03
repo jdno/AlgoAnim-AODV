@@ -66,6 +66,7 @@ public class AODVGraph {
 		for(int i = 0; i < animalGraph.getSize(); i++) {
 			node = animalGraph.getNode(i);
 			aodv = new AODVNode(animalGraph.getNodeLabel(i));
+			graphLabels[i] = aodv.getNodeIdentifier();
 			aodvNodes.add(aodv);
 		}
 		
