@@ -103,17 +103,16 @@ public class AODVNode {
                     AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
                     sendMessageToNeighbor(destinationIdentifier, msg);
-                    cachedMessage = null;
                 } else {
                     for (AODVNode neighbor : neighbors) {
                         neighbor.receiveMessage(this, cachedMessage);
                     }
-                    cachedMessage = null;
                 }
             } else {
                 sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
-                cachedMessage = null;
             }
+
+            cachedMessage = null;
         }
     }
 
@@ -222,6 +221,7 @@ public class AODVNode {
             newEntry.setHopCount(message.getHopCount());
             newEntry.setNextHop(cachedMessageSender);
             routingTable.add(newEntry);
+            infoTable.updateTable();
         }
 
         if (!destinationUpdated) {
@@ -230,9 +230,8 @@ public class AODVNode {
             newEntry.setHopCount(message.getHopCount());
             newEntry.setNextHop(cachedMessageSender);
             routingTable.add(newEntry);
+            infoTable.updateTable();
         }
-
-        infoTable.updateTable();
     }
 
     /**
