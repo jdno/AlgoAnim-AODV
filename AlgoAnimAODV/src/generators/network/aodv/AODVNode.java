@@ -162,8 +162,7 @@ public class AODVNode {
         }
 
         if (destinationSequence == -1) {
-            System.err.println("Destination not found in routing table.");
-            return;
+            destinationSequence = 0;
         }
 
         AODVMessage rreq = new AODVMessage(AODVMessage.MessageType.RREQ, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
