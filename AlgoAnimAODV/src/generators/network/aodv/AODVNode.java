@@ -225,24 +225,6 @@ public class AODVNode {
                 }
             }
         }
-
-        if (!originatorUpdated) {
-            RoutingTableEntry newEntry = new RoutingTableEntry(message.getOriginatorIdentifier());
-            newEntry.setDestinationSequence(message.getDestinationSequence());
-            newEntry.setHopCount(message.getHopCount());
-            newEntry.setNextHop(cachedMessageSender);
-            routingTable.add(newEntry);
-            infoTable.updateTable();
-        }
-
-        if (!destinationUpdated) {
-            RoutingTableEntry newEntry = new RoutingTableEntry(message.getOriginatorIdentifier());
-            newEntry.setDestinationSequence(message.getDestinationSequence());
-            newEntry.setHopCount(message.getHopCount());
-            newEntry.setNextHop(cachedMessageSender);
-            routingTable.add(newEntry);
-            infoTable.updateTable();
-        }
     }
 
     /**
