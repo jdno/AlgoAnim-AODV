@@ -294,5 +294,17 @@ public class AODVNode {
     /**
      * @param routingTable the routingTable to set
      */
-    public void setRoutingTable(ArrayList<RoutingTableEntry> routingTable) { this.routingTable = routingTable; }
+    public void setRoutingTable(ArrayList<RoutingTableEntry> routingTable) {
+        this.routingTable.clear();
+
+        for(RoutingTableEntry entry: routingTable) {
+            this.routingTable.add(entry.clone());
+
+            if (entry.getIdentifier().equals(nodeIdentifier)) {
+                entry.setHopCount(0);
+                entry.setNextHop(nodeIdentifier);
+                break;
+            }
+        }
+    }
 }
