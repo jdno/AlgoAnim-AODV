@@ -204,16 +204,12 @@ public class AODVNode {
      * @param message The message to analyze
      */
     private void updateRoutingTable(AODVMessage message) {
-        boolean originatorUpdated = false;
-        boolean destinationUpdated = false;
-
         for (RoutingTableEntry entry : routingTable) {
             if (entry.getIdentifier().equals(message.getOriginatorIdentifier())) {
                 // Update originator if its sequence number is more up to date
                 if (entry.getDestinationSequence() < message.getOriginatorSequence()) {
                     entry.setDestinationSequence(message.getOriginatorSequence());
                     entry.setNextHop(cachedMessageSender);
-                    originatorUpdated = true;
                 }
             }
             if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
@@ -221,7 +217,6 @@ public class AODVNode {
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
                     entry.setNextHop(cachedMessageSender);
-                    destinationUpdated = true;
                 }
             }
         }
