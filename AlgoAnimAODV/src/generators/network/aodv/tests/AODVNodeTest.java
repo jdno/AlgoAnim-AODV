@@ -124,4 +124,19 @@ public class AODVNodeTest {
         assertNotNull(nodeB.getCachedMessage());
         assertNull(nodeC.getCachedMessage());
     }
+
+    @Test
+    public void testSetRoutingTable() {
+        ArrayList<RoutingTableEntry> routingTable = new ArrayList<RoutingTableEntry>(10);
+        RoutingTableEntry entry;
+
+        for(int i = 0; i < 10; i++) {
+            entry = new RoutingTableEntry("node" + i, 0, Integer.MAX_VALUE, "");
+            routingTable.add(entry);
+        }
+
+        nodeA.setRoutingTable(routingTable);
+
+        assertEquals(10, nodeA.getRoutingTable().size());
+    }
 }
