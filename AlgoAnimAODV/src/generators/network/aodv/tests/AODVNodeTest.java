@@ -1,10 +1,20 @@
 package generators.network.aodv.tests;
 
+import algoanim.animalscript.AnimalScript;
+import algoanim.primitives.generators.Language;
+import algoanim.util.Coordinates;
 import generators.network.aodv.AODVMessage;
 import generators.network.aodv.AODVNode;
+import generators.network.aodv.RoutingTableEntry;
+import generators.network.aodv.guielements.GUIController;
+import generators.network.aodv.guielements.GeometryToolBox;
+import generators.network.aodv.guielements.InfoTable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -52,6 +62,32 @@ public class AODVNodeTest {
         assertEquals(1, nodeA.getRoutingTable().get(0).getHopCount());
         assertEquals(nodeA.getRoutingTable().get(0).getDestinationSequence(), nodeB.getOriginatorSequence());
         assertEquals(nodeA.getRoutingTable().get(0).getNextHop(), nodeB.getNodeIdentifier());
+    }
+
+    @Test
+    public void testProcessIntermediateWithRREP () {
+
+    }
+
+    @Test
+    public void testProcessIntermediateWithRREQ() {
+        Language language = new AnimalScript("JUnit Tests", "Sascha Bleidner, Jan David Nose", 1200, 800);
+        GUIController gui = new GUIController(language);
+        GeometryToolBox.init(language);
+
+        InfoTable infoTable = new InfoTable(language, gui, nodeB, new Coordinates(0,0), 4);
+
+        nodeB.addTable(infoTable);
+
+        AODVMessage msg = new AODVMessage(AODVMessage.MessageType.RREQ, 0, nodeA, nodeD);
+        nodeB.receiveMessage(nodeA, msg);
+
+        assertNotNull(nodeB.getCachedMessage());
+
+        nodeB.process();
+
+        assertNotNull(nodeA.getCachedMessage());
+        assertNotNull(nodeD.getCachedMessage());
     }
 
     @Test
