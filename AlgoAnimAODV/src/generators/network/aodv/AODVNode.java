@@ -183,6 +183,8 @@ public class AODVNode {
                 neighbor.receiveMessage(this, rreq);
             }
         }
+
+        processedMessages.add(identifier);
     }
 
     /**
