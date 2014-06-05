@@ -67,6 +67,16 @@ public class RoutingTableEntry {
 		this.nextHop = nextHop;
 	}
 
+    /**
+     * Return a clone of the current instance.
+     *
+     * @return the routingTableEntry
+     */
+    @Override
+    public RoutingTableEntry clone() {
+        return new RoutingTableEntry(identifier, destinationSequence, hopCount, nextHop);
+    }
+
 	/**
 	 * @return the destinationSequence
 	 */
