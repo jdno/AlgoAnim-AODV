@@ -76,6 +76,22 @@ public class AODVMessage {
 		this.originatorSequence = originatorSequence;
 	}
 
+    /**
+     * Create an AODV message. Use this constructor for texts or neighbor-to-neighbor communication.
+     * @param type Can either be "RREQ" or "RREP"
+     * @param identifier The RREQ/RREP's ID
+     * @param sender The original sender of the message
+     * @param receiver The intended receiver for the message
+     */
+    public AODVMessage(MessageType type, int identifier, AODVNode sender, AODVNode receiver) {
+        this.type = type;
+        this.identifier = identifier;
+        this.destinationIdentifier = receiver.getNodeIdentifier();
+        this.destinationSequence = receiver.getOriginatorSequence();
+        this.originatorIdentifier = sender.getNodeIdentifier();
+        this.originatorSequence = sender.getOriginatorSequence();
+    }
+
 	/**
 	 * @return the hopCount
 	 */
