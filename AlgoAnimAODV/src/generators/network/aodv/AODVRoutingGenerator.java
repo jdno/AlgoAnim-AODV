@@ -33,24 +33,12 @@ public class AODVRoutingGenerator implements Generator {
         Graph loadedGraph = (Graph) primitives.get("graph");
 
         aodvGraph = new AODVGraph(lang, loadedGraph);
-
-
-        System.out.println(aodvGraph.getAODVNodes().size());
         aodvGraph.show();
 
         lang.nextStep();
-        aodvGraph.highlightNode(0);
-        aodvGraph.highlightNode(3);
-        aodvGraph.highlightEdge(0, 1);
-        lang.nextStep();
 
         controller.drawInfoTable(aodvGraph.getAODVNodes());
-
         controller.drawInfoBox("Erläuterung");
-        controller.updateInfoBoxText("Hallo");
-        lang.nextStep();
-        controller.updateInfoBoxText("Wuhuuu");
-        lang.nextStep();
 
         startAodvRouting();
 
@@ -58,7 +46,6 @@ public class AODVRoutingGenerator implements Generator {
     }
 
     public void startAodvRouting() {
-        lang.nextStep();
         controller.updateInfoBoxText("Der Startknoten beginnt die Route Discovery, in dem er ein Route Request (RREQ) an seine Nachbarn schickt.");
 
         // TODO initialize correctly
