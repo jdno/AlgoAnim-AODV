@@ -66,13 +66,21 @@ public class AODVNode {
      */
     public void addNeighbor(AODVNode neighbor) {
         this.neighbors.add(neighbor);
+        RoutingTableEntry entry = null;
 
-        for(RoutingTableEntry entry: routingTable) {
-            if (entry.getIdentifier().equals(neighbor.getNodeIdentifier())) {
-                entry.setHopCount(1);
-                entry.setNextHop(entry.getIdentifier());
+        for(RoutingTableEntry e: routingTable) {
+            if (e.getIdentifier().equals(neighbor.getNodeIdentifier())) {
+                entry = e;
                 break;
             }
+        }
+
+        if (entry == null) {
+            RoutingTableEntry e = new RoutingTableEntry(neighbor.getNodeIdentifier(), neighbor.getOriginatorSequence(), 1, neighbor.getNodeIdentifier());
+            routingTable.add(e);
+        } else {
+            entry.setHopCount(1);
+            entry.setNextHop(neighbor.getNodeIdentifier());
         }
     }
 
