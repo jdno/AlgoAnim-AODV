@@ -210,6 +210,7 @@ public class AODVNode {
                 if (entry.getDestinationSequence() < message.getOriginatorSequence()) {
                     entry.setDestinationSequence(message.getOriginatorSequence());
                     entry.setNextHop(cachedMessageSender);
+                    infoTable.updateTable();
                 }
             }
             if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
@@ -217,6 +218,7 @@ public class AODVNode {
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
                     entry.setNextHop(cachedMessageSender);
+                    infoTable.updateTable();
                 }
             }
         }
