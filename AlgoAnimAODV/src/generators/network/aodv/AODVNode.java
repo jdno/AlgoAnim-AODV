@@ -4,6 +4,7 @@ import generators.network.aodv.AODVMessage.MessageType;
 import generators.network.aodv.guielements.InfoTable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * This class represents a node in a network that uses AODV. It has an
@@ -34,6 +35,11 @@ public class AODVNode {
      * The node from which we received the last message.
      */
     private String cachedMessageSender;
+
+    /**
+     * Keep track of already processed messages.
+     */
+    private HashSet<Integer> processedMessages = new HashSet<Integer>();
 
     /**
      * The info table used to display the routing table.
@@ -100,6 +106,7 @@ public class AODVNode {
         // TODO visualize sending of message
 
         if (cachedMessage != null) {
+            processedMessages.add(cachedMessage.getIdentifier());
             updateRoutingTable(cachedMessage);
 
             if (cachedMessage.getType() == MessageType.RREQ) {
@@ -133,13 +140,15 @@ public class AODVNode {
      * @param message The message to process later
      */
     public void receiveMessage(AODVNode sender, AODVMessage message) {
-        if (cachedMessage == null) {
-            cachedMessage = message;
-            cachedMessageSender = sender.nodeIdentifier;
-        } else {
-            if (cachedMessage.getIdentifier() != message.getIdentifier()) {
+        if (!processedMessages.contains(message.getIdentifier())) {
+            if (cachedMessage == null) {
                 cachedMessage = message;
                 cachedMessageSender = sender.nodeIdentifier;
+            } else {
+                if (cachedMessage.getIdentifier() != message.getIdentifier()) {
+                    cachedMessage = message;
+                    cachedMessageSender = sender.nodeIdentifier;
+                }
             }
         }
     }
