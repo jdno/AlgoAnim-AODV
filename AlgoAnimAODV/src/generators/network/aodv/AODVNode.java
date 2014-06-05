@@ -168,8 +168,12 @@ public class AODVNode {
 
         AODVMessage rreq = new AODVMessage(AODVMessage.MessageType.RREQ, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
-        for (AODVNode neighbor : neighbors) {
-            neighbor.receiveMessage(this, rreq);
+        if (neighbors.contains(destination)) {
+            destination.receiveMessage(this, rreq);
+        } else {
+            for (AODVNode neighbor : neighbors) {
+                neighbor.receiveMessage(this, rreq);
+            }
         }
     }
 
