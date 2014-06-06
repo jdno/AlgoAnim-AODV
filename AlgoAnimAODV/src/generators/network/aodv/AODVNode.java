@@ -82,8 +82,8 @@ public class AODVNode {
         }
 
         if (entry == null) {
-            RoutingTableEntry e = new RoutingTableEntry(neighbor.getNodeIdentifier(), neighbor.getOriginatorSequence(), 1, neighbor.getNodeIdentifier());
-            routingTable.add(e);
+            entry = new RoutingTableEntry(neighbor.getNodeIdentifier(), neighbor.getOriginatorSequence(), 1, neighbor.getNodeIdentifier());
+            routingTable.add(entry);
         } else {
             entry.setHopCount(1);
             entry.setNextHop(neighbor.getNodeIdentifier());
