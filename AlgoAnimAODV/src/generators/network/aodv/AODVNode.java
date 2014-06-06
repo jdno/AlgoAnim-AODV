@@ -297,12 +297,15 @@ public class AODVNode {
     public void setRoutingTable(ArrayList<RoutingTableEntry> routingTable) {
         this.routingTable.clear();
 
-        for(RoutingTableEntry entry: routingTable) {
-            this.routingTable.add(entry.clone());
+        RoutingTableEntry newEntry;
 
-            if (entry.getIdentifier().equals(nodeIdentifier)) {
-                entry.setHopCount(0);
-                entry.setNextHop(nodeIdentifier);
+        for(RoutingTableEntry entry: routingTable) {
+            newEntry = entry.clone();
+            this.routingTable.add(newEntry);
+
+            if (newEntry.getIdentifier().equals(nodeIdentifier)) {
+                newEntry.setHopCount(0);
+                newEntry.setNextHop(nodeIdentifier);
             }
         }
     }
