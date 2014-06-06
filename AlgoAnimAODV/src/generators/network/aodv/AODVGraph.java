@@ -68,15 +68,20 @@ public class AODVGraph {
 
         int[] neighbors;
         initializeRoutingTables();
+        
+        
 
         for (int i = 0; i < animalGraph.getSize(); i++) {
             neighbors = animalGraph.getEdgesForNode(i);
             aodv = aodvNodes.get(i);
-
-            for (int j : neighbors) {
+            
+            for (int j = 0; j < neighbors.length;j++) {
+            	if (neighbors[j]==1){
                 aodv.addNeighbor(aodvNodes.get(j));
+            	}
             }
         }
+        
     }
 
     private void initializeRoutingTables() {
