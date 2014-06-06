@@ -137,8 +137,19 @@ public class AODVNodeTest {
         }
 
         nodeA.setRoutingTable(routingTable);
+        nodeB.setRoutingTable(routingTable);
 
         assertEquals(10, nodeA.getRoutingTable().size());
         assertNotEquals(routingTable, nodeA.getRoutingTable());
+        assertNotEquals(nodeA.getRoutingTable(), nodeB.getRoutingTable());
+
+        RoutingTableEntry entryA = nodeA.getRoutingTable().get(0);
+        RoutingTableEntry entryB = nodeB.getRoutingTable().get(0);
+
+        assertNotEquals(entryA, entryB);
+        assertEquals("A", entryA.getIdentifier());
+        assertEquals("A", entryB.getIdentifier());
+        assertEquals(Integer.MAX_VALUE, entryB.getHopCount());
+        assertEquals("", entryB.getNextHop());
     }
 }
