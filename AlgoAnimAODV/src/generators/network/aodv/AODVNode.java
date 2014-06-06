@@ -303,7 +303,6 @@ public class AODVNode {
             if (entry.getIdentifier().equals(nodeIdentifier)) {
                 entry.setHopCount(0);
                 entry.setNextHop(nodeIdentifier);
-                break;
             }
         }
     }
