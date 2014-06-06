@@ -73,7 +73,6 @@ public class AODVNodeTest {
     public void testProcessIntermediateWithRREQ() {
         Language language = new AnimalScript("JUnit Tests", "Sascha Bleidner, Jan David Nose", 1200, 800);
         GUIController gui = new GUIController(language);
-        GeometryToolBox.init(language);
 
         InfoTable infoTable = new InfoTable(language, gui, nodeB, new Coordinates(0,0), 4);
 

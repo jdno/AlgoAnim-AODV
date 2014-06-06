@@ -12,24 +12,18 @@ import algoanim.util.Node;
  */
 public class GeometryToolBox {
 
-	private static Language lang;
-
 	
-	public static void init(Language language){
-		lang = language;
-	}
-	
-	public static algoanim.primitives.Polygon drawVerticalLine(
+	public static algoanim.primitives.Polygon drawVerticalLine(Language lang,
 			Coordinates startPoint, int length) {
-		return getPolygon(startPoint, length, true);
+		return getPolygon(lang,startPoint, length, true);
 	}
 
-	public static algoanim.primitives.Polygon drawHorizontalLie(
+	public static algoanim.primitives.Polygon drawHorizontalLie(Language lang,
 			Coordinates startPoint, int length) {
-		return getPolygon(startPoint, length, false);
+		return getPolygon(lang,startPoint, length, false);
 	}
 
-	public static algoanim.primitives.Polygon getPolygon(Coordinates startPoint,
+	public static algoanim.primitives.Polygon getPolygon(Language lang, Coordinates startPoint,
 			int length, boolean vertical) {
 
 		Node[] nodes = new Node[2];

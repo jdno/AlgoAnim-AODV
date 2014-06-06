@@ -21,7 +21,6 @@ public class AODVRoutingGenerator implements Generator {
         lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
                 "Sascha Bleidner, Jan David Nose", 1200, 800);
         controller = new GUIController(lang);
-        GeometryToolBox.init(lang);
     }
 
     public void init() {

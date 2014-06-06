@@ -1,12 +1,10 @@
 package generators.network.aodv.guielements;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
-import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 
