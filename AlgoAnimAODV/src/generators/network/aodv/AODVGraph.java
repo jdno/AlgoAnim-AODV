@@ -78,10 +78,11 @@ public class AODVGraph {
             for (int j = 0; j < neighbors.length;j++) {
             	if (neighbors[j]==1){
                 aodv.addNeighbor(aodvNodes.get(j));
-            	}
+                aodvNodes.get(j).addNeighbor(aodv);
             }
         }
-        
+        }
+        printGraph();
     }
 
     private void initializeRoutingTables() {
@@ -110,4 +111,11 @@ public class AODVGraph {
         return aodvNodes.get(index);
     }
 
+  
+    public void printGraph(){
+    	for (AODVNode node : aodvNodes){
+    		System.out.println(node.getNeighborsAsString());
+    	}
+    }
+    
 }

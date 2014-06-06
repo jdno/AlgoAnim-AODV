@@ -306,4 +306,17 @@ public class AODVNode {
             }
         }
     }
+    
+    /**
+     * Returns the node ID and all his neighbors as a string for console testing
+     * @return
+     */
+    public String getNeighborsAsString(){
+    	StringBuffer strBuff = new StringBuffer();
+    	strBuff.append("Node: ").append(getNodeIdentifier()).append(" has neighbors: ");
+    	for (AODVNode neigbhor: neighbors){
+    		strBuff.append(neigbhor.getNodeIdentifier()).append("; ");
+    	}
+    	return strBuff.toString();
+    }
 }
