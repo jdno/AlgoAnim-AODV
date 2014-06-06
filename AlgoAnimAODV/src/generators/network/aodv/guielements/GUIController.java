@@ -51,13 +51,6 @@ public class GUIController {
 
 	}
 
-	public void highlightCell(AODVNode node, int cellX, int cellY) {
-		tables.get(node).highlightCell(cellX, cellY, true);
-	}
-
-	public void unhighlightCell(AODVNode node, int cellX, int cellY) {
-		tables.get(node).highlightCell(cellX, cellY, false);
-	}
 
 	public void drawInfoBox(String titleOfBox) {
 		info = new InfoBox(lang, titleOfBox, infoBoxUpperLeft,
