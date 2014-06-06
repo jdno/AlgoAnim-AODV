@@ -138,5 +138,6 @@ public class AODVNodeTest {
         nodeA.setRoutingTable(routingTable);
 
         assertEquals(10, nodeA.getRoutingTable().size());
+        assertNotEquals(routingTable, nodeA.getRoutingTable());
     }
 }
