@@ -42,7 +42,7 @@ public class AODVGraph {
 
         graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlightColor);
         graphProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
-        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
+        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, false);
 
         /**
          * Extract all information from the given graph object
@@ -78,10 +78,11 @@ public class AODVGraph {
             for (int j = 0; j < neighbors.length;j++) {
             	if (neighbors[j]==1){
                 aodv.addNeighbor(aodvNodes.get(j));
-            	}
+                aodvNodes.get(j).addNeighbor(aodv);
             }
         }
-        
+        }
+        printGraph();
     }
 
     private void initializeRoutingTables() {
@@ -110,4 +111,11 @@ public class AODVGraph {
         return aodvNodes.get(index);
     }
 
+  
+    public void printGraph(){
+    	for (AODVNode node : aodvNodes){
+    		System.out.println(node.getNeighborsAsString());
+    	}
+    }
+    
 }
