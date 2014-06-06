@@ -113,6 +113,7 @@ public class AODVNodeTest {
 
         assertNotNull(nodeB.getCachedMessage());
         assertNotNull(nodeC.getCachedMessage());
+        assertNull(nodeD.getCachedMessage());
         assertEquals(AODVMessage.MessageType.RREQ, nodeB.getCachedMessage().getType());
 
         nodeB.setCachedMessage(null);
@@ -122,6 +123,7 @@ public class AODVNodeTest {
 
         assertNotNull(nodeB.getCachedMessage());
         assertNull(nodeC.getCachedMessage());
+        assertNull(nodeD.getCachedMessage());
     }
 
     @Test
