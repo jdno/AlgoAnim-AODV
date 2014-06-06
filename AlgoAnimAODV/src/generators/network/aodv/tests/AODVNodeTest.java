@@ -127,10 +127,12 @@ public class AODVNodeTest {
     @Test
     public void testSetRoutingTable() {
         ArrayList<RoutingTableEntry> routingTable = new ArrayList<RoutingTableEntry>(10);
+        char letter = 'A';
         RoutingTableEntry entry;
 
         for(int i = 0; i < 10; i++) {
-            entry = new RoutingTableEntry("node" + i, 0, Integer.MAX_VALUE, "");
+            entry = new RoutingTableEntry(String.valueOf(letter), 0, Integer.MAX_VALUE, "");
+            letter++;
             routingTable.add(entry);
         }
 
