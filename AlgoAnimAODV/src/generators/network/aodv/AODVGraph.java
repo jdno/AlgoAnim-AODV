@@ -42,7 +42,7 @@ public class AODVGraph {
 
         graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlightColor);
         graphProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
-        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
+        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, false);
 
         /**
          * Extract all information from the given graph object
