@@ -65,7 +65,23 @@ public class AODVNodeTest {
     }
 
     @Test
-    public void testProcessIntermediateWithRREP () {
+    public void testProcessBeginningWithRREQ() {
+        Language language = new AnimalScript("JUnit Tests", "Sascha Bleidner, Jan David Nose", 1200, 800);
+        GUIController gui = new GUIController(language);
+
+        InfoTable infoTable = new InfoTable(language, gui, nodeA, new Coordinates(0,0), 4);
+        nodeA.addTable(infoTable);
+
+        AODVMessage msg = new AODVMessage(AODVMessage.MessageType.RREQ, 0, nodeA, nodeD);
+        nodeA.receiveMessage(nodeA, msg);
+
+        assertNotNull(nodeA.getCachedMessage());
+
+        nodeA.process();
+
+        assertNotNull(nodeB.getCachedMessage());
+        assertNotNull(nodeC.getCachedMessage());
+        assertNull(nodeD.getCachedMessage());
 
     }
 
@@ -75,7 +91,6 @@ public class AODVNodeTest {
         GUIController gui = new GUIController(language);
 
         InfoTable infoTable = new InfoTable(language, gui, nodeB, new Coordinates(0,0), 4);
-
         nodeB.addTable(infoTable);
 
         AODVMessage msg = new AODVMessage(AODVMessage.MessageType.RREQ, 0, nodeA, nodeD);
