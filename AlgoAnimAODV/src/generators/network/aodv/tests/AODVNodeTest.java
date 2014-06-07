@@ -108,7 +108,7 @@ public class AODVNodeTest {
     public void testReceiveMessage() {
         AODVNode sender = new AODVNode("B");
         AODVMessage msg1 = new AODVMessage(AODVMessage.MessageType.RREQ, 0, sender, nodeA);
-        AODVMessage msg2 = new AODVMessage(AODVMessage.MessageType.RREQ, 1, sender, nodeA);
+        AODVMessage msg2 = new AODVMessage(AODVMessage.MessageType.RREQ, 0, nodeC, nodeA);
 
         assertNull(nodeA.getCachedMessage());
 
@@ -117,9 +117,19 @@ public class AODVNodeTest {
         assertEquals(msg1, nodeA.getCachedMessage());
         assertEquals(sender.getNodeIdentifier(), nodeA.getCachedMessageSender());
 
+        nodeA.process();
+
         nodeA.receiveMessage(sender, msg2);
 
         assertEquals(msg2, nodeA.getCachedMessage());
+
+        nodeA.setCachedMessage(null);
+
+        assertNull(nodeA.getCachedMessage());
+
+        nodeA.receiveMessage(sender, msg1);
+
+        assertNull(nodeA.getCachedMessage());
     }
 
     @Test
