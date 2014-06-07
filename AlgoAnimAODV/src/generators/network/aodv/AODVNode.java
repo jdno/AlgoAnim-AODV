@@ -108,7 +108,9 @@ public class AODVNode {
 
         if (cachedMessage != null) {
             markCachedMessageAsRead();
+
             updateRoutingTable(cachedMessage);
+            cachedMessage.incrementHopCount();
 
             if (cachedMessage.getType() == MessageType.RREQ) {
                 if (cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
