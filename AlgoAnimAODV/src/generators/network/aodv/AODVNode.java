@@ -123,7 +123,7 @@ public class AODVNode {
                     sendMessageToNeighbor(destinationIdentifier, msg);
                 } else {
                     for (AODVNode neighbor : neighbors) {
-                        neighbor.receiveMessage(this, cachedMessage);
+                        neighbor.receiveMessage(this, cachedMessage.clone());
                     }
                 }
             } else {
@@ -231,11 +231,9 @@ public class AODVNode {
             if (entry.getIdentifier().equals(destinationIdentifier)) {
                 for (AODVNode neighbor : neighbors) {
                     if (neighbor.getNodeIdentifier().equals(entry.getNextHop())) {
-                        neighbor.receiveMessage(this, message);
+                        neighbor.receiveMessage(this, message.clone());
                         messageSent = true;
                         break;
-                    } else {
-                        System.err.println("No neighbor found to forward message to.");
                     }
                 }
             } else {
