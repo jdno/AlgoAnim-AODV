@@ -254,6 +254,7 @@ public class AODVNode {
                 if (entry.getDestinationSequence() < message.getOriginatorSequence()) {
                     entry.setDestinationSequence(message.getOriginatorSequence());
                     entry.setNextHop(cachedMessageSender);
+                    entry.setHopCount(message.getHopCount());
                     infoTable.updateTable();
                 }
             }
@@ -261,7 +262,6 @@ public class AODVNode {
                 // Update destination if its sequence number is more up to date
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
-                    entry.setNextHop(cachedMessageSender);
                     infoTable.updateTable();
                 }
             }
