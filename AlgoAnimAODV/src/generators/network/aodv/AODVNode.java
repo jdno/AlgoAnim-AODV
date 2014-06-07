@@ -141,16 +141,9 @@ public class AODVNode {
      * @param message The message to process later
      */
     public void receiveMessage(AODVNode sender, AODVMessage message) {
-        if (messageAlreadyProcessed(message)) {
-            if (cachedMessage == null) {
-                cachedMessage = message;
-                cachedMessageSender = sender.nodeIdentifier;
-            } else {
-                if (cachedMessage.getIdentifier() != message.getIdentifier()) {
-                    cachedMessage = message;
-                    cachedMessageSender = sender.nodeIdentifier;
-                }
-            }
+        if (!messageAlreadyProcessed(message)) {
+            cachedMessage = message;
+            cachedMessageSender = sender.nodeIdentifier;
         }
     }
 
@@ -194,6 +187,12 @@ public class AODVNode {
     private void markCachedMessageAsRead() {
         if (cachedMessage != null) {
             HashSet<Integer> processedMessagesForSender = processedMessages.get(cachedMessage.getOriginatorIdentifier());
+
+            if (processedMessagesForSender == null) {
+                processedMessagesForSender = new HashSet<Integer>();
+                processedMessages.put(cachedMessage.getOriginatorIdentifier(), processedMessagesForSender);
+            }
+
             processedMessagesForSender.add(cachedMessage.getIdentifier());
         }
     }
@@ -206,7 +205,11 @@ public class AODVNode {
     private boolean messageAlreadyProcessed(AODVMessage message) {
         HashSet<Integer> processedMessagesForSender = processedMessages.get(message.getOriginatorIdentifier());
 
-        return processedMessagesForSender.contains(message.getIdentifier());
+        if (processedMessagesForSender == null) {
+            return false;
+        } else {
+            return processedMessagesForSender.contains(message.getIdentifier());
+        }
     }
 
     /**
