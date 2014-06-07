@@ -145,7 +145,7 @@ public class AODVNode {
      * @param message The message to process later
      */
     public void receiveMessage(AODVNode sender, AODVMessage message) {
-        if (!messageAlreadyProcessed(message)) {
+        if (cachedMessage == null && !messageAlreadyProcessed(message)) {
             cachedMessage = message;
             cachedMessageSender = sender.nodeIdentifier;
         }
