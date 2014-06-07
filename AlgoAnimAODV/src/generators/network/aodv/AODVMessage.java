@@ -98,8 +98,10 @@ public class AODVMessage {
      */
     @Override
     public AODVMessage clone() {
-        return new AODVMessage(type, identifier, destinationIdentifier, destinationSequence, originatorIdentifier, originatorSequence);
+        AODVMessage clone = new AODVMessage(type, identifier, destinationIdentifier, destinationSequence, originatorIdentifier, originatorSequence);
+        clone.setHopCount(this.hopCount);
 
+        return clone;
     }
 
     /**
