@@ -92,6 +92,13 @@ public class AODVMessage {
         this.originatorSequence = sender.getOriginatorSequence();
     }
 
+    /**
+     * Increase the hop count by 1.
+     */
+    public void incrementHopCount() {
+        hopCount++;
+    }
+
 	/**
 	 * @return the hopCount
 	 */
