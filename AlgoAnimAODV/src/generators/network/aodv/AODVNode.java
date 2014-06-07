@@ -127,7 +127,9 @@ public class AODVNode {
                     }
                 }
             } else {
-                sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
+                if (!cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
+                    sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
+                }
             }
 
             cachedMessage = null;
