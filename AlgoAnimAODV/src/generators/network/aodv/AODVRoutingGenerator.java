@@ -9,6 +9,7 @@ import generators.framework.properties.AnimationPropertiesContainer;
 import generators.network.aodv.guielements.GUIController;
 import generators.network.aodv.guielements.GeometryToolBox;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -53,17 +54,23 @@ public class AODVRoutingGenerator implements Generator {
 
         startNode.startRouteDiscovery(destinationNode);
         int idleNodes = 0;
+        ArrayList<AODVNode> workingNodes = new ArrayList<AODVNode>(aodvGraph.getAODVNodes().size());
 
-        for(int i = 0; i < 4; i++) {
-        //while (idleNodes < aodvGraph.getAODVNodes().size()) {
+        //for(int i = 0; i < 4; i++) {
+        while (idleNodes < aodvGraph.getAODVNodes().size()) {
             idleNodes = 0;
+            workingNodes.clear();
 
             for (AODVNode node : aodvGraph.getAODVNodes()) {
                 if (node.getCachedMessage() != null) {
-                    node.process();
+                    workingNodes.add(node);
                 } else {
                     idleNodes++;
                 }
+            }
+
+            for(AODVNode node : workingNodes) {
+                node.process();
             }
         }
     }
