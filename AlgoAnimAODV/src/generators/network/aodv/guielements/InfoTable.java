@@ -3,15 +3,9 @@ package generators.network.aodv.guielements;
 import generators.network.aodv.AODVNode;
 import generators.network.aodv.RoutingTableEntry;
 
-import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
 
-import algoanim.primitives.Rect;
-import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
-import algoanim.properties.AnimationPropertiesKeys;
-import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
 
 public class InfoTable extends GUIElement {
@@ -19,34 +13,34 @@ public class InfoTable extends GUIElement {
 	/**
 	 * Height of a cell
 	 */
-	private int cellHeight = 15;
+	private final int cellHeight = 15;
 
 	/**
 	 * Width of a column
 	 */
-	private int distanceColumns = 30;
+	private final int distanceColumns = 30;
 
 	/**
 	 * Strings for the title row
 	 */
-	private String[] titles = new String[] { "N", "DS", "HC", "NH" };
+	private final String[] titles = new String[] { "N", "DS", "HC", "NH" };
 
 
 	/**
 	 * Shortcut for the approx. height of the whole table.
 	 */
-	private int height;
+	private final int height;
 
 	/**
 	 * Represents the currentLine in the GUI
 	 */
 	private Coordinates currentLine;
 
-	private ArrayList<InfoTableEntry> tableEntries;
+	private final ArrayList<InfoTableEntry> tableEntries;
 
-	private AODVNode ownNode;
-	private int numOFNodes;
-	private GUIController controller;
+	private final AODVNode ownNode;
+	private final int numOFNodes;
+	private final GUIController controller;
 
 	public InfoTable(Language lang, GUIController controller,
 			AODVNode nodeForThisTable, Coordinates startPoint, int numOfNodes) {
@@ -83,7 +77,7 @@ public class InfoTable extends GUIElement {
 				* titles.length);
 
 		for (int row = 0; row < numOFNodes; row++) {
-			tableEntries.add(new InfoTableEntry(lang, "A", currentLine,
+			tableEntries.add(new InfoTableEntry(lang, currentLine,
 					distanceColumns, cellHeight));
 			nextLine();
 		}

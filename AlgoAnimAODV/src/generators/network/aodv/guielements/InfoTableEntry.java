@@ -14,10 +14,10 @@ public class InfoTableEntry extends GUIElement {
 	private InfoTableCell hopCountCell;
 	private InfoTableCell nextHopCell;
 
-	public InfoTableEntry(Language lang, String nodeID, Coordinates position,
+	public InfoTableEntry(Language lang, Coordinates position,
 			int coloumnWidth, int rowHeight) {
 		super(lang, position);
-		this.nodeIDCell = new InfoTableCell(lang, nodeID, position,
+		this.nodeIDCell = new InfoTableCell(lang, "-", position,
 				coloumnWidth, rowHeight);
 		this.destSeqCell = new InfoTableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth, 0),
@@ -46,8 +46,11 @@ public class InfoTableEntry extends GUIElement {
 
 		currentString = Integer.toString(entry.getHopCount());
 		if (entry.getHopCount() == Integer.MAX_VALUE) {
-			hopCountCell.setText("inf");
-			updated = true;
+            if (!hopCountCell.getText().equals("inf")) {
+                hopCountCell.setText("inf");
+                hopCountCell.highlightCell();
+                updated = true;
+            }
 		} else {
 			if (checkCellForUpdate(currentString, hopCountCell)) {
 				updated = true;
@@ -64,6 +67,8 @@ public class InfoTableEntry extends GUIElement {
 
 	private boolean checkCellForUpdate(String text, InfoTableCell cell) {
 		if (!text.equals(cell.getText())) {
+            System.out.println("Old text: "+cell.getText());
+            System.out.println("New text: "+text);
 			cell.setText(text);
 			cell.highlightCell();
 			return true;

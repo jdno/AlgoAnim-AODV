@@ -12,24 +12,22 @@ import algoanim.util.Coordinates;
 public class InfoTableCell extends GUIElement{
 
 	private Text entry;
-	private Rect highlightBox;
-	private RectProperties boxProperties;
-	private Coordinates upperLeft;
-	private Coordinates lowerRight;
+	private final Rect highlightBox;
+    private static RectProperties boxProperties;
 	
 	/**
 	 * Color for highlighted cells
 	 */
-	private Color highlightColor = Color.ORANGE;
+	private final Color highlightColor = Color.ORANGE;
 	
 	public InfoTableCell(Language lang, String text, Coordinates position, int width, int height){
 		super(lang,position);
-		this.boxProperties = new RectProperties();
+		boxProperties = new RectProperties();
 		boxProperties.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
 		boxProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, highlightColor);
 		boxProperties.set(AnimationPropertiesKeys.COLOR_PROPERTY, highlightColor);
-		this.upperLeft = GeometryToolBox.moveCoordinate(position, -2, 1);
-		this.lowerRight = GeometryToolBox.moveCoordinate(position, width-5, height-1);
+		Coordinates upperLeft = GeometryToolBox.moveCoordinate(position, -2, 1);
+        Coordinates lowerRight = GeometryToolBox.moveCoordinate(position, width-5, height-1);
 		this.highlightBox = lang.newRect(upperLeft, lowerRight, "rect", null, boxProperties);
 		this.highlightBox.hide();
 		this.entry = lang.newText(position, text, "cell", null);
@@ -48,7 +46,8 @@ public class InfoTableCell extends GUIElement{
 	}
 	
 	public void setText(String text){
-		entry.setText(text, null, null);
+        entry.hide();
+        entry = lang.newText(position, text,"cell",null);
 	}
 	
 }
