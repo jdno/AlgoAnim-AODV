@@ -93,6 +93,16 @@ public class AODVMessage {
     }
 
     /**
+     * Return an exact copy of this instance.
+     * @return The message to clone
+     */
+    @Override
+    public AODVMessage clone() {
+        return new AODVMessage(type, identifier, destinationIdentifier, destinationSequence, originatorIdentifier, originatorSequence);
+
+    }
+
+    /**
      * Increase the hop count by 1.
      */
     public void incrementHopCount() {
