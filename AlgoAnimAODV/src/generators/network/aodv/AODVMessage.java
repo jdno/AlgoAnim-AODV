@@ -55,7 +55,7 @@ public class AODVMessage {
 	/**
 	 * The number of hops from the Originator to the node handling the request.
 	 */
-	private int hopCount = 0;
+	private int hopCount = 1;
 	
 	/**
 	 * Create an AODV message. The message ID should be set to the originator's sequence number or another number
