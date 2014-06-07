@@ -179,10 +179,10 @@ public class AODVNode {
         processedMessages.put(nodeIdentifier, processedMessagesForSender);
 
         if (neighbors.contains(destination)) {
-            destination.receiveMessage(this, rreq);
+            destination.receiveMessage(this, rreq.clone());
         } else {
             for (AODVNode neighbor : neighbors) {
-                neighbor.receiveMessage(this, rreq);
+                neighbor.receiveMessage(this, rreq.clone());
             }
         }
 
