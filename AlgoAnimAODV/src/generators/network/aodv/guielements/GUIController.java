@@ -1,5 +1,7 @@
 package generators.network.aodv.guielements;
 
+import algoanim.primitives.Graph;
+import generators.network.aodv.AODVGraph;
 import generators.network.aodv.AODVNode;
 
 import java.util.ArrayList;
@@ -7,8 +9,9 @@ import java.util.HashMap;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
+import generators.network.aodv.AODVNodeListener;
 
-public class GUIController {
+public class GUIController implements AODVNodeListener{
 
 	private static Language lang;
 	private HashMap<AODVNode, InfoTable> tables;
@@ -18,14 +21,23 @@ public class GUIController {
 	private Coordinates tableStartingPont = new Coordinates(500, 20);
 	private int distanceBetweenTables = 30;
 	private ArrayList<InfoTable> lastUpdated;
+    private GUIGraph graph;
 
-	public GUIController(Language language) {
+	public GUIController(Language language, Graph animalGraph) {
 		lang = language;
 		tables = new HashMap<AODVNode, InfoTable>();
 		lastUpdated = new ArrayList<InfoTable>();
+        graph = new GUIGraph(lang,animalGraph);
 	}
 
-	public void drawInfoTable(ArrayList<AODVNode> nodes) {
+	public void drawAODVGraph(){
+        graph.show();
+    }
+
+
+
+
+    public void drawInfoTable(ArrayList<AODVNode> nodes) {
 
 		/**
 		 * Check how many tables have to be drawn in a row
@@ -71,6 +83,23 @@ public class GUIController {
 			}
 			lastUpdated.clear();
 		}
-	
 
+    public Graph getAnimalGraph(){
+        return graph.getAnimalGraph();
+    }
+
+
+    @Override
+    public void highlightNode(AODVNode node) {
+        graph.unHighlightLastChange();
+        graph.highlightNode(node);
+    }
+
+    @Override
+    public void highlightEgde(AODVNode startNode, AODVNode endNode) {
+        graph.unHighlightLastChange();
+        graph.highlightEdge(startNode,endNode);
+    }
+
+  
 }

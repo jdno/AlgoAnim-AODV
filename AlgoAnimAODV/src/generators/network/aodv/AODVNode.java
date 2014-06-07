@@ -58,12 +58,24 @@ public class AODVNode {
     private ArrayList<RoutingTableEntry> routingTable = new ArrayList<RoutingTableEntry>();
 
     /**
+     * Index of the node in the AODVGraph
+     */
+    private int index;
+
+    /**
+     * Reference to AODVNodeListener to notify it when processing a node
+     */
+    private static AODVNodeListener listener;
+
+    /**
      * Create a new AODV node with the given node identifier.
      *
      * @param nodeIdentifier The node's identifier
      */
-    public AODVNode(String nodeIdentifier) {
+    public AODVNode(String nodeIdentifier, int index, AODVNodeListener listener) {
         this.nodeIdentifier = nodeIdentifier;
+        this.index = index;
+        this.listener = listener;
     }
 
     /**
@@ -105,7 +117,7 @@ public class AODVNode {
      */
     public void process() {
         // TODO visualize sending of message
-
+        listener.highlightNode(this);
         if (cachedMessage != null) {
             markCachedMessageAsRead();
 
@@ -129,6 +141,7 @@ public class AODVNode {
             } else {
                 if (!cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
                     sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
+
                 }
             }
 
@@ -358,5 +371,9 @@ public class AODVNode {
     		strBuff.append(neigbhor.getNodeIdentifier()).append("; ");
     	}
     	return strBuff.toString();
+    }
+
+    public int getIndex(){
+        return index;
     }
 }

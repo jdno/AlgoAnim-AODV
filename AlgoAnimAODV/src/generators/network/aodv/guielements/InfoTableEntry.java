@@ -7,7 +7,7 @@ import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
 
-public class InfoTableEntry extends GUIElement {
+public class InfoTableEntry extends GUIPositionElement {
 
 	private InfoTableCell nodeIDCell;
 	private InfoTableCell destSeqCell;

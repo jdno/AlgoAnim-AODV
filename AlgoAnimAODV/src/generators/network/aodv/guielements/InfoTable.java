@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
 
-public class InfoTable extends GUIElement {
+public class InfoTable extends GUIPositionElement {
 
 	/**
 	 * Height of a cell

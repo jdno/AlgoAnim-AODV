@@ -9,7 +9,7 @@ import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
 
-public class InfoTableCell extends GUIElement{
+public class InfoTableCell extends GUIPositionElement{
 
 	private Text entry;
 	private final Rect highlightBox;

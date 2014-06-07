@@ -11,57 +11,29 @@ import java.util.ArrayList;
 
 public class AODVGraph {
 
-    private Graph animalGraph;
+
     private Language lang;
+    private Graph animalGraph;
     private String[] graphLabels = {};
-    GraphProperties graphProperties;
     private ArrayList<AODVNode> aodvNodes = new ArrayList<AODVNode>();
-    Color highlightColor = Color.ORANGE;
+    private AODVNodeListener listener;
 
-    public AODVGraph(Language lang, Graph animalGraph) {
+
+    public AODVGraph(Language lang, Graph animalGraph,AODVNodeListener listener) {
         this.lang = lang;
-        graphProperties = new GraphProperties();
-        transformGraph(animalGraph);
+        this.animalGraph = animalGraph;
+        this.listener = listener;
+        this.graphLabels = new String[animalGraph.getSize()];
         initialize();
-    }
 
-    public void highlightNode(int index) {
-        animalGraph.highlightNode(index, null, null);
-    }
-
-    public void highlightEdge(int startNode, int endNode) {
-        animalGraph.highlightEdge(startNode, endNode, null, null);
-    }
-
-    public void show() {
-        animalGraph.show();
     }
 
 
-    private void transformGraph(Graph loadedGraph) {
-
-        graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlightColor);
-        graphProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
-        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, false);
-
-        /**
-         * Extract all information from the given graph object
-         */
-        Node[] nodes = new Node[loadedGraph.getSize()];
-        graphLabels = new String[loadedGraph.getSize()];
-        for (int i = 0; i < loadedGraph.getSize(); i++) {
-            nodes[i] = loadedGraph.getNodeForIndex(i);
-            graphLabels[i] = loadedGraph.getNodeLabel(nodes[i]);
-        }
-
-        animalGraph = lang.newGraph("Graph", loadedGraph.getAdjacencyMatrix(), nodes, graphLabels, null, graphProperties);
-    }
 
     private void initialize() {
         AODVNode aodv;
-
         for (int i = 0; i < animalGraph.getSize(); i++) {
-            aodv = new AODVNode(animalGraph.getNodeLabel(i));
+            aodv = new AODVNode(animalGraph.getNodeLabel(i),i,listener);
             graphLabels[i] = aodv.getNodeIdentifier();
             aodvNodes.add(aodv);
         }
@@ -103,19 +75,21 @@ public class AODVGraph {
         return aodvNodes;
     }
 
-    public Graph getGraph() {
-        return animalGraph;
-    }
 
     public AODVNode getNode(int index) {
         return aodvNodes.get(index);
     }
 
+    public Graph getAnimalGraph(){return animalGraph;}
   
     public void printGraph(){
     	for (AODVNode node : aodvNodes){
     		System.out.println(node.getNeighborsAsString());
     	}
     }
+
+
+
+
     
 }

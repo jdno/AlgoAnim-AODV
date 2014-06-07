@@ -5,11 +5,9 @@ import algoanim.util.Coordinates;
 
 public class GUIElement {
 
-	protected Language lang;
-	protected Coordinates position;
+	protected final Language lang;
 	
-	public GUIElement(Language lang, Coordinates position){
+	public GUIElement(Language lang){
 		this.lang = lang;
-		this.position = position;
 	}
 }
