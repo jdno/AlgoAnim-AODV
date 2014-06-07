@@ -4,6 +4,7 @@ import generators.network.aodv.AODVMessage.MessageType;
 import generators.network.aodv.guielements.InfoTable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -39,7 +40,7 @@ public class AODVNode {
     /**
      * Keep track of already processed messages.
      */
-    private HashSet<Integer> processedMessages = new HashSet<Integer>();
+    private HashMap<String, HashSet<Integer>> processedMessages = new HashMap<String, HashSet<Integer>>();
 
     /**
      * The info table used to display the routing table.
@@ -106,14 +107,14 @@ public class AODVNode {
         // TODO visualize sending of message
 
         if (cachedMessage != null) {
-            processedMessages.add(cachedMessage.getIdentifier());
+            markCachedMessageAsRead();
             updateRoutingTable(cachedMessage);
 
             if (cachedMessage.getType() == MessageType.RREQ) {
                 if (cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
                     int identifier = ++originatorSequence;
                     String destinationIdentifier = cachedMessage.getOriginatorIdentifier();
-                    int destinationSequence = -1;
+                    int destinationSequence = cachedMessage.getOriginatorSequence();
 
                     AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
@@ -140,7 +141,7 @@ public class AODVNode {
      * @param message The message to process later
      */
     public void receiveMessage(AODVNode sender, AODVMessage message) {
-        if (!processedMessages.contains(message.getIdentifier())) {
+        if (messageAlreadyProcessed(message)) {
             if (cachedMessage == null) {
                 cachedMessage = message;
                 cachedMessageSender = sender.nodeIdentifier;
@@ -184,7 +185,28 @@ public class AODVNode {
             }
         }
 
-        processedMessages.add(identifier);
+        markCachedMessageAsRead();
+    }
+
+    /**
+     * Adds the currently cached message to the list of already processed messages.
+     */
+    private void markCachedMessageAsRead() {
+        if (cachedMessage != null) {
+            HashSet<Integer> processedMessagesForSender = processedMessages.get(cachedMessage.getOriginatorIdentifier());
+            processedMessagesForSender.add(cachedMessage.getIdentifier());
+        }
+    }
+
+    /**
+     * Checks whether the message was already received.
+     * @param message The message to analyze
+     * @return True if the message has already been processed, false otherwise
+     */
+    private boolean messageAlreadyProcessed(AODVMessage message) {
+        HashSet<Integer> processedMessagesForSender = processedMessages.get(message.getOriginatorIdentifier());
+
+        return processedMessagesForSender.contains(message.getIdentifier());
     }
 
     /**
