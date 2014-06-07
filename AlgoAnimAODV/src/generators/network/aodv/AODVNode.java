@@ -216,11 +216,15 @@ public class AODVNode {
      * @param message               The message to send
      */
     private void sendMessageToNeighbor(String destinationIdentifier, AODVMessage message) {
+        boolean messageSent = false;
+
         for (RoutingTableEntry entry : routingTable) {
             if (entry.getIdentifier().equals(destinationIdentifier)) {
                 for (AODVNode neighbor : neighbors) {
-                    if (neighbor.nodeIdentifier.equals(entry.getNextHop())) {
+                    if (neighbor.getNodeIdentifier().equals(entry.getNextHop())) {
                         neighbor.receiveMessage(this, message);
+                        messageSent = true;
+                        break;
                     } else {
                         System.err.println("No neighbor found to forward message to.");
                     }
@@ -228,6 +232,8 @@ public class AODVNode {
             } else {
                 System.err.println("No route to message destination found.");
             }
+
+            if (messageSent) break;
         }
     }
 
