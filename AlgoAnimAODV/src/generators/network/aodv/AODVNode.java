@@ -172,6 +172,10 @@ public class AODVNode {
 
         AODVMessage rreq = new AODVMessage(AODVMessage.MessageType.RREQ, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
+        HashSet<Integer> processedMessagesForSender = new HashSet<Integer>();
+        processedMessagesForSender.add(identifier);
+        processedMessages.put(nodeIdentifier, processedMessagesForSender);
+
         if (neighbors.contains(destination)) {
             destination.receiveMessage(this, rreq);
         } else {
