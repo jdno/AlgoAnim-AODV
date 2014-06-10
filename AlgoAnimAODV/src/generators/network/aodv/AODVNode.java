@@ -71,7 +71,17 @@ public class AODVNode {
      * Create a new AODV node with the given node identifier.
      *
      * @param nodeIdentifier The node's identifier
+     */
+    public AODVNode(String nodeIdentifier) {
+        this.nodeIdentifier = nodeIdentifier;
+    }
+
+    /**
+     * Create a new AODV node with the given node identifier.
+     *
+     * @param nodeIdentifier The node's identifier
      * @param index The node's position in the animal graph
+     * @param listener The listener used to highlight the node
      */
     public AODVNode(String nodeIdentifier, int index, AODVNodeListener listener) {
         this.nodeIdentifier = nodeIdentifier;
