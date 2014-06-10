@@ -17,6 +17,7 @@ public class AODVRoutingGenerator implements Generator {
     private Language lang;
     private GUIController controller;
     private AODVGraph aodvGraph;
+    private String[][] routeDiscoveries = {{"A", "H"}, {"B", "G"}};
 
     public AODVRoutingGenerator() {
         lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
@@ -43,17 +44,27 @@ public class AODVRoutingGenerator implements Generator {
         controller.drawInfoTable(aodvGraph.getAODVNodes());
         controller.drawInfoBox("Erläuterung");
 
-        startAodvRouting();
+        AODVNode startNode;
+        AODVNode destinationNode;
+
+        for(String[] route: routeDiscoveries) {
+            if (route.length < 2) {
+                break;
+            }
+
+            startNode = aodvGraph.getNode(route[0]);
+            destinationNode = aodvGraph.getNode(route[1]);
+
+            if (startNode != null && destinationNode != null) {
+                startAodvRouting(startNode, destinationNode);
+            }
+        }
 
         return lang.toString();
     }
 
-    public void startAodvRouting() {
+    public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
         controller.updateInfoBoxText("Der Startknoten beginnt die Route Discovery, in dem er ein Route Request (RREQ) an seine Nachbarn schickt.");
-
-        // TODO initialize correctly
-        AODVNode startNode = aodvGraph.getNode(0);
-        AODVNode destinationNode = aodvGraph.getNode(aodvGraph.getAODVNodes().size() - 1);
 
         startNode.startRouteDiscovery(destinationNode);
         int idleNodes = 0;
