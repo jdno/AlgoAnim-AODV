@@ -30,11 +30,9 @@ public class GUIController implements AODVNodeListener{
         graph = new GUIGraph(lang,animalGraph);
 	}
 
-	public void drawAODVGraph(){
+	public void drawGUIGraph(){
         graph.show();
     }
-
-
 
 
     public void drawInfoTable(ArrayList<AODVNode> nodes) {
@@ -101,5 +99,5 @@ public class GUIController implements AODVNodeListener{
         graph.highlightEdge(startNode,endNode);
     }
 
-  
+
 }

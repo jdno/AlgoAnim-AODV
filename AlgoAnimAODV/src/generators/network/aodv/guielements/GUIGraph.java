@@ -41,6 +41,7 @@ public class GUIGraph extends GUIElement{
          */
         Node[] nodes = new Node[loadedGraph.getSize()];
         graphLabels = new String[loadedGraph.getSize()];
+        System.out.println(loadedGraph.getSize());
         for (int i = 0; i < loadedGraph.getSize(); i++) {
             nodes[i] = loadedGraph.getNodeForIndex(i);
             graphLabels[i] = loadedGraph.getNodeLabel(nodes[i]);

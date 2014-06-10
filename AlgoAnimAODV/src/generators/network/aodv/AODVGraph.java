@@ -11,16 +11,13 @@ import java.util.ArrayList;
 
 public class AODVGraph {
 
-
-    private Language lang;
     private Graph animalGraph;
     private String[] graphLabels = {};
     private ArrayList<AODVNode> aodvNodes = new ArrayList<AODVNode>();
     private AODVNodeListener listener;
 
 
-    public AODVGraph(Language lang, Graph animalGraph,AODVNodeListener listener) {
-        this.lang = lang;
+    public AODVGraph(Graph animalGraph,AODVNodeListener listener) {
         this.animalGraph = animalGraph;
         this.listener = listener;
         this.graphLabels = new String[animalGraph.getSize()];
@@ -54,7 +51,6 @@ public class AODVGraph {
             }
         }
         }
-        printGraph();
     }
 
     private void initializeRoutingTables() {
@@ -79,14 +75,12 @@ public class AODVGraph {
     public AODVNode getNode(int index) {
         return aodvNodes.get(index);
     }
-
-    public Graph getAnimalGraph(){return animalGraph;}
   
     public void printGraph(){
     	for (AODVNode node : aodvNodes){
     		System.out.println(node.getNeighborsAsString());
     	}
-    }
+   }
 
 
 

@@ -67,8 +67,6 @@ public class InfoTableEntry extends GUIPositionElement {
 
 	private boolean checkCellForUpdate(String text, InfoTableCell cell) {
 		if (!text.equals(cell.getText())) {
-            System.out.println("Old text: "+cell.getText());
-            System.out.println("New text: "+text);
 			cell.setText(text);
 			cell.highlightCell();
 			return true;

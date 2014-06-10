@@ -34,8 +34,8 @@ public class AODVRoutingGenerator implements Generator {
         controller = new GUIController(lang,loadedGraph);
 
 
-        controller.drawAODVGraph();
-        aodvGraph = new AODVGraph(lang, controller.getAnimalGraph(),controller);
+        controller.drawGUIGraph();
+        aodvGraph = new AODVGraph(controller.getAnimalGraph(),controller);
 
 
         lang.nextStep();
