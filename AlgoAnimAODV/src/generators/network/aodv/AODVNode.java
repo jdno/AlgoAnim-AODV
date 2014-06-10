@@ -129,9 +129,7 @@ public class AODVNode {
     public void process() {
         // TODO visualize sending of message
         if (cachedMessage != null) {
-            if (listener != null) {
-                listener.highlightNode(this);
-            }
+            highlightNode();
 
             markCachedMessageAsRead();
 
@@ -184,6 +182,8 @@ public class AODVNode {
      * @param destination The destination for the Route Discovery
      */
     public void startRouteDiscovery(AODVNode destination) {
+        highlightNode();
+
         int identifier = ++originatorSequence;
         String destinationIdentifier = destination.nodeIdentifier;
         int destinationSequence = -1;
@@ -215,6 +215,15 @@ public class AODVNode {
 
         markCachedMessageAsRead();
         updateInfoTable();
+    }
+
+    /**
+     * Highlight this node if a listener is set.
+     */
+    private void highlightNode() {
+        if (listener != null) {
+            listener.highlightNode(this);
+        }
     }
 
     /**
