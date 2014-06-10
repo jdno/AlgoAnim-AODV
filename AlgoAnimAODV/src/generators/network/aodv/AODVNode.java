@@ -189,9 +189,12 @@ public class AODVNode {
         int destinationSequence = -1;
 
         for (RoutingTableEntry entry : routingTable) {
+            if (entry.getIdentifier().equals(nodeIdentifier)) {
+                entry.setDestinationSequence(originatorSequence);
+            }
+
             if (entry.getIdentifier().equals(destinationIdentifier)) {
                 destinationSequence = entry.getDestinationSequence();
-                break;
             }
         }
 
