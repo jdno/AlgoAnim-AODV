@@ -65,12 +65,13 @@ public class AODVNode {
     /**
      * Reference to AODVNodeListener to notify it when processing a node
      */
-    private static AODVNodeListener listener;
+    private AODVNodeListener listener;
 
     /**
      * Create a new AODV node with the given node identifier.
      *
      * @param nodeIdentifier The node's identifier
+     * @param index The node's position in the animal graph
      */
     public AODVNode(String nodeIdentifier, int index, AODVNodeListener listener) {
         this.nodeIdentifier = nodeIdentifier;
