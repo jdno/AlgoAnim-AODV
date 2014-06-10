@@ -75,6 +75,16 @@ public class AODVGraph {
     public AODVNode getNode(int index) {
         return aodvNodes.get(index);
     }
+
+    public AODVNode getNode(String nodeIdentifier) {
+        for(AODVNode node: aodvNodes) {
+            if (node.getNodeIdentifier().equals(nodeIdentifier)) {
+                return node;
+            }
+        }
+
+        return null;
+    }
   
     public void printGraph(){
     	for (AODVNode node : aodvNodes){
