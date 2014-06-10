@@ -66,12 +66,6 @@ public class AODVNodeTest {
 
     @Test
     public void testProcessBeginningWithRREQ() {
-        Language language = new AnimalScript("JUnit Tests", "Sascha Bleidner, Jan David Nose", 1200, 800);
-        GUIController gui = new GUIController(language);
-
-        InfoTable infoTable = new InfoTable(language, gui, nodeA, new Coordinates(0,0), 4);
-        nodeA.addTable(infoTable);
-
         AODVMessage msg = new AODVMessage(AODVMessage.MessageType.RREQ, 0, nodeA, nodeD);
         nodeA.receiveMessage(nodeA, msg);
 
@@ -87,12 +81,6 @@ public class AODVNodeTest {
 
     @Test
     public void testProcessIntermediateWithRREQ() {
-        Language language = new AnimalScript("JUnit Tests", "Sascha Bleidner, Jan David Nose", 1200, 800);
-        GUIController gui = new GUIController(language);
-
-        InfoTable infoTable = new InfoTable(language, gui, nodeB, new Coordinates(0,0), 4);
-        nodeB.addTable(infoTable);
-
         AODVMessage msg = new AODVMessage(AODVMessage.MessageType.RREQ, 0, nodeA, nodeD);
         nodeB.receiveMessage(nodeA, msg);
 
