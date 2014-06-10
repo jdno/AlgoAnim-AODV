@@ -119,7 +119,9 @@ public class AODVNode {
     public void process() {
         // TODO visualize sending of message
         if (cachedMessage != null) {
-            listener.highlightNode(this);
+            if (listener != null) {
+                listener.highlightNode(this);
+            }
 
             markCachedMessageAsRead();
 
@@ -274,14 +276,18 @@ public class AODVNode {
                     entry.setDestinationSequence(message.getOriginatorSequence());
                     entry.setNextHop(cachedMessageSender);
                     entry.setHopCount(message.getHopCount());
-                    infoTable.updateTable();
+                    if (infoTable != null) {
+                        infoTable.updateTable();
+                    }
                 }
             }
             if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
                 // Update destination if its sequence number is more up to date
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
-                    infoTable.updateTable();
+                    if (infoTable != null) {
+                        infoTable.updateTable();
+                    }
                 }
             }
         }
