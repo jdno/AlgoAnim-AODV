@@ -214,6 +214,7 @@ public class AODVNode {
         }
 
         markCachedMessageAsRead();
+        updateInfoTable();
     }
 
     /**
@@ -274,6 +275,15 @@ public class AODVNode {
     }
 
     /**
+     * Update the info table.
+     */
+    private void updateInfoTable() {
+        if (infoTable != null) {
+            infoTable.updateTable();
+        }
+    }
+
+    /**
      * Update the routing table with the information from the given message.
      *
      * @param message The message to analyze
@@ -286,18 +296,14 @@ public class AODVNode {
                     entry.setDestinationSequence(message.getOriginatorSequence());
                     entry.setNextHop(cachedMessageSender);
                     entry.setHopCount(message.getHopCount());
-                    if (infoTable != null) {
-                        infoTable.updateTable();
-                    }
+                    updateInfoTable();
                 }
             }
             if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
                 // Update destination if its sequence number is more up to date
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
-                    if (infoTable != null) {
-                        infoTable.updateTable();
-                    }
+                    updateInfoTable();
                 }
             }
         }
