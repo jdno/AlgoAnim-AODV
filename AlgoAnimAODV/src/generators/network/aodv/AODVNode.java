@@ -1,6 +1,7 @@
 package generators.network.aodv;
 
 import generators.network.aodv.AODVMessage.MessageType;
+import generators.network.aodv.animal.Statistics;
 import generators.network.aodv.guielements.InfoTable;
 
 import java.util.ArrayList;
@@ -66,6 +67,11 @@ public class AODVNode {
      * Reference to AODVNodeListener to notify it when processing a node
      */
     private AODVNodeListener listener;
+
+    /**
+     * Used to collect statistics about from this node
+     */
+    private Statistics stats = Statistics.sharedInstance();
 
     /**
      * Create a new AODV node with the given node identifier.
@@ -173,6 +179,7 @@ public class AODVNode {
         if (cachedMessage == null && !messageAlreadyProcessed(message)) {
             cachedMessage = message;
             cachedMessageSender = sender.nodeIdentifier;
+            stats.messageSent();
         }
     }
 
@@ -284,6 +291,8 @@ public class AODVNode {
 
             if (messageSent) break;
         }
+
+        stats.routingTableRead();
     }
 
     /**
@@ -301,6 +310,8 @@ public class AODVNode {
      * @param message The message to analyze
      */
     private void updateRoutingTable(AODVMessage message) {
+        boolean updated = false;
+
         for (RoutingTableEntry entry : routingTable) {
             if (entry.getIdentifier().equals(message.getOriginatorIdentifier())) {
                 // Update originator if its sequence number is more up to date
@@ -308,16 +319,28 @@ public class AODVNode {
                     entry.setDestinationSequence(message.getOriginatorSequence());
                     entry.setNextHop(cachedMessageSender);
                     entry.setHopCount(message.getHopCount());
+
                     updateInfoTable();
+
+                    updated = true;
                 }
             }
             if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
                 // Update destination if its sequence number is more up to date
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
+
                     updateInfoTable();
+
+                    updated = true;
                 }
             }
+        }
+
+        stats.routingTableRead();
+
+        if (updated) {
+            stats.routingTableUpdated();
         }
     }
 
