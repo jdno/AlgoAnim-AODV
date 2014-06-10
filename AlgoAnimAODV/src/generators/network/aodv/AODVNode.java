@@ -118,8 +118,9 @@ public class AODVNode {
      */
     public void process() {
         // TODO visualize sending of message
-        listener.highlightNode(this);
         if (cachedMessage != null) {
+            listener.highlightNode(this);
+
             markCachedMessageAsRead();
 
             updateRoutingTable(cachedMessage);
