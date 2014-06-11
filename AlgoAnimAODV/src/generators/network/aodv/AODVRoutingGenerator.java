@@ -20,16 +20,21 @@ public class AODVRoutingGenerator implements Generator {
     private String[][] routeDiscoveries = {{"A", "H"}, {"B", "G"}};
 
     public AODVRoutingGenerator() {
-        lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
-                "Sascha Bleidner, Jan David Nose", 1200, 800);
+
 
     }
 
     public void init() {
-        lang.setStepMode(true);
+
     }
 
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
+
+
+        lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
+                "Sascha Bleidner, Jan David Nose", 1200, 800);
+
+        lang.setStepMode(true);
 
         Graph loadedGraph = (Graph) primitives.get("graph");
         controller = new GUIController(lang,loadedGraph);
