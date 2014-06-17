@@ -1,8 +1,12 @@
 package generators.network.aodv.guielements;
 
 import algoanim.primitives.Graph;
+import algoanim.properties.AnimationPropertiesKeys;
+import algoanim.properties.RectProperties;
+import algoanim.properties.TextProperties;
 import generators.network.aodv.AODVNode;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,26 +15,45 @@ import algoanim.util.Coordinates;
 import generators.network.aodv.AODVNodeListener;
 import generators.network.aodv.guielements.Tables.InfoTable;
 import generators.network.aodv.guielements.Tables.StatisticTable;
+import translator.Translator;
 
 public class GUIController implements AODVNodeListener{
 
-	private static Language lang;
+	private  Language lang;
+    private Translator translator;
+
+    /**
+     * AODV Nodes with corresponding InfoTable objects
+     */
 	private HashMap<AODVNode, InfoTable> tables;
-	private InfoBox info;
-	private Coordinates infoBoxUpperLeft = new Coordinates(40, 470);
-	private Coordinates infoBoxLowerRight = new Coordinates(840, 600);
-	private Coordinates tableStartingPont = new Coordinates(500, 20);
-    private Coordinates statisticTableStartingPoint = new Coordinates(500,400);
-	private int distanceBetweenTables = 30;
+    private ArrayList<InfoTable> lastUpdated;
+
+
+    /**
+     * Coordinates for the GUI Elements
+     */
+	private final Coordinates infoBoxUpperLeft = new Coordinates(40, 470);
+	private final Coordinates infoBoxLowerRight = new Coordinates(840, 600);
+	private final Coordinates tableStartingPont = new Coordinates(500, 20);
+    private final Coordinates statisticTableStartingPoint = new Coordinates(500,400);
+	private final int distanceBetweenTables = 30;
+
+    /**
+     * GUI Elements
+     */
     private StatisticTable statTable;
-	private ArrayList<InfoTable> lastUpdated;
+    private InfoBox info;
     private GUIGraph graph;
 
-	public GUIController(Language language, Graph animalGraph) {
+    private RectProperties highlightCellProps;
+
+	public GUIController(Language language, Graph animalGraph,Translator translator,RectProperties rectProps) {
 		lang = language;
 		tables = new HashMap<AODVNode, InfoTable>();
 		lastUpdated = new ArrayList<InfoTable>();
         graph = new GUIGraph(lang,animalGraph);
+        this.translator = translator;
+        this.highlightCellProps = rectProps;
 	}
 
 	public void drawGUIGraph(){
@@ -50,7 +73,7 @@ public class GUIController implements AODVNodeListener{
 		 * following tables
 		 */
 		InfoTable table = new InfoTable(lang, this, nodes.get(0),
-				tableStartingPont, nodes.size());
+				tableStartingPont, nodes.size(), highlightCellProps);
 		int offsetX = distanceBetweenTables + table.getWidth();
 		int offsetY = distanceBetweenTables + table.getHeight();
 
@@ -58,7 +81,7 @@ public class GUIController implements AODVNodeListener{
 			table = new InfoTable(lang, this, nodes.get(i),
 					(GeometryToolBox.moveCoordinate(tableStartingPont, i
 							% numOfTablesX * offsetX, i / numOfTablesX
-							* offsetY)), nodes.size());
+							* offsetY)), nodes.size(), highlightCellProps);
 			tables.put(nodes.get(i), table);
 		}
 
@@ -89,8 +112,20 @@ public class GUIController implements AODVNodeListener{
         return graph.getAnimalGraph();
     }
 
-    public void drawStatisticTable(){
-         statTable = new StatisticTable(lang,statisticTableStartingPoint);
+    public void showStartPage(){
+        TextProperties title = new TextProperties();
+        title.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
+                Font.SANS_SERIF, Font.PLAIN, 20));
+        title.set(AnimationPropertiesKeys.COLOR_PROPERTY,Color.ORANGE);
+
+        lang.newText(new Coordinates(50,50),translator.translateMessage("algoTitle"),"Title",null,title);
+        lang.newText(new Coordinates(50,80),translator.translateMessage("animDesc"),"Description",null);
+        lang.nextStep("Start Algorithm");
+    }
+
+
+    public void drawStatisticTable(String title){
+         statTable = new StatisticTable(lang,statisticTableStartingPoint, title, highlightCellProps);
     }
 
     @Override

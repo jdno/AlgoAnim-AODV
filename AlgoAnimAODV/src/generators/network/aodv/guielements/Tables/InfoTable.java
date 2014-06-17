@@ -1,5 +1,6 @@
 package generators.network.aodv.guielements.Tables;
 
+import algoanim.properties.RectProperties;
 import generators.network.aodv.AODVNode;
 import generators.network.aodv.RoutingTableEntry;
 
@@ -25,11 +26,12 @@ public class InfoTable extends GUITable {
 	private final GUIController controller;
 
 	public InfoTable(Language lang, GUIController controller,
-			AODVNode nodeForThisTable, Coordinates startPoint, int numOfNodes) {
-		super(lang, startPoint);
+			AODVNode nodeForThisTable, Coordinates startPoint, int numOfNodes, RectProperties highlight) {
+		super(lang, startPoint,highlight);
 		this.controller = controller;
 		this.ownNode = nodeForThisTable;
 		this.numOFNodes = numOfNodes;
+        title = "Node: " + ownNode.getNodeIdentifier();
         cellHeight = 15;
         cellWidth = 30;
         titles = new String[] { "N", "DS", "HC", "NH" };
@@ -39,16 +41,10 @@ public class InfoTable extends GUITable {
 	}
 
 	private void initContent() {
-		lang.newText(currentLine, "Node: " + ownNode.getNodeIdentifier(),
-				"Tablename", null);
-
-		nextLine();
-
 		drawTitles(numOFNodes+1);
-
 		for (int row = 0; row < numOFNodes; row++) {
 			tableEntries.add(new InfoTableEntry(lang, currentLine,
-                    cellWidth, cellHeight));
+                    cellWidth, cellHeight, highlight));
 			nextLine();
 		}
 

@@ -1,5 +1,6 @@
 package generators.network.aodv.guielements.Tables;
 
+import algoanim.properties.RectProperties;
 import generators.network.aodv.RoutingTableEntry;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
@@ -14,19 +15,19 @@ public class InfoTableEntry extends GUIPositionElement {
 	private TableCell nextHopCell;
 
 	public InfoTableEntry(Language lang, Coordinates position,
-			int coloumnWidth, int rowHeight) {
+			int coloumnWidth, int rowHeight, RectProperties highlight) {
 		super(lang, position);
 		this.nodeIDCell = new TableCell(lang, "-", position,
-				coloumnWidth, rowHeight);
+				coloumnWidth, rowHeight,highlight);
 		this.destSeqCell = new TableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth, 0),
-				coloumnWidth, rowHeight);
+				coloumnWidth, rowHeight,highlight);
 		this.hopCountCell = new TableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth * 2, 0),
-				coloumnWidth, rowHeight);
+				coloumnWidth, rowHeight,highlight);
 		this.nextHopCell = new TableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth * 3, 0),
-				coloumnWidth, rowHeight);
+				coloumnWidth, rowHeight,highlight);
 	}
 
 	public boolean updateInfoTableEntry(RoutingTableEntry entry) {

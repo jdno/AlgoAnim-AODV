@@ -17,17 +17,13 @@ public class TableCell extends GUIPositionElement {
 	private final Rect highlightBox;
     private static RectProperties boxProperties;
 	
-	/**
-	 * Color for highlighted cells
-	 */
-	private final Color highlightColor = Color.ORANGE;
+
 	
-	public TableCell(Language lang, String text, Coordinates position, int width, int height){
+	public TableCell(Language lang, String text, Coordinates position, int width, int height, RectProperties rectProps){
 		super(lang,position);
-		boxProperties = new RectProperties();
-		boxProperties.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
-		boxProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, highlightColor);
-		boxProperties.set(AnimationPropertiesKeys.COLOR_PROPERTY, highlightColor);
+
+        boxProperties = rectProps;
+
 		Coordinates upperLeft = GeometryToolBox.moveCoordinate(position, -2, 1);
         Coordinates lowerRight = GeometryToolBox.moveCoordinate(position, width-5, height-1);
 		this.highlightBox = lang.newRect(upperLeft, lowerRight, "rect", null, boxProperties);

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <PropertiesTreeModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PropertiesTreeModel.xsd">
 	<Folder name="Root">
-			
+        <Primitive type="StringArray">
+            <name>StartandEndnodes</name>
+            <value><StringArray>A,H,B,C</StringArray></value>
+        </Primitive>
+
 	<Primitive type="Graph">
 			<name>graph</name>
 			<value><Graph>%graphscript
@@ -35,5 +39,45 @@ edge F H
 
 </Graph></value>
 		</Primitive>
+        <AnimationProperties type="RectProperties">
+            <AnimationPropertyItem type="ColorPropertyItem">
+                <name>fillColor</name>
+                <isEditable value="true" />
+                <label></label>
+                <value><Color>(234, 166, 58)</Color></value>
+            </AnimationPropertyItem>
+            <AnimationPropertyItem type="IntegerPropertyItem">
+                <name>depth</name>
+                <isEditable value="false" />
+                <label></label>
+                <value><int>1</int></value>
+            </AnimationPropertyItem>
+            <AnimationPropertyItem type="ColorPropertyItem">
+                <name>color</name>
+                <isEditable value="false" />
+                <label></label>
+                <value><Color>(234, 166, 58)</Color></value>
+            </AnimationPropertyItem>
+            <AnimationPropertyItem type="BooleanPropertyItem">
+                <name>hidden</name>
+                <isEditable value="false" />
+                <label></label>
+                <value><boolean value="false" /></value>
+            </AnimationPropertyItem>
+            <AnimationPropertyItem type="StringPropertyItem">
+                <name>name</name>
+                <isEditable value="true" />
+                <label></label>
+                <value><String>highlightColor</String></value>
+            </AnimationPropertyItem>
+            <AnimationPropertyItem type="BooleanPropertyItem">
+                <name>filled</name>
+                <isEditable value="false" />
+                <label></label>
+                <value><boolean value="true" /></value>
+            </AnimationPropertyItem>
+        </AnimationProperties>
+
+
 		</Folder>
 </PropertiesTreeModel>

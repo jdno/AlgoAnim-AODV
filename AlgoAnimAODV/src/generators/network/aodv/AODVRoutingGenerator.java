@@ -3,12 +3,19 @@ package generators.network.aodv;
 import algoanim.animalscript.AnimalScript;
 import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.AnimationPropertiesKeys;
+import algoanim.properties.RectProperties;
+import algoanim.properties.TextProperties;
+import algoanim.util.Coordinates;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
 import generators.network.aodv.guielements.GUIController;
 import generators.network.aodv.guielements.GeometryToolBox;
+import translator.Translator;
 
+import java.awt.*;
+import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -17,11 +24,14 @@ public class AODVRoutingGenerator implements Generator {
     private Language lang;
     private GUIController controller;
     private AODVGraph aodvGraph;
-    private String[][] routeDiscoveries = {{"A", "H"}, {"B", "G"}};
+    private String[] routeDiscoveries;
+    private Translator translator;
+    private String resourceName;
+    private Locale locale;
+
 
     public AODVRoutingGenerator() {
-
-
+        translator = new Translator("ressources/AlgoAnimAODV", Locale.GERMANY);
     }
 
     public void init() {
@@ -30,39 +40,41 @@ public class AODVRoutingGenerator implements Generator {
 
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
 
-
         lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
                 "Sascha Bleidner, Jan David Nose", 1200, 800);
 
         lang.setStepMode(true);
 
         Graph loadedGraph = (Graph) primitives.get("graph");
-        controller = new GUIController(lang,loadedGraph);
+        routeDiscoveries = (String[]) primitives.get("StartandEndnodes");
 
+        RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
+
+        controller = new GUIController(lang,loadedGraph,translator,cellHighlight);
+
+        controller.showStartPage();
+        lang.hideAllPrimitives();
 
         controller.drawGUIGraph();
         aodvGraph = new AODVGraph(controller.getAnimalGraph(),controller);
 
-
-        lang.nextStep();
-
         controller.drawInfoTable(aodvGraph.getAODVNodes());
-        controller.drawStatisticTable();
-        controller.drawInfoBox("Erläuterung");
+        controller.drawStatisticTable(translator.translateMessage("statTableTitle"));
+        controller.drawInfoBox(translator.translateMessage("infoBox"));
 
         AODVNode startNode;
         AODVNode destinationNode;
 
-        for(String[] route: routeDiscoveries) {
-            if (route.length < 2) {
-                break;
-            }
 
-            startNode = aodvGraph.getNode(route[0]);
-            destinationNode = aodvGraph.getNode(route[1]);
-
-            if (startNode != null && destinationNode != null) {
-                startAodvRouting(startNode, destinationNode);
+        if (routeDiscoveries.length % 2 != 0) {
+            System.err.println("Stard and Endnotes not properly declared");
+        } else {
+            for (int i = 0; i < routeDiscoveries.length; i = i +2){
+                startNode = aodvGraph.getNode(routeDiscoveries[i]);
+                destinationNode = aodvGraph.getNode(routeDiscoveries[i+1]);
+                if (startNode != null && destinationNode != null) {
+                    startAodvRouting(startNode, destinationNode);
+                }
             }
         }
 
@@ -70,7 +82,7 @@ public class AODVRoutingGenerator implements Generator {
     }
 
     public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
-        controller.updateInfoBoxText("Der Startknoten beginnt die Route Discovery, in dem er ein Route Request (RREQ) an seine Nachbarn schickt.");
+        controller.updateInfoBoxText(translator.translateMessage("startRouteDiscovery"));
 
         startNode.startRouteDiscovery(destinationNode);
         int idleNodes = 0;
@@ -95,12 +107,14 @@ public class AODVRoutingGenerator implements Generator {
         }
     }
 
+
+
     public String getName() {
-        return "Ad-hoc Optimized Vector Routing";
+        return translator.translateMessage("algoTitle");
     }
 
     public String getAlgorithmName() {
-        return "AODV";
+        return translator.translateMessage("algoName");
     }
 
     public String getAnimationAuthor() {
@@ -108,7 +122,7 @@ public class AODVRoutingGenerator implements Generator {
     }
 
     public String getDescription() {
-        return "AODV ist ein reaktiver Routingalgorithmus für mobile Ad-hoc Netze.";
+        return translator.translateMessage("algoDesc");
     }
 
     public String getCodeExample() {

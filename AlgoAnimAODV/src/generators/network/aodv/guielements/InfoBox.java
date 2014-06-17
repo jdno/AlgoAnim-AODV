@@ -40,6 +40,7 @@ public class InfoBox {
 		}
 	}
 
+
 	/**
 	 * Updates the text inside the InfoBox
 	 * 

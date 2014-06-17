@@ -1,6 +1,7 @@
 package generators.network.aodv.guielements.Tables;
 
 import algoanim.primitives.generators.Language;
+import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
 import generators.network.aodv.guielements.GUIPositionElement;
 import generators.network.aodv.guielements.GeometryToolBox;
@@ -15,11 +16,15 @@ public class GUITable extends GUIPositionElement {
 
     protected Coordinates currentLine;
 
+    protected String title;
     protected String[] titles;
 
-    public GUITable(Language lang, Coordinates position){
+    protected RectProperties highlight;
+
+    public GUITable(Language lang, Coordinates position, RectProperties highlight){
         super(lang,position);
         currentLine = position;
+        this.highlight = highlight;
     }
 
     protected void nextLine() {
@@ -32,6 +37,9 @@ public class GUITable extends GUIPositionElement {
     }
 
     protected void drawTitles(int height){
+        lang.newText(currentLine, title,
+                "Tablename", null);
+        nextLine();
         for (int i = 0; i < titles.length; i++) {
             lang.newText(moveToCell(i), titles[i], "", null);
 
