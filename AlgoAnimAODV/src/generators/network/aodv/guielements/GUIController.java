@@ -19,7 +19,9 @@ public class GUIController implements AODVNodeListener{
 	private Coordinates infoBoxUpperLeft = new Coordinates(40, 470);
 	private Coordinates infoBoxLowerRight = new Coordinates(840, 600);
 	private Coordinates tableStartingPont = new Coordinates(500, 20);
+    private Coordinates statisticTableStartingPoint = new Coordinates(500,400);
 	private int distanceBetweenTables = 30;
+    private StatisticTable statTable;
 	private ArrayList<InfoTable> lastUpdated;
     private GUIGraph graph;
 
@@ -86,6 +88,17 @@ public class GUIController implements AODVNodeListener{
         return graph.getAnimalGraph();
     }
 
+    public void drawStatisticTable(){
+         statTable = new StatisticTable(lang,statisticTableStartingPoint);
+    }
+
+    @Override
+    public void updateInfoTable(AODVNode node) {
+        if (tables.get(node) != null) {
+            tables.get(node).updateTable();
+            statTable.updateStatisticTable();
+        }
+    }
 
     @Override
     public void highlightNode(AODVNode node) {

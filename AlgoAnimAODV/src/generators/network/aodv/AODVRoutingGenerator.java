@@ -47,6 +47,7 @@ public class AODVRoutingGenerator implements Generator {
         lang.nextStep();
 
         controller.drawInfoTable(aodvGraph.getAODVNodes());
+        controller.drawStatisticTable();
         controller.drawInfoBox("Erläuterung");
 
         AODVNode startNode;

@@ -9,7 +9,7 @@ import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
 
-public class InfoTableCell extends GUIPositionElement{
+public class TableCell extends GUIPositionElement{
 
 	private Text entry;
 	private final Rect highlightBox;
@@ -20,7 +20,7 @@ public class InfoTableCell extends GUIPositionElement{
 	 */
 	private final Color highlightColor = Color.ORANGE;
 	
-	public InfoTableCell(Language lang, String text, Coordinates position, int width, int height){
+	public TableCell(Language lang, String text, Coordinates position, int width, int height){
 		super(lang,position);
 		boxProperties = new RectProperties();
 		boxProperties.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
@@ -49,5 +49,11 @@ public class InfoTableCell extends GUIPositionElement{
         entry.hide();
         entry = lang.newText(position, text,"cell",null);
 	}
+
+    public void updateText(String text){
+        if (!text.equals(entry)){
+            setText(text);
+        }
+    }
 	
 }

@@ -43,10 +43,6 @@ public class AODVNode {
      */
     private HashMap<String, HashSet<Integer>> processedMessages = new HashMap<String, HashSet<Integer>>();
 
-    /**
-     * The info table used to display the routing table.
-     */
-    private InfoTable infoTable;
 
     /**
      * A list of the neighbors of the node.
@@ -120,14 +116,6 @@ public class AODVNode {
         }
     }
 
-    /**
-     * Add the info table for this node.
-     *
-     * @param infoTable The table that displays this node's routing table
-     */
-    public void addTable(InfoTable infoTable) {
-        this.infoTable = infoTable;
-    }
 
     /**
      * Process the currently cached message.
@@ -224,7 +212,7 @@ public class AODVNode {
         }
 
         markCachedMessageAsRead();
-        updateInfoTable();
+        listener.updateInfoTable(this);
     }
 
     /**
@@ -295,14 +283,6 @@ public class AODVNode {
         stats.routingTableRead();
     }
 
-    /**
-     * Update the info table.
-     */
-    private void updateInfoTable() {
-        if (infoTable != null) {
-            infoTable.updateTable();
-        }
-    }
 
     /**
      * Update the routing table with the information from the given message.
@@ -320,7 +300,8 @@ public class AODVNode {
                     entry.setNextHop(cachedMessageSender);
                     entry.setHopCount(message.getHopCount());
 
-                    updateInfoTable();
+                    listener.updateInfoTable(this);
+
 
                     updated = true;
                 }
@@ -330,7 +311,8 @@ public class AODVNode {
                 if (entry.getDestinationSequence() < message.getDestinationSequence()) {
                     entry.setDestinationSequence(message.getDestinationSequence());
 
-                    updateInfoTable();
+                    listener.updateInfoTable(this);
+
 
                     updated = true;
                 }

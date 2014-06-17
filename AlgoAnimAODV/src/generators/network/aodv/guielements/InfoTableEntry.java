@@ -1,31 +1,28 @@
 package generators.network.aodv.guielements;
 
-import generators.graphics.helpers.Coordinate;
 import generators.network.aodv.RoutingTableEntry;
-import algoanim.primitives.Rect;
-import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
 
 public class InfoTableEntry extends GUIPositionElement {
 
-	private InfoTableCell nodeIDCell;
-	private InfoTableCell destSeqCell;
-	private InfoTableCell hopCountCell;
-	private InfoTableCell nextHopCell;
+	private TableCell nodeIDCell;
+	private TableCell destSeqCell;
+	private TableCell hopCountCell;
+	private TableCell nextHopCell;
 
 	public InfoTableEntry(Language lang, Coordinates position,
 			int coloumnWidth, int rowHeight) {
 		super(lang, position);
-		this.nodeIDCell = new InfoTableCell(lang, "-", position,
+		this.nodeIDCell = new TableCell(lang, "-", position,
 				coloumnWidth, rowHeight);
-		this.destSeqCell = new InfoTableCell(lang, "-",
+		this.destSeqCell = new TableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth, 0),
 				coloumnWidth, rowHeight);
-		this.hopCountCell = new InfoTableCell(lang, "-",
+		this.hopCountCell = new TableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth * 2, 0),
 				coloumnWidth, rowHeight);
-		this.nextHopCell = new InfoTableCell(lang, "-",
+		this.nextHopCell = new TableCell(lang, "-",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth * 3, 0),
 				coloumnWidth, rowHeight);
 	}
@@ -65,7 +62,7 @@ public class InfoTableEntry extends GUIPositionElement {
 
 	}
 
-	private boolean checkCellForUpdate(String text, InfoTableCell cell) {
+	private boolean checkCellForUpdate(String text, TableCell cell) {
 		if (!text.equals(cell.getText())) {
 			cell.setText(text);
 			cell.highlightCell();

@@ -8,22 +8,7 @@ import java.util.ArrayList;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
 
-public class InfoTable extends GUIPositionElement {
-
-	/**
-	 * Height of a cell
-	 */
-	private final int cellHeight = 15;
-
-	/**
-	 * Width of a column
-	 */
-	private final int distanceColumns = 30;
-
-	/**
-	 * Strings for the title row
-	 */
-	private final String[] titles = new String[] { "N", "DS", "HC", "NH" };
+public class InfoTable extends GUITable {
 
 
 	/**
@@ -31,10 +16,6 @@ public class InfoTable extends GUIPositionElement {
 	 */
 	private final int height;
 
-	/**
-	 * Represents the currentLine in the GUI
-	 */
-	private Coordinates currentLine;
 
 	private final ArrayList<InfoTableEntry> tableEntries;
 
@@ -47,9 +28,10 @@ public class InfoTable extends GUIPositionElement {
 		super(lang, startPoint);
 		this.controller = controller;
 		this.ownNode = nodeForThisTable;
-		this.ownNode.addTable(this);
-		this.currentLine = startPoint;
 		this.numOFNodes = numOfNodes;
+        cellHeight = 15;
+        cellWidth = 30;
+        titles = new String[] { "N", "DS", "HC", "NH" };
 		this.height = cellHeight * (numOFNodes + 1);
 		this.tableEntries = new ArrayList<InfoTableEntry>();
 		initContent();
@@ -60,33 +42,15 @@ public class InfoTable extends GUIPositionElement {
 				"Tablename", null);
 
 		nextLine();
-		for (int i = 0; i < titles.length; i++) {
-			lang.newText(
-					GeometryToolBox.moveCoordinate(currentLine, distanceColumns
-							* i, 0), titles[i], "", null);
 
-			if (i != 0) {
-				GeometryToolBox.drawVerticalLine(lang,
-						GeometryToolBox.moveCoordinate(currentLine,
-								distanceColumns * i - 5, 0), height);
-			}
-		}
-		// switch to the next line
-		nextLine();
-		GeometryToolBox.drawHorizontalLie(lang,currentLine, distanceColumns
-				* titles.length);
+		drawTitles(numOFNodes+1);
 
 		for (int row = 0; row < numOFNodes; row++) {
 			tableEntries.add(new InfoTableEntry(lang, currentLine,
-					distanceColumns, cellHeight));
+                    cellWidth, cellHeight));
 			nextLine();
 		}
 
-	}
-
-	private void nextLine() {
-		currentLine = GeometryToolBox
-				.moveCoordinate(currentLine, 0, cellHeight);
 	}
 
 	public void updateTable() {
@@ -132,7 +96,7 @@ public class InfoTable extends GUIPositionElement {
 	}
 
 	public int getWidth() {
-		return distanceColumns * titles.length;
+		return cellWidth * titles.length;
 	}
 
 }
