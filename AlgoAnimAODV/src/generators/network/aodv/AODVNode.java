@@ -2,7 +2,6 @@ package generators.network.aodv;
 
 import generators.network.aodv.AODVMessage.MessageType;
 import generators.network.aodv.animal.Statistics;
-import generators.network.aodv.guielements.InfoTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

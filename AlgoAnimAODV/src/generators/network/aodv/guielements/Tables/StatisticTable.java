@@ -1,4 +1,4 @@
-package generators.network.aodv.guielements;
+package generators.network.aodv.guielements.Tables;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;

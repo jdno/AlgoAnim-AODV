@@ -1,8 +1,10 @@
-package generators.network.aodv.guielements;
+package generators.network.aodv.guielements.Tables;
 
 import generators.network.aodv.RoutingTableEntry;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
+import generators.network.aodv.guielements.GUIPositionElement;
+import generators.network.aodv.guielements.GeometryToolBox;
 
 public class InfoTableEntry extends GUIPositionElement {
 

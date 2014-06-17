@@ -1,13 +1,14 @@
-package generators.network.aodv.guielements;
+package generators.network.aodv.guielements.Tables;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
+import generators.network.aodv.guielements.GUIPositionElement;
+import generators.network.aodv.guielements.GeometryToolBox;
 
 /**
  * Created by sascha on 17.06.14.
  */
-public class GUITable extends GUIPositionElement{
-
+public class GUITable extends GUIPositionElement {
 
     protected int cellHeight;
     protected int cellWidth;
@@ -15,7 +16,6 @@ public class GUITable extends GUIPositionElement{
     protected Coordinates currentLine;
 
     protected String[] titles;
-
 
     public GUITable(Language lang, Coordinates position){
         super(lang,position);

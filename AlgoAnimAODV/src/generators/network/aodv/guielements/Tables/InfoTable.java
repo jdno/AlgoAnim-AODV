@@ -1,4 +1,4 @@
-package generators.network.aodv.guielements;
+package generators.network.aodv.guielements.Tables;
 
 import generators.network.aodv.AODVNode;
 import generators.network.aodv.RoutingTableEntry;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
+import generators.network.aodv.guielements.GUIController;
 
 public class InfoTable extends GUITable {
 

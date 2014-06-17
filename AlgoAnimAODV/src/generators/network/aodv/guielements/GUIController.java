@@ -1,7 +1,6 @@
 package generators.network.aodv.guielements;
 
 import algoanim.primitives.Graph;
-import generators.network.aodv.AODVGraph;
 import generators.network.aodv.AODVNode;
 
 import java.util.ArrayList;
@@ -10,6 +9,8 @@ import java.util.HashMap;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
 import generators.network.aodv.AODVNodeListener;
+import generators.network.aodv.guielements.Tables.InfoTable;
+import generators.network.aodv.guielements.Tables.StatisticTable;
 
 public class GUIController implements AODVNodeListener{
 
