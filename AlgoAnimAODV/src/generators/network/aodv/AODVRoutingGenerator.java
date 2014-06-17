@@ -53,7 +53,7 @@ public class AODVRoutingGenerator implements Generator {
         controller = new GUIController(lang,loadedGraph,translator,cellHighlight);
 
         controller.showStartPage();
-        lang.hideAllPrimitives();
+        controller.hideStartPage();
 
         controller.drawGUIGraph();
         aodvGraph = new AODVGraph(controller.getAnimalGraph(),controller);

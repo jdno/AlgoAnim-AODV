@@ -113,14 +113,33 @@ public class GUIController implements AODVNodeListener{
     }
 
     public void showStartPage(){
+        TextProperties bigTitle = new TextProperties();
+        bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
+                Font.SANS_SERIF, Font.PLAIN, 25));
+        bigTitle.set(AnimationPropertiesKeys.COLOR_PROPERTY,Color.ORANGE);
+
         TextProperties title = new TextProperties();
         title.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
                 Font.SANS_SERIF, Font.PLAIN, 20));
         title.set(AnimationPropertiesKeys.COLOR_PROPERTY,Color.ORANGE);
 
-        lang.newText(new Coordinates(50,50),translator.translateMessage("algoTitle"),"Title",null,title);
-        lang.newText(new Coordinates(50,80),translator.translateMessage("animDesc"),"Description",null);
-        lang.nextStep("Start Algorithm");
+
+        lang.newText(new Coordinates(50,30),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
+
+        lang.newText(new Coordinates(50,50),translator.translateMessage("algoTitle"),"algoTitle",null,title);
+        lang.newText(new Coordinates(50,70),translator.translateMessage("animDesc"),"Description",null);
+
+        lang.newText(new Coordinates(50,200),translator.translateMessage("startFunctionality"),"startF",null,title);
+        lang.newText(new Coordinates(50,220),translator.translateMessage("aodvFunc"),"Description",null);
+
+        lang.newText(new Coordinates(50,400),translator.translateMessage("startAnimation"),"startA",null,title);
+        lang.newText(new Coordinates(50,420),translator.translateMessage("aodvAnimation"),"Animation",null);
+        lang.nextStep();
+    }
+
+    public void hideStartPage(){
+        lang.hideAllPrimitives();
+        lang.nextStep();
     }
 
 
