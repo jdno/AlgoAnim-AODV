@@ -282,6 +282,16 @@ public class AODVNode {
         stats.routingTableRead();
     }
 
+    /**
+     * Update the text in the InfoBox with the message for the given key.
+     *
+     * @param messageKey The key of the message to print
+     */
+    private void updateInfoBox(String messageKey) {
+        if (listener != null) {
+            listener.updateInfoText(messageKey);
+        }
+    }
 
     /**
      * Update the routing table with the information from the given message.
