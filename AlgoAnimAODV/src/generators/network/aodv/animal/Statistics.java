@@ -63,6 +63,9 @@ public class Statistics {
         messageCount++;
     }
 
+    /**
+     * Increment the number of routes that were successfully discovered.
+     */
     public void routeDiscovered() {
         routesDiscoveredCount++;
     }
