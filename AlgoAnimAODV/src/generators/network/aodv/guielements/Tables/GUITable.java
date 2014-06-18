@@ -9,7 +9,7 @@ import generators.network.aodv.guielements.GeometryToolBox;
 /**
  * Created by sascha on 17.06.14.
  */
-public class GUITable extends GUIPositionElement {
+public abstract class GUITable extends GUIPositionElement {
 
     protected int cellHeight;
     protected int cellWidth;

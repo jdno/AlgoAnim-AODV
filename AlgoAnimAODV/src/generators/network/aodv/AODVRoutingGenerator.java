@@ -3,19 +3,14 @@ package generators.network.aodv;
 import algoanim.animalscript.AnimalScript;
 import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
-import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.RectProperties;
-import algoanim.properties.TextProperties;
-import algoanim.util.Coordinates;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
 import generators.network.aodv.guielements.GUIController;
-import generators.network.aodv.guielements.GeometryToolBox;
 import translator.Translator;
 
 import java.awt.*;
-import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -50,9 +45,10 @@ public class AODVRoutingGenerator implements Generator {
 
         RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
 
+
         controller = new GUIController(lang,loadedGraph,translator,cellHighlight);
 
-        controller.showStartPage();
+        controller.drawStartPage();
         controller.hideStartPage();
 
         controller.drawGUIGraph();

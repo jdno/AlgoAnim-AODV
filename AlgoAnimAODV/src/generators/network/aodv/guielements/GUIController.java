@@ -19,6 +19,7 @@ import translator.Translator;
 
 public class GUIController implements AODVNodeListener{
 
+
 	private  Language lang;
     private Translator translator;
 
@@ -45,22 +46,44 @@ public class GUIController implements AODVNodeListener{
     private InfoBox info;
     private GUIGraph graph;
 
+    /**
+     * Properties for the highlighted color of TableCells
+     */
     private RectProperties highlightCellProps;
 
+    /**
+     * Constructor for a GUIController
+     * @param language
+     *          object to control animal
+     * @param animalGraph
+     *          from animal loaded graph object
+     * @param translator
+     *          translator instance to translate strings for the GUI
+     * @param rectProps
+     *          properties for the TableCells
+     */
 	public GUIController(Language language, Graph animalGraph,Translator translator,RectProperties rectProps) {
 		lang = language;
 		tables = new HashMap<AODVNode, InfoTable>();
 		lastUpdated = new ArrayList<InfoTable>();
-        graph = new GUIGraph(lang,animalGraph);
+        graph = new GUIGraph(lang,animalGraph,Color.ORANGE);
         this.translator = translator;
         this.highlightCellProps = rectProps;
 	}
 
+    /**
+     * Draws the GUIGraph on the screen
+     */
 	public void drawGUIGraph(){
         graph.show();
     }
 
 
+    /**
+     * Draws the InfoTable for the given AODVNodes on the screen
+     * @param nodes
+     *          nodes which are connected to the InfoTables
+     */
     public void drawInfoTable(ArrayList<AODVNode> nodes) {
 
 		/**
@@ -87,32 +110,32 @@ public class GUIController implements AODVNodeListener{
 
 	}
 
+    /**
+     * Draws the statistic table on the screen
+     * @param title
+     *          title for the Statistic to draw
+     */
+    public void drawStatisticTable(String title){
+        statTable = new StatisticTable(lang,statisticTableStartingPoint, title, highlightCellProps);
+    }
 
-	public void drawInfoBox(String titleOfBox) {
-		info = new InfoBox(lang, titleOfBox, infoBoxUpperLeft,
+
+    /**
+     * Draws the InfoBox on the screen
+     * @param title
+     *          title for the InfoBox
+     */
+	public void drawInfoBox(String title) {
+		info = new InfoBox(lang, title, infoBoxUpperLeft,
 				infoBoxLowerRight);
 	}
 
-	public void updateInfoBoxText(String update) {
-		info.updateText(update);
-	}
 
-	public void tableUpdated(InfoTable table) {
-		lastUpdated.add(table);
-	}
 
-	public void tableRefresh() {
-			for (InfoTable table : lastUpdated) {
-				table.refresh();
-			}
-			lastUpdated.clear();
-		}
-
-    public Graph getAnimalGraph(){
-        return graph.getAnimalGraph();
-    }
-
-    public void showStartPage(){
+    /**
+     * Displays the startPage with description of the algorithm
+     */
+    public void drawStartPage(){
         TextProperties bigTitle = new TextProperties();
         bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
                 Font.SANS_SERIF, Font.PLAIN, 25));
@@ -137,16 +160,52 @@ public class GUIController implements AODVNodeListener{
         lang.nextStep();
     }
 
+    /**
+     * Hides the start page
+     */
     public void hideStartPage(){
         lang.hideAllPrimitives();
         lang.nextStep();
     }
 
-
-    public void drawStatisticTable(String title){
-         statTable = new StatisticTable(lang,statisticTableStartingPoint, title, highlightCellProps);
+    public void updateInfoBoxText(String update) {
+        info.updateText(update);
     }
 
+    /**
+     * Marks table as updated. Should be called whenever a table gets updated
+     * @param table
+     *          table which was updated
+     */
+    public void tableUpdated(InfoTable table) {
+        lastUpdated.add(table);
+    }
+
+    /**
+     * Resets the highlights for the last updated tables
+     */
+    public void tableRefresh() {
+        for (InfoTable table : lastUpdated) {
+            table.refresh();
+        }
+        lastUpdated.clear();
+    }
+
+
+    /**
+     * Returns the animalGraph from te AODVGraph object
+     * @return
+     *      Graph as an Graph object
+     */
+    public Graph getAnimalGraph(){
+        return graph.getAnimalGraph();
+    }
+
+    /**
+     * Updates the InfoTable for the given AODVNode
+     * @param node
+     *          Node for which the table needs to be updated
+     */
     @Override
     public void updateInfoTable(AODVNode node) {
         if (tables.get(node) != null) {
@@ -155,17 +214,31 @@ public class GUIController implements AODVNodeListener{
         }
     }
 
+    /**
+     * Highlights the given AODVNode on the screen
+     * @param node
+     *          Node to be highlighted
+     */
     @Override
     public void highlightNode(AODVNode node) {
         graph.unHighlightLastChange();
         graph.highlightNode(node);
     }
 
+    /**
+     * Highlights the edge from the given startnode to the given endnode
+     * @param startNode
+     *          node from which the edge starts
+     * @param endNode
+     *          node to which the edge leads
+     */
     @Override
     public void highlightEgde(AODVNode startNode, AODVNode endNode) {
         graph.unHighlightLastChange();
         graph.highlightEdge(startNode,endNode);
     }
+
+
 
 
 }

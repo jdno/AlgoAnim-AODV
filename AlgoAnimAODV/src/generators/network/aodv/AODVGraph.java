@@ -1,43 +1,45 @@
 package generators.network.aodv;
 
 import algoanim.primitives.Graph;
-import algoanim.primitives.generators.Language;
-import algoanim.properties.AnimationPropertiesKeys;
-import algoanim.properties.GraphProperties;
-import algoanim.util.Node;
 
-import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Class which represents an AODVGraph
+ */
 public class AODVGraph {
 
-    private Graph animalGraph;
-    private String[] graphLabels = {};
+    /**
+     * List to store the AODVNodes
+     */
     private ArrayList<AODVNode> aodvNodes = new ArrayList<AODVNode>();
-    private AODVNodeListener listener;
 
-
+    /**
+     * Constructor for an AODVGraph object
+     * @param animalGraph
+     *          the loaded animal Graph object
+     * @param listener
+     *          listener to call whenever a node or table updates
+     */
     public AODVGraph(Graph animalGraph,AODVNodeListener listener) {
-        this.animalGraph = animalGraph;
-        this.listener = listener;
-        this.graphLabels = new String[animalGraph.getSize()];
-        initialize();
-
+        initialize(animalGraph,listener);
     }
 
 
-
-    private void initialize() {
+    /**
+     * Initializes an AODVGraph from the given animalGraph;
+     * @param animalGraph
+     *           Graph object to construct the AODVGraph from
+     */
+    private void initialize(Graph animalGraph, AODVNodeListener listener) {
         AODVNode aodv;
         for (int i = 0; i < animalGraph.getSize(); i++) {
             aodv = new AODVNode(animalGraph.getNodeLabel(i),i,listener);
-            graphLabels[i] = aodv.getNodeIdentifier();
             aodvNodes.add(aodv);
         }
 
         int[] neighbors;
         initializeRoutingTables();
-        
         
 
         for (int i = 0; i < animalGraph.getSize(); i++) {
@@ -53,6 +55,9 @@ public class AODVGraph {
         }
     }
 
+    /**
+     * Initializes the initial RoutingTables
+     */
     private void initializeRoutingTables() {
         ArrayList<RoutingTableEntry> routingTable = new ArrayList<RoutingTableEntry>(aodvNodes.size());
         RoutingTableEntry entry;
@@ -67,15 +72,22 @@ public class AODVGraph {
         }
     }
 
+    /**
+     * Returns the list of AODVNodes in this graph
+     * @return
+     *      list of ADOVNodes
+     */
     public ArrayList<AODVNode> getAODVNodes() {
         return aodvNodes;
     }
 
-
-    public AODVNode getNode(int index) {
-        return aodvNodes.get(index);
-    }
-
+    /**
+     * Get node by the given node identifier
+     * @param nodeIdentifier
+     *              Identifier of a node
+     * @return
+     *      AODVNode with the given Identifier
+     */
     public AODVNode getNode(String nodeIdentifier) {
         for(AODVNode node: aodvNodes) {
             if (node.getNodeIdentifier().equals(nodeIdentifier)) {
@@ -85,15 +97,6 @@ public class AODVGraph {
 
         return null;
     }
-  
-    public void printGraph(){
-    	for (AODVNode node : aodvNodes){
-    		System.out.println(node.getNeighborsAsString());
-    	}
-   }
-
-
-
 
     
 }
