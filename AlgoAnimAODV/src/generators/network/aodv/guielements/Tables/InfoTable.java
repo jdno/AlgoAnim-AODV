@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
-import generators.network.aodv.guielements.GUIController;
+import generators.network.aodv.GUIController;
 
 public class InfoTable extends GUITable {
 
