@@ -74,8 +74,6 @@ public class AODVRoutingGenerator implements Generator {
     }
 
     public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
-        controller.updateInfoBoxText(translator.translateMessage("startRouteDiscovery"));
-
         startNode.startRouteDiscovery(destinationNode);
         int idleNodes = 0;
         ArrayList<AODVNode> workingNodes = new ArrayList<AODVNode>(aodvGraph.getAODVNodes().size());

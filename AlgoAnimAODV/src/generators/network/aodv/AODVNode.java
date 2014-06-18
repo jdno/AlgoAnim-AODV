@@ -42,7 +42,6 @@ public class AODVNode {
      */
     private HashMap<String, HashSet<Integer>> processedMessages = new HashMap<String, HashSet<Integer>>();
 
-
     /**
      * A list of the neighbors of the node.
      */
@@ -176,6 +175,7 @@ public class AODVNode {
      * @param destination The destination for the Route Discovery
      */
     public void startRouteDiscovery(AODVNode destination) {
+        updateInfoBox("startRouteDiscovery");
         highlightNode();
 
         int identifier = ++originatorSequence;
