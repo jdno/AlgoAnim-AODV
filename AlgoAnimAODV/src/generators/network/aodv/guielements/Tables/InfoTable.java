@@ -74,7 +74,6 @@ public class InfoTable extends GUITable {
 		if (updated) {
 			controller.tableUpdated(this);
 		}
-		lang.nextStep();
 	}
 
 	

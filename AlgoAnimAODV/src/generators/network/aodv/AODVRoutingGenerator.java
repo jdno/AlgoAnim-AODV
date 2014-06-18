@@ -57,9 +57,8 @@ public class AODVRoutingGenerator implements Generator {
         AODVNode startNode;
         AODVNode destinationNode;
 
-
         if (routeDiscoveries.length % 2 != 0) {
-            System.err.println("Stard and Endnotes not properly declared");
+            System.err.println("Start and end nodes not properly declared");
         } else {
             for (int i = 0; i < routeDiscoveries.length; i = i +2){
                 startNode = aodvGraph.getNode(routeDiscoveries[i]);
@@ -75,6 +74,8 @@ public class AODVRoutingGenerator implements Generator {
 
     public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
         startNode.startRouteDiscovery(destinationNode);
+        lang.nextStep();
+
         int idleNodes = 0;
         ArrayList<AODVNode> workingNodes = new ArrayList<AODVNode>(aodvGraph.getAODVNodes().size());
 
@@ -93,6 +94,7 @@ public class AODVRoutingGenerator implements Generator {
 
             for(AODVNode node : workingNodes) {
                 node.process();
+                lang.nextStep();
             }
         }
     }
