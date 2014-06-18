@@ -241,7 +241,14 @@ public class GUIController implements AODVNodeListener{
         graph.highlightEdge(startNode,endNode);
     }
 
-
-
-
+    /**
+     * Updates the InfoBox with the text for the given message identifier.
+     * The message identifier must match a string in the localization file.
+     *
+     * @param messageId The identifier of the message
+     */
+    @Override
+    public void updateInfoText(String messageId) {
+        updateInfoBoxText(translator.translateMessage(messageId));
+    }
 }
