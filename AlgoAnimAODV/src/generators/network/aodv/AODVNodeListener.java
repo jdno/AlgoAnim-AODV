@@ -27,4 +27,12 @@ public interface AODVNodeListener {
      *          Node for which the table needs to be updated
      */
     public void updateInfoTable(AODVNode node);
+
+    /**
+     * Updates the InfoBox with the text for the given message identifier.
+     * The message identifier must match a string in the localization file.
+     *
+     * @param messageId The identifier of the message
+     */
+    public void updateInfoText(String messageId);
 }
