@@ -4,6 +4,7 @@ import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
+import algoanim.util.Coordinates;
 import algoanim.util.Node;
 import generators.network.aodv.AODVNode;
 
@@ -29,7 +30,7 @@ public class GUIGraph extends GUIElement{
      *          highlightColor for the graph
      */
     public GUIGraph(Language lang, Graph animalGraph, Color highlight){
-        super(lang);
+        super(lang,new Coordinates(0,0));
         this.graphProperties = new GraphProperties();
         transformGraph(animalGraph,highlight);
     }

@@ -1,4 +1,4 @@
-package generators.network.aodv.guielements;
+package generators.network.aodv;
 
 import algoanim.primitives.Graph;
 import algoanim.properties.AnimationPropertiesKeys;
@@ -13,6 +13,9 @@ import java.util.HashMap;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
 import generators.network.aodv.AODVNodeListener;
+import generators.network.aodv.guielements.GUIGraph;
+import generators.network.aodv.guielements.GeometryToolBox;
+import generators.network.aodv.guielements.InfoBox;
 import generators.network.aodv.guielements.Tables.InfoTable;
 import generators.network.aodv.guielements.Tables.StatisticTable;
 import translator.Translator;
@@ -103,8 +106,8 @@ public class GUIController implements AODVNodeListener{
 		for (int i = 1; i < nodes.size(); i++) {
 			table = new InfoTable(lang, this, nodes.get(i),
 					(GeometryToolBox.moveCoordinate(tableStartingPont, i
-							% numOfTablesX * offsetX, i / numOfTablesX
-							* offsetY)), nodes.size(), highlightCellProps);
+                            % numOfTablesX * offsetX, i / numOfTablesX
+                            * offsetY)), nodes.size(), highlightCellProps);
 			tables.put(nodes.get(i), table);
 		}
 

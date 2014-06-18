@@ -15,7 +15,7 @@ import algoanim.util.Coordinates;
  * @author sascha
  * 
  */
-public class InfoBox {
+public class InfoBox extends GUIElement{
 
 	/**
 	 * The Text to be displayed in the InfoBox
@@ -24,7 +24,7 @@ public class InfoBox {
 
 	public InfoBox(Language lang, String title, Coordinates upperLeft,
 			Coordinates lowerRight) {
-
+    super(lang,upperLeft);
 		TextProperties textProps = new TextProperties();
 
 		// textProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
@@ -53,7 +53,6 @@ public class InfoBox {
 		
 		if (text.length() <= 100) {
 			textLines.get(0).setText(text, null, null);
-			//textLines.get(0).show();
 		} else {
 			int charCounter = 0;
 			int line = 0;

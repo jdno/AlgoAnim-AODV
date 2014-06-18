@@ -7,10 +7,8 @@ import algoanim.properties.RectProperties;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
-import generators.network.aodv.guielements.GUIController;
 import translator.Translator;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -21,8 +19,6 @@ public class AODVRoutingGenerator implements Generator {
     private AODVGraph aodvGraph;
     private String[] routeDiscoveries;
     private Translator translator;
-    private String resourceName;
-    private Locale locale;
 
 
     public AODVRoutingGenerator() {

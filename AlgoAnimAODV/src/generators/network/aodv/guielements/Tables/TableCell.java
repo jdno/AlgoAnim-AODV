@@ -1,17 +1,14 @@
 package generators.network.aodv.guielements.Tables;
 
-import java.awt.Color;
-
 import algoanim.primitives.Rect;
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
-import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
-import generators.network.aodv.guielements.GUIPositionElement;
+import generators.network.aodv.guielements.GUIElement;
 import generators.network.aodv.guielements.GeometryToolBox;
 
-public class TableCell extends GUIPositionElement {
+public class TableCell extends GUIElement {
 
 	private Text entry;
 	private final Rect highlightBox;

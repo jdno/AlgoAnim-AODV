@@ -12,18 +12,49 @@ import algoanim.util.Node;
  */
 public class GeometryToolBox {
 
-	
+    /**
+     * Draws a vertical line from the given startPoint with the specified length
+     * @param lang
+     *          language object to draw on
+     * @param startPoint
+     *          starting point fo the line
+     * @param length
+     *          length of the drawn line
+     * @return
+     */
 	public static algoanim.primitives.Polygon drawVerticalLine(Language lang,
 			Coordinates startPoint, int length) {
 		return getPolygon(lang,startPoint, length, true);
 	}
 
+    /**
+     * Draws a horizontal line from the given startPoint with the specified length
+     * @param lang
+     *          language object to draw on
+     * @param startPoint
+     *          starting point fo the line
+     * @param length
+     *          length of the drawn line
+     * @return
+     */
 	public static algoanim.primitives.Polygon drawHorizontalLie(Language lang,
 			Coordinates startPoint, int length) {
 		return getPolygon(lang,startPoint, length, false);
 	}
 
-	public static algoanim.primitives.Polygon getPolygon(Language lang, Coordinates startPoint,
+    /**
+     * Returns a polygon object with the given parameters
+     * @param lang
+     *          language object to draw on
+     * @param startPoint
+     *          starting point of the polygon
+     * @param length
+     *          length of the polygon
+     * @param vertical
+     *          is vertical
+     * @return
+     */
+	private static algoanim.primitives.Polygon getPolygon(Language lang, Coordinates startPoint,
 			int length, boolean vertical) {
 
 		Node[] nodes = new Node[2];

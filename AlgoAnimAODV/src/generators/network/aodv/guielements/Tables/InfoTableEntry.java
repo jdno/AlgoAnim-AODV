@@ -4,10 +4,10 @@ import algoanim.properties.RectProperties;
 import generators.network.aodv.RoutingTableEntry;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
-import generators.network.aodv.guielements.GUIPositionElement;
+import generators.network.aodv.guielements.GUIElement;
 import generators.network.aodv.guielements.GeometryToolBox;
 
-public class InfoTableEntry extends GUIPositionElement {
+public class InfoTableEntry extends GUIElement {
 
 	private TableCell nodeIDCell;
 	private TableCell destSeqCell;

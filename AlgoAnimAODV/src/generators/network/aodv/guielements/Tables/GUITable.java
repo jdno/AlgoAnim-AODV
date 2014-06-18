@@ -3,13 +3,13 @@ package generators.network.aodv.guielements.Tables;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.RectProperties;
 import algoanim.util.Coordinates;
-import generators.network.aodv.guielements.GUIPositionElement;
+import generators.network.aodv.guielements.GUIElement;
 import generators.network.aodv.guielements.GeometryToolBox;
 
 /**
  * Created by sascha on 17.06.14.
  */
-public abstract class GUITable extends GUIPositionElement {
+public abstract class GUITable extends GUIElement {
 
     protected int cellHeight;
     protected int cellWidth;
