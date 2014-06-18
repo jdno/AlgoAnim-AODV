@@ -7,6 +7,7 @@ animDesc=Beschreibung des Algorithmus
 
 infoBox=Erläuterung
 
+sendRREQ=Der aktuelle Knoten sendet das RREQ an seine Nachbarn.
 startAnimation=Animation
 startFunctionality=Funktionsweise
 startPageTitle=Routing

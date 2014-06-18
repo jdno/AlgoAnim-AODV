@@ -139,13 +139,15 @@ public class AODVNode {
                     sendMessageToNeighbor(destinationIdentifier, msg);
                 } else {
                     for (AODVNode neighbor : neighbors) {
-                        neighbor.receiveMessage(this, cachedMessage.clone());
+                        if (!neighbor.getNodeIdentifier().equals(cachedMessageSender)) {
+                            neighbor.receiveMessage(this, cachedMessage.clone());
+                            highlightEdge(neighbor);
+                        }
                     }
                 }
             } else {
                 if (!cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
                     sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
-
                 }
             }
 
@@ -204,14 +206,30 @@ public class AODVNode {
 
         if (neighbors.contains(destination)) {
             destination.receiveMessage(this, rreq.clone());
+            highlightEdge(destination);
         } else {
             for (AODVNode neighbor : neighbors) {
-                neighbor.receiveMessage(this, rreq.clone());
+                if (!neighbor.nodeIdentifier.equals(cachedMessageSender)) {
+                    neighbor.receiveMessage(this, rreq.clone());
+                    highlightEdge(neighbor);
+                }
             }
         }
 
         markCachedMessageAsRead();
+        updateInfoBox("sendRREQ");
         listener.updateInfoTable(this);
+    }
+
+    /**
+     * Highlight the edge between this node and the given neighbor.
+     *
+     * @param neighbor The neighbor to highlight the edge to
+     */
+    private void highlightEdge(AODVNode neighbor) {
+        if (listener != null) {
+            listener.highlightEgde(this, neighbor);
+        }
     }
 
     /**
@@ -268,6 +286,7 @@ public class AODVNode {
                 for (AODVNode neighbor : neighbors) {
                     if (neighbor.getNodeIdentifier().equals(entry.getNextHop())) {
                         neighbor.receiveMessage(this, message.clone());
+                        highlightEdge(neighbor);
                         messageSent = true;
                         break;
                     }
