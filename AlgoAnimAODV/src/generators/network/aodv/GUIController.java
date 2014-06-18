@@ -4,7 +4,6 @@ import algoanim.primitives.Graph;
 import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.RectProperties;
 import algoanim.properties.TextProperties;
-import generators.network.aodv.AODVNode;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.HashMap;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
-import generators.network.aodv.AODVNodeListener;
 import generators.network.aodv.guielements.GUIGraph;
 import generators.network.aodv.guielements.GeometryToolBox;
 import generators.network.aodv.guielements.InfoBox;
@@ -224,7 +222,7 @@ public class GUIController implements AODVNodeListener{
      */
     @Override
     public void highlightNode(AODVNode node) {
-        graph.unHighlightLastChange();
+        graph.unHighlightLastChanges();
         graph.highlightNode(node);
     }
 
@@ -237,7 +235,7 @@ public class GUIController implements AODVNodeListener{
      */
     @Override
     public void highlightEgde(AODVNode startNode, AODVNode endNode) {
-        graph.unHighlightLastChange();
+        graph.unHighlightLastChanges();
         graph.highlightEdge(startNode,endNode);
     }
 

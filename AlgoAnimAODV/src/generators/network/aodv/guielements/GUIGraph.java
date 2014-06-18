@@ -9,25 +9,41 @@ import algoanim.util.Node;
 import generators.network.aodv.AODVNode;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
- * Class represents a graphical GUI graph
+ * This class is a wrapper around AnimalScript's graph object. It provides several
+ * additional methods to highlight elements on the graph.
  */
 public class GUIGraph extends GUIElement{
 
+    /**
+     * The AnimalScript graph instance
+     */
     private Graph animalGraph;
-    private GraphProperties graphProperties;
-    private AODVNode lastStartNode;
-    private AODVNode lastEndNode;
 
     /**
-     * Constructor fo a GUIGraph
-     * @param lang
-     *          language object to draw the graph on
-     * @param animalGraph
-     *          animalGraph to load the GUIGraph from
-     * @param highlight
-     *          highlightColor for the graph
+     * The graph's properties
+     */
+    private GraphProperties graphProperties;
+
+    /**
+     * Used to keep track of highlighted edges
+     */
+    private ArrayList<HighlightedEdge> highlightedEdges = new ArrayList<HighlightedEdge>();
+
+    /**
+     * Used to keep track of highlighted nodes
+     */
+    private ArrayList<AODVNode> highlighedNodes = new ArrayList<AODVNode>();
+
+    /**
+     * The constructor for the graph wrapper takes the language object, the AnimalScript graph
+     * and the color which is used to highlight nodes and edges.
+     *
+     * @param lang language object to draw the graph on
+     * @param animalGraph animalGraph to load the GUIGraph from
+     * @param highlight highlightColor for the graph
      */
     public GUIGraph(Language lang, Graph animalGraph, Color highlight){
         super(lang,new Coordinates(0,0));
@@ -37,8 +53,7 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Transforms given Graph object to a new object and adding internal properties to this new Graph object
-     * @param loadedGraph
-     *             Graph to be extracted
+     * @param loadedGraph Graph to be extracted
      */
     private void transformGraph(Graph loadedGraph, Color highlight) {
         graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlight);
@@ -63,10 +78,8 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Transforms the adjacency matrix from the given graph to an matrix of an bidirectional connected graph
-     * @param loadedGraph
-     *          Graph to extract the adjacency matrix from
-     * @return
-     *      new adjacency matrix
+     * @param loadedGraph Graph to extract the adjacency matrix from
+     * @return new adjacency matrix
      */
     private int[][] transformAdjacencyMatrix(Graph loadedGraph){
         int[][] adjacencyMatrix = new int[loadedGraph.getAdjacencyMatrix().length][loadedGraph.getAdjacencyMatrix()[0].length];
@@ -83,36 +96,33 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Highlight a given AODVNode in the Graph;
-     * @param node
-     *          node to be highlighted
+     * @param node node to be highlighted
      */
     public void highlightNode(AODVNode node){
         animalGraph.highlightNode(node.getIndex(),null,null);
-        lastStartNode = node;
+        highlighedNodes.add(node);
     }
 
     /**
-     * Highlights an edge from the given startnode to the endnode
-     * @param startNode
-     *          startnode of the edge
-     * @param endNode
-     *          endnode of the edge
+     * Highlights an edge from the given start node to the end node
+     * @param startNode start node of the edge
+     * @param endNode end node of the edge
      */
     public void highlightEdge(AODVNode startNode, AODVNode endNode){
         animalGraph.highlightEdge(startNode.getIndex(),endNode.getIndex(),null,null);
-        lastStartNode = startNode;
-        lastEndNode = endNode;
+        highlightedEdges.add(new HighlightedEdge(startNode, endNode));
     }
 
     /**
      * Unhighlights the latest changes in the graph
      */
-    public void unHighlightLastChange(){
-        if (lastStartNode != null) {
-            animalGraph.unhighlightNode(lastStartNode.getIndex(), null, null);
-            if (lastEndNode != null) {
-                animalGraph.unhighlightEdge(lastStartNode.getIndex(), lastEndNode.getIndex(), null, null);
-            }
+    public void unHighlightLastChanges(){
+        for (HighlightedEdge edge: highlightedEdges) {
+            animalGraph.unhighlightEdge(edge.getStartNode().getIndex(), edge.getEndNode().getIndex(), null, null);
+        }
+
+        for (AODVNode node: highlighedNodes) {
+            animalGraph.unhighlightNode(node.getIndex(), null, null);
         }
     }
 
@@ -120,7 +130,6 @@ public class GUIGraph extends GUIElement{
      * Shows animalGraph on the screen
      */
     public void show(){animalGraph.show();}
-
 
     /**
      * Returns the internal animalGraph object
@@ -131,4 +140,47 @@ public class GUIGraph extends GUIElement{
         return animalGraph;
     }
 
+    /**
+     * This private class represents a highlighted edge. It has a start and an
+     * end node.
+     *
+     * @author Jan David
+     */
+    private class HighlightedEdge {
+
+        /**
+         * The start node of the edge
+         */
+        private AODVNode startNode;
+
+        /**
+         * The end node of the edge
+         */
+        private AODVNode endNode;
+
+        /**
+         * Highlight the edge between the given start and end nodes.
+         *
+         * @param startNode The node where the edge starts
+         * @param endNode The node where the edge ends
+         */
+        public HighlightedEdge(AODVNode startNode, AODVNode endNode) {
+            this.startNode = startNode;
+            this.endNode = endNode;
+        }
+
+        /**
+         * @return the start node
+         */
+        public AODVNode getStartNode() {
+            return startNode;
+        }
+
+        /**
+         * @return the end node
+         */
+        public AODVNode getEndNode() {
+            return endNode;
+        }
+    }
 }
