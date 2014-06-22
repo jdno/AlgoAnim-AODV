@@ -35,7 +35,7 @@ public class GUIGraph extends GUIElement{
     /**
      * Used to keep track of highlighted nodes
      */
-    private ArrayList<AODVNode> highlighedNodes = new ArrayList<AODVNode>();
+    private ArrayList<AODVNode> highlightedNodes = new ArrayList<AODVNode>();
 
     /**
      * The constructor for the graph wrapper takes the language object, the AnimalScript graph
@@ -100,7 +100,7 @@ public class GUIGraph extends GUIElement{
      */
     public void highlightNode(AODVNode node){
         animalGraph.highlightNode(node.getIndex(),null,null);
-        highlighedNodes.add(node);
+        highlightedNodes.add(node);
     }
 
     /**
@@ -121,7 +121,7 @@ public class GUIGraph extends GUIElement{
             animalGraph.unhighlightEdge(edge.getStartNode().getIndex(), edge.getEndNode().getIndex(), null, null);
         }
 
-        for (AODVNode node: highlighedNodes) {
+        for (AODVNode node: highlightedNodes) {
             animalGraph.unhighlightNode(node.getIndex(), null, null);
         }
     }
