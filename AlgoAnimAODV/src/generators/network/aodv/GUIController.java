@@ -222,7 +222,6 @@ public class GUIController implements AODVNodeListener{
      */
     @Override
     public void highlightNode(AODVNode node) {
-        graph.unHighlightLastChanges();
         graph.highlightNode(node);
     }
 
@@ -235,8 +234,15 @@ public class GUIController implements AODVNodeListener{
      */
     @Override
     public void highlightEgde(AODVNode startNode, AODVNode endNode) {
-        graph.unHighlightLastChanges();
         graph.highlightEdge(startNode,endNode);
+    }
+
+    /**
+     * Reset all highlights on the graph.
+     */
+    @Override
+    public void unhighlightAll() {
+        graph.unHighlightLastChanges();
     }
 
     /**

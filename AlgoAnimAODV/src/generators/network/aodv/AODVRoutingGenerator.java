@@ -93,6 +93,7 @@ public class AODVRoutingGenerator implements Generator {
             }
 
             for(AODVNode node : workingNodes) {
+                controller.unhighlightAll();
                 node.process();
                 lang.nextStep();
             }

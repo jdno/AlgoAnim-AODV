@@ -22,6 +22,11 @@ public interface AODVNodeListener {
     public void highlightEgde(AODVNode startNode,AODVNode endNode);
 
     /**
+     * Reset all highlights on the graph.
+     */
+    public void unhighlightAll();
+
+    /**
      * Updates the InfoTable for the given AODVNode
      * @param node
      *          Node for which the table needs to be updated
