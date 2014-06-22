@@ -137,6 +137,7 @@ public class AODVNode {
                     AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
                     sendMessageToNeighbor(destinationIdentifier, msg);
+                    updateInfoBox("sendRREP");
                 } else {
                     for (AODVNode neighbor : neighbors) {
                         if (!neighbor.getNodeIdentifier().equals(cachedMessageSender)) {
@@ -148,6 +149,7 @@ public class AODVNode {
             } else {
                 if (!cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
                     sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
+                    updateInfoBox("sendRREP");
                 }
             }
 
