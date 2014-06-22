@@ -65,6 +65,7 @@ public class AODVRoutingGenerator implements Generator {
                 destinationNode = aodvGraph.getNode(routeDiscoveries[i+1]);
                 if (startNode != null && destinationNode != null) {
                     startAodvRouting(startNode, destinationNode);
+                    controller.unhighlightAll();
                 }
             }
         }
