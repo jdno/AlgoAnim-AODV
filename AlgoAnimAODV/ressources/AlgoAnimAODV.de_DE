@@ -1,8 +1,7 @@
 algoDesc=AODV ist ein reaktiver Routingalgorithmus für mobile Ad-hoc Netze.
 aodvAnimation=Die Animation zeigt...
 aodvFunc=AODV ist ein reaktiver Routingalgorithmus, der bei Bedarf Routen in Mobilen Netzen berechnet.
-algoName=Ad-hoc Optimized Vector Routing
-algoTitle=Ad-hoc Optimized Vector Routing
+algoName=Ad-hoc On-demand Distance Vector Routing
 animDesc=Beschreibung des Algorithmus
 
 infoBox=Erläuterung

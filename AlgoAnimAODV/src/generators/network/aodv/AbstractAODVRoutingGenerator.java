@@ -106,7 +106,7 @@ public class AbstractAODVRoutingGenerator {
 
 
     public String getName() {
-        return translator.translateMessage("algoTitle");
+        return translator.translateMessage("algoName");
     }
 
     public String getAlgorithmName() {
@@ -134,7 +134,7 @@ public class AbstractAODVRoutingGenerator {
     }
 
     public GeneratorType getGeneratorType() {
-        return new GeneratorType(GeneratorType.GENERATOR_TYPE_MORE);
+        return new GeneratorType(GeneratorType.GENERATOR_TYPE_NETWORK);
     }
 
     public String getOutputLanguage() {
