@@ -1,0 +1,17 @@
+algoDesc=AODV ist ein reaktiver Routingalgorithmus für mobile Ad-hoc Netze.
+aodvAnimation=Die Animation zeigt...
+aodvFunc=AODV ist ein reaktiver Routingalgorithmus, der bei Bedarf Routen in Mobilen Netzen berechnet.
+algoName=Ad-hoc Optimized Vector Routing
+algoTitle=Ad-hoc Optimized Vector Routing
+animDesc=Beschreibung des Algorithmus
+
+infoBox=Erläuterung
+
+sendRREP=Der aktuelle Knoten leitet die RREP zum Ziel basierend auf dem Next Hop in seiner Routing Table weiter.
+sendRREQ=Der aktuelle Knoten erhöht den Hop Count des RREQ, bevor er es an seine Nachbarn weiterleitet.
+startAnimation=Animation
+startFunctionality=Funktionsweise
+startPageTitle=Routing
+startRouteDiscovery=Der Startknoten beginnt die Route Discovery, wenn er in seine Routing Table keine Route zum Ziel findet. Dann erhöht er erst seine eigene Sequence Number um eins, und sendet ein Route Request (RREQ) als Broadcast.
+startRouteReply=Der Zielknote antwortet auf das Route Request (RREQ) mit einem Route Reply (RREQ). Hierfür erhöht er seine eigene Sequence Number um eins, und schickt die Nachricht an den Next Hop auf dem Weg zum Startknoten.
+statTableTitle=Statistiken
