@@ -16,6 +16,7 @@ import generators.network.aodv.guielements.GeometryToolBox;
 import generators.network.aodv.guielements.InfoBox;
 import generators.network.aodv.guielements.Tables.InfoTable;
 import generators.network.aodv.guielements.Tables.StatisticTable;
+import generators.network.aodv.guielements.TextToolBox;
 import translator.Translator;
 
 public class GUIController implements AODVNodeListener{
@@ -147,17 +148,26 @@ public class GUIController implements AODVNodeListener{
                 Font.SANS_SERIF, Font.PLAIN, 20));
         title.set(AnimationPropertiesKeys.COLOR_PROPERTY,Color.ORANGE);
 
+        TextProperties text = new TextProperties();
 
-        lang.newText(new Coordinates(50,30),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
 
-        lang.newText(new Coordinates(50,50),translator.translateMessage("algoTitle"),"algoTitle",null,title);
-        lang.newText(new Coordinates(50,70),translator.translateMessage("animDesc"),"Description",null);
+        /*lang.newText(new Coordinates(50,30),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
+        lang.newText(new Coordinates(50,60),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
+        lang.newText(new Coordinates(50,90),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
+        lang.newText(new Coordinates(50,120),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
+        lang.newText(new Coordinates(50,150),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);*/
 
-        lang.newText(new Coordinates(50,200),translator.translateMessage("startFunctionality"),"startF",null,title);
-        lang.newText(new Coordinates(50,220),translator.translateMessage("aodvFunc"),"Description",null);
 
-        lang.newText(new Coordinates(50,400),translator.translateMessage("startAnimation"),"startA",null,title);
-        lang.newText(new Coordinates(50,420),translator.translateMessage("aodvAnimation"),"Animation",null);
+        String[][] textElements = new String[][]{{"algoName","animDesc"},{"startFunctionality","aodvFunc"},{"startAnimation","aodvAnimation"}};
+
+        int startCoordinates = 20;
+        int endOfText =  startCoordinates;
+        int distanceTitleToText = 20;
+        for (String[] currentText: textElements){
+            lang.newText(new Coordinates(50,endOfText+40),translator.translateMessage(currentText[0]),"algoName",null,title);
+            endOfText = TextToolBox.multipleTextLines(lang, new Coordinates(50, endOfText+distanceTitleToText+40), translator.translateMessage(currentText[1]), text, 100);
+        }
+
         lang.nextStep();
     }
 

@@ -2,8 +2,11 @@ package generators.network.aodv.guielements;
 
 import algoanim.exceptions.NotEnoughNodesException;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
+
+import java.util.StringTokenizer;
 
 /**
  * This class provides some basic geometry functionality for processing GUI elements
@@ -82,9 +85,9 @@ public class GeometryToolBox {
 	 * Moves the given point by x and y in the 2-dimensional space
 	 * @param point
 	 * 			the point to be moved
-	 * @param x
+	 * @param moveX
 	 * 			the amount of movement in the x-direction
-	 * @param y
+	 * @param moveY
 	 * 			the amount of movement in the y-direction
 	 * @return
 	 * 			moved coordinate
@@ -92,6 +95,7 @@ public class GeometryToolBox {
 	public static Coordinates moveCoordinate(Coordinates point, int moveX, int moveY) {
 		return new Coordinates(point.getX() + moveX, point.getY() + moveY);
 	}
+
 	
 	
 }
