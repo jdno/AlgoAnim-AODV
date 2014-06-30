@@ -41,10 +41,10 @@ public class AbstractAODVRoutingGenerator {
         Graph loadedGraph = (Graph) primitives.get("graph");
         routeDiscoveries = (String[]) primitives.get("StartandEndnodes");
 
-        RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
 
 
-        controller = new GUIController(lang,loadedGraph,translator,cellHighlight);
+
+        controller = new GUIController(lang,loadedGraph,translator,props);
 
         controller.drawStartPage();
         controller.hideStartPage();

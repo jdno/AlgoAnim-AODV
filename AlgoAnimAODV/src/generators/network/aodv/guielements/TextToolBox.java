@@ -14,7 +14,7 @@ public class TextToolBox {
     public static int multipleTextLines(Language lang, Coordinates startPoint, String text, TextProperties props, int lengthOfLine) {
         if (text.length() <= lengthOfLine) {
             System.out.println(lang == null);
-            lang.newText(startPoint, text, "text", null, props);
+            lang.newText(startPoint, text, "text", null);
         } else {
             int charCounter = 0;
             int line = 0;
@@ -28,14 +28,15 @@ public class TextToolBox {
                     charCounter += strBuffer.length() - before;
                 } else {
                     charCounter = 0;
-                    lang.newText(GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line), strBuffer.toString(), "text", null, props);
+                    lang.newText(GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line), strBuffer.toString(), "text", null,props);
                     strBuffer = new StringBuffer();
                     line++;
+
                 }
 
             }
             if (strBuffer.length() != 0) {
-                lang.newText(GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line), strBuffer.toString(), "text", null, props);
+                lang.newText(GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line), strBuffer.toString(), "text", null,props);
             }
             return GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line).getY();
         }

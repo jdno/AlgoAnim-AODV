@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
+import generators.framework.properties.AnimationPropertiesContainer;
 import generators.network.aodv.guielements.GUIGraph;
 import generators.network.aodv.guielements.GeometryToolBox;
 import generators.network.aodv.guielements.InfoBox;
@@ -40,6 +41,7 @@ public class GUIController implements AODVNodeListener{
 	private final Coordinates tableStartingPont = new Coordinates(500, 20);
     private final Coordinates statisticTableStartingPoint = new Coordinates(500,400);
 	private final int distanceBetweenTables = 30;
+    private final AnimationPropertiesContainer props;
 
     /**
      * GUI Elements
@@ -61,16 +63,16 @@ public class GUIController implements AODVNodeListener{
      *          from animal loaded graph object
      * @param translator
      *          translator instance to translate strings for the GUI
-     * @param rectProps
-     *          properties for the TableCells
+     * @param props
+     *          properties for the GUI elements
      */
-	public GUIController(Language language, Graph animalGraph,Translator translator,RectProperties rectProps) {
+	public GUIController(Language language, Graph animalGraph,Translator translator,AnimationPropertiesContainer props) {
 		lang = language;
 		tables = new HashMap<AODVNode, InfoTable>();
 		lastUpdated = new ArrayList<InfoTable>();
         graph = new GUIGraph(lang,animalGraph,Color.ORANGE);
         this.translator = translator;
-        this.highlightCellProps = rectProps;
+        this.props = props;
 	}
 
     /**
@@ -93,12 +95,14 @@ public class GUIController implements AODVNodeListener{
 		 */
 		int numOfTablesX = (int) Math.round((nodes.size() + 0.5) / 2);
 
+        RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
+
 		/**
 		 * Draw initial table in order to get the width and height for the
 		 * following tables
 		 */
 		InfoTable table = new InfoTable(lang, this, nodes.get(0),
-				tableStartingPont, nodes.size(), highlightCellProps);
+				tableStartingPont, nodes.size(), cellHighlight);
 		int offsetX = distanceBetweenTables + table.getWidth();
 		int offsetY = distanceBetweenTables + table.getHeight();
 
@@ -106,7 +110,7 @@ public class GUIController implements AODVNodeListener{
 			table = new InfoTable(lang, this, nodes.get(i),
 					(GeometryToolBox.moveCoordinate(tableStartingPont, i
                             % numOfTablesX * offsetX, i / numOfTablesX
-                            * offsetY)), nodes.size(), highlightCellProps);
+                            * offsetY)), nodes.size(), cellHighlight);
 			tables.put(nodes.get(i), table);
 		}
 
@@ -118,7 +122,8 @@ public class GUIController implements AODVNodeListener{
      *          title for the Statistic to draw
      */
     public void drawStatisticTable(String title){
-        statTable = new StatisticTable(lang,statisticTableStartingPoint, title, highlightCellProps);
+        RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
+        statTable = new StatisticTable(lang,statisticTableStartingPoint, title, cellHighlight);
     }
 
 
@@ -138,24 +143,15 @@ public class GUIController implements AODVNodeListener{
      * Displays the startPage with description of the algorithm
      */
     public void drawStartPage(){
-        TextProperties bigTitle = new TextProperties();
+
+        TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
+
+        TextProperties bigTitle = title;
         bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
                 Font.SANS_SERIF, Font.PLAIN, 25));
-        bigTitle.set(AnimationPropertiesKeys.COLOR_PROPERTY,Color.ORANGE);
 
-        TextProperties title = new TextProperties();
-        title.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
-                Font.SANS_SERIF, Font.PLAIN, 20));
-        title.set(AnimationPropertiesKeys.COLOR_PROPERTY,Color.ORANGE);
+        TextProperties text = (TextProperties) props.getPropertiesByName("DescriptionText");
 
-        TextProperties text = new TextProperties();
-
-
-        /*lang.newText(new Coordinates(50,30),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
-        lang.newText(new Coordinates(50,60),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
-        lang.newText(new Coordinates(50,90),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
-        lang.newText(new Coordinates(50,120),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);
-        lang.newText(new Coordinates(50,150),translator.translateMessage("startPageTitle"),"startTitle",null,bigTitle);*/
 
 
         String[][] textElements = new String[][]{{"algoName","animDesc"},{"startFunctionality","aodvFunc"},{"startAnimation","aodvAnimation"}};
