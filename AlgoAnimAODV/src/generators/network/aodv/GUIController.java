@@ -173,6 +173,38 @@ public class GUIController implements AODVNodeListener{
         lang.nextStep();
     }
 
+
+    /**
+     * Displays the startPage with description of the algorithm
+     */
+    public void drawEndPage(){
+
+        lang.hideAllPrimitives();
+
+        TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
+
+        TextProperties bigTitle = title;
+        bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
+                Font.SANS_SERIF, Font.PLAIN, 25));
+
+        TextProperties text = (TextProperties) props.getPropertiesByName("DescriptionText");
+
+
+        String[][] textElements = new String[][]{{"algoComplexTitle","algoComplexity"}};
+
+        int startCoordinates = 20;
+        int endOfText =  startCoordinates;
+        int distanceTitleToText = 20;
+        for (String[] currentText: textElements){
+            lang.newText(new Coordinates(50,endOfText+40),translator.translateMessage(currentText[0]),"algoName",null,title);
+            endOfText = TextToolBox.multipleTextLines(lang, new Coordinates(50, endOfText+distanceTitleToText+40), translator.translateMessage(currentText[1]), text, 100);
+        }
+        lang.nextStep();
+    }
+
+
+
+
     /**
      * Hides the start page
      */

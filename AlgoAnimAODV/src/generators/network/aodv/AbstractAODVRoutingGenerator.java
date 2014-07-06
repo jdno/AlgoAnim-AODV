@@ -3,7 +3,6 @@ package generators.network.aodv;
 import algoanim.animalscript.AnimalScript;
 import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
-import algoanim.properties.RectProperties;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
@@ -42,8 +41,6 @@ public class AbstractAODVRoutingGenerator {
         routeDiscoveries = (String[][]) primitives.get("StartandEndnodes");
 
 
-
-
         controller = new GUIController(lang,loadedGraph,translator,props);
 
         controller.drawStartPage();
@@ -76,6 +73,9 @@ public class AbstractAODVRoutingGenerator {
             }
         }
 
+
+        controller.drawEndPage();
+
         return lang.toString();
     }
 
@@ -106,6 +106,8 @@ public class AbstractAODVRoutingGenerator {
             }
         }
     }
+
+
 
 
 
