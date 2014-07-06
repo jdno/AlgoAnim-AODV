@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.RectProperties;
 import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 
@@ -23,15 +24,11 @@ public class InfoBox extends GUIElement{
 	private ArrayList<Text> textLines;
 
 	public InfoBox(Language lang, String title, Coordinates upperLeft,
-			Coordinates lowerRight) {
+			Coordinates lowerRight, TextProperties textProps, RectProperties rectProps) {
     super(lang,upperLeft);
-		TextProperties textProps = new TextProperties();
-
-		// textProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
-		// "Monospaced", Font.PLAIN, 12));
 		lang.newText(upperLeft, title, "Title", null, textProps);
 		lang.newRect(GeometryToolBox.moveCoordinate(upperLeft, 0, 20),
-				lowerRight, "InfoBox", null);
+				lowerRight, "InfoBox", null, rectProps);
 		this.textLines = new ArrayList<Text>();
 		for (int i = 0; i < 5; i++) {
 			textLines.add(lang.newText(

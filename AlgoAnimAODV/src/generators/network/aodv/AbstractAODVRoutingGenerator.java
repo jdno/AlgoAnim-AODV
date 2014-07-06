@@ -17,7 +17,7 @@ public class AbstractAODVRoutingGenerator {
     private Language lang;
     private GUIController controller;
     private AODVGraph aodvGraph;
-    private String[] routeDiscoveries;
+    private String[][] routeDiscoveries;
     private Translator translator;
     private Locale locale;
 
@@ -39,7 +39,7 @@ public class AbstractAODVRoutingGenerator {
         lang.setStepMode(true);
 
         Graph loadedGraph = (Graph) primitives.get("graph");
-        routeDiscoveries = (String[]) primitives.get("StartandEndnodes");
+        routeDiscoveries = (String[][]) primitives.get("StartandEndnodes");
 
 
 
@@ -62,12 +62,16 @@ public class AbstractAODVRoutingGenerator {
         if (routeDiscoveries.length % 2 != 0) {
             System.err.println("Start and end nodes not properly declared");
         } else {
-            for (int i = 0; i < routeDiscoveries.length; i = i +2){
-                startNode = aodvGraph.getNode(routeDiscoveries[i]);
-                destinationNode = aodvGraph.getNode(routeDiscoveries[i+1]);
-                if (startNode != null && destinationNode != null) {
-                    startAodvRouting(startNode, destinationNode);
-                    controller.unhighlightAll();
+            for (String[] startEndNodes : routeDiscoveries){
+                if (startEndNodes.length != 2 ){
+                    System.err.println("Start and end nodes not properly declared");
+                } else {
+                    startNode = aodvGraph.getNode(startEndNodes[0]);
+                    destinationNode = aodvGraph.getNode(startEndNodes[1]);
+                    if (startNode != null && destinationNode != null) {
+                        startAodvRouting(startNode, destinationNode);
+                        controller.unhighlightAll();
+                    }
                 }
             }
         }

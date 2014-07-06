@@ -43,22 +43,19 @@ public class GUIGraph extends GUIElement{
      *
      * @param lang language object to draw the graph on
      * @param animalGraph animalGraph to load the GUIGraph from
-     * @param highlight highlightColor for the graph
+     * @param graphProperties proerties for the graph object
      */
-    public GUIGraph(Language lang, Graph animalGraph, Color highlight){
+    public GUIGraph(Language lang, Graph animalGraph, GraphProperties graphProperties){
         super(lang,new Coordinates(0,0));
-        this.graphProperties = new GraphProperties();
-        transformGraph(animalGraph,highlight);
+        this.graphProperties = graphProperties;
+        transformGraph(animalGraph);
     }
 
     /**
      * Transforms given Graph object to a new object and adding internal properties to this new Graph object
      * @param loadedGraph Graph to be extracted
      */
-    private void transformGraph(Graph loadedGraph, Color highlight) {
-        graphProperties.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, highlight);
-        graphProperties.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
-        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY, true);
+    private void transformGraph(Graph loadedGraph) {
 
         String[] graphLabels;
         /**
@@ -72,6 +69,8 @@ public class GUIGraph extends GUIElement{
             graphLabels[i] = loadedGraph.getNodeLabel(nodes[i]);
         }
 
+        // even if the directed porperty is set in the XML file, graph is not directed, therefore force it to true
+        graphProperties.set(AnimationPropertiesKeys.DIRECTED_PROPERTY,true);
         animalGraph = lang.newGraph("Graph", transformAdjacencyMatrix(loadedGraph), nodes, graphLabels, null, graphProperties);
         animalGraph.hide();
     }

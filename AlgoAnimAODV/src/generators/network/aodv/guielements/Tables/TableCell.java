@@ -13,7 +13,6 @@ public class TableCell extends GUIElement {
 	private Text entry;
 	private final Rect highlightBox;
     private static RectProperties boxProperties;
-	
 
 	
 	public TableCell(Language lang, String text, Coordinates position, int width, int height, RectProperties rectProps){

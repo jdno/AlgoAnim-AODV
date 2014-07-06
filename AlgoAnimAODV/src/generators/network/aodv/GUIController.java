@@ -2,6 +2,7 @@ package generators.network.aodv;
 
 import algoanim.primitives.Graph;
 import algoanim.properties.AnimationPropertiesKeys;
+import algoanim.properties.GraphProperties;
 import algoanim.properties.RectProperties;
 import algoanim.properties.TextProperties;
 
@@ -70,7 +71,10 @@ public class GUIController implements AODVNodeListener{
 		lang = language;
 		tables = new HashMap<AODVNode, InfoTable>();
 		lastUpdated = new ArrayList<InfoTable>();
-        graph = new GUIGraph(lang,animalGraph,Color.ORANGE);
+
+        GraphProperties graphProps = (GraphProperties) props.getPropertiesByName("GraphProperties");
+
+        graph = new GUIGraph(lang,animalGraph,graphProps);
         this.translator = translator;
         this.props = props;
 	}
@@ -133,8 +137,10 @@ public class GUIController implements AODVNodeListener{
      *          title for the InfoBox
      */
 	public void drawInfoBox(String title) {
+        TextProperties textProps = (TextProperties) props.getPropertiesByName("InfoBoxText");
+        RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("BackgroundColor");
 		info = new InfoBox(lang, title, infoBoxUpperLeft,
-				infoBoxLowerRight);
+				infoBoxLowerRight,textProps,cellHighlight);
 	}
 
 
