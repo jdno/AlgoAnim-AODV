@@ -251,16 +251,12 @@ public class GUIController implements AODVNodeListener{
     }
 
     /**
-     * Updates the InfoTable for the given AODVNode
-     * @param node
-     *          Node for which the table needs to be updated
+     * Returns the current instance of Translator
+     * @return The current instance of Translator
      */
     @Override
-    public void updateInfoTable(AODVNode node) {
-        if (tables.get(node) != null) {
-            tables.get(node).updateTable();
-            statTable.updateStatisticTable();
-        }
+    public Translator getTranslator() {
+        return translator;
     }
 
     /**
@@ -285,12 +281,35 @@ public class GUIController implements AODVNodeListener{
         graph.highlightEdge(startNode,endNode);
     }
 
+    @Override
+    public void nextStep() {
+        lang.nextStep();
+    }
+
+    @Override
+    public void nextStep(String label) {
+        lang.nextStep();
+    }
+
     /**
      * Reset all highlights on the graph.
      */
     @Override
     public void unhighlightAll() {
         graph.unHighlightLastChanges();
+    }
+
+    /**
+     * Updates the InfoTable for the given AODVNode
+     * @param node
+     *          Node for which the table needs to be updated
+     */
+    @Override
+    public void updateInfoTable(AODVNode node) {
+        if (tables.get(node) != null) {
+            tables.get(node).updateTable();
+            statTable.updateStatisticTable();
+        }
     }
 
     /**
