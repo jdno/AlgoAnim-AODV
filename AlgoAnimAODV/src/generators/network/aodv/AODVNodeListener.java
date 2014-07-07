@@ -1,9 +1,17 @@
 package generators.network.aodv;
 
+import translator.Translator;
+
 /**
  * Interface to use whenever an AODVNode needs to update the GUI
  */
 public interface AODVNodeListener {
+
+    /**
+     * Return the current instance of Translator
+     * @return The current instance of Translator
+     */
+    public Translator getTranslator();
 
     /**
      * Highlights the given AODVNode on the screen
@@ -20,6 +28,17 @@ public interface AODVNodeListener {
      *          node to which the edge leads
      */
     public void highlightEgde(AODVNode startNode,AODVNode endNode);
+
+    /**
+     * Tell the language object to insert a new step.
+     */
+    public void nextStep();
+
+    /**
+     * Tell the language object to insert a new step, and set the given label.
+     * @param label The label for the current step
+     */
+    public void nextStep(String label);
 
     /**
      * Reset all highlights on the graph.
