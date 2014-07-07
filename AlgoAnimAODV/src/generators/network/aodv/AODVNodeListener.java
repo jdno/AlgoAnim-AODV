@@ -36,6 +36,9 @@ public interface AODVNodeListener {
 
     /**
      * Tell the language object to insert a new step, and set the given label.
+     *
+     * <b>CAUTION</b> The label will NOT be translated!
+     *
      * @param label The label for the current step
      */
     public void nextStep(String label);
@@ -53,10 +56,11 @@ public interface AODVNodeListener {
     public void updateInfoTable(AODVNode node);
 
     /**
-     * Updates the InfoBox with the text for the given message identifier.
-     * The message identifier must match a string in the localization file.
+     * Updates the InfoBox with the given message.
      *
-     * @param messageId The identifier of the message
+     * <b>CAUTION</b> The message will NOT be translated!
+     *
+     * @param message The message to print
      */
-    public void updateInfoText(String messageId);
+    public void updateInfoText(String message);
 }

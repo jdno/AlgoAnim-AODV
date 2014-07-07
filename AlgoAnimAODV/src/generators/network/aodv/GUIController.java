@@ -322,13 +322,14 @@ public class GUIController implements AODVNodeListener{
     }
 
     /**
-     * Updates the InfoBox with the text for the given message identifier.
-     * The message identifier must match a string in the localization file.
+     * Updates the InfoBox with the given message.
      *
-     * @param messageId The identifier of the message
+     * <b>CAUTION</b> The message will NOT be translated!
+     *
+     * @param message The message to print
      */
     @Override
-    public void updateInfoText(String messageId) {
-        updateInfoBoxText(translator.translateMessage(messageId));
+    public void updateInfoText(String message) {
+        updateInfoBoxText(message);
     }
 }
