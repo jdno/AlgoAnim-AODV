@@ -43,7 +43,7 @@ public class InfoTable extends GUITable {
 	private void initContent() {
 		drawTitles(numOFNodes+1);
 		for (int row = 0; row < numOFNodes; row++) {
-			tableEntries.add(new InfoTableEntry(lang, currentLine,
+			tableEntries.add(new InfoTableEntry(lang, currentLine, ownNode.getRoutingTable().get(row),
                     cellWidth, cellHeight, highlight));
 			nextLine();
 		}
@@ -83,9 +83,6 @@ public class InfoTable extends GUITable {
 		}
 	}
 
-	public AODVNode getAODVNode() {
-		return ownNode;
-	}
 
 	public int getHeight() {
 		return height;

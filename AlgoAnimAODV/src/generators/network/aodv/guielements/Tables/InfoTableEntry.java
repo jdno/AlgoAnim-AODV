@@ -1,6 +1,7 @@
 package generators.network.aodv.guielements.Tables;
 
 import algoanim.properties.RectProperties;
+import generators.network.aodv.AODVNode;
 import generators.network.aodv.RoutingTableEntry;
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
@@ -14,18 +15,19 @@ public class InfoTableEntry extends GUIElement {
 	private TableCell hopCountCell;
 	private TableCell nextHopCell;
 
-	public InfoTableEntry(Language lang, Coordinates position,
+	public InfoTableEntry(Language lang, Coordinates position, RoutingTableEntry entry,
 			int coloumnWidth, int rowHeight, RectProperties highlight) {
 		super(lang, position);
-		this.nodeIDCell = new TableCell(lang, "-", position,
+
+		this.nodeIDCell = new TableCell(lang, entry.getIdentifier(), position,
 				coloumnWidth, rowHeight,highlight);
-		this.destSeqCell = new TableCell(lang, "-",
+		this.destSeqCell = new TableCell(lang, Integer.toString(entry.getDestinationSequence()),
 				GeometryToolBox.moveCoordinate(position, coloumnWidth, 0),
 				coloumnWidth, rowHeight,highlight);
-		this.hopCountCell = new TableCell(lang, "-",
+		this.hopCountCell = new TableCell(lang, "inf",
 				GeometryToolBox.moveCoordinate(position, coloumnWidth * 2, 0),
 				coloumnWidth, rowHeight,highlight);
-		this.nextHopCell = new TableCell(lang, "-",
+		this.nextHopCell = new TableCell(lang, entry.getNextHop(),
 				GeometryToolBox.moveCoordinate(position, coloumnWidth * 3, 0),
 				coloumnWidth, rowHeight,highlight);
 	}

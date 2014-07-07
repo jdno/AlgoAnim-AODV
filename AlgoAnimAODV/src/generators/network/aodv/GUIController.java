@@ -9,6 +9,8 @@ import algoanim.properties.TextProperties;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import algoanim.primitives.generators.Language;
 import algoanim.util.Coordinates;
@@ -107,16 +109,18 @@ public class GUIController implements AODVNodeListener{
 		 */
 		InfoTable table = new InfoTable(lang, this, nodes.get(0),
 				tableStartingPont, nodes.size(), cellHighlight);
+
 		int offsetX = distanceBetweenTables + table.getWidth();
 		int offsetY = distanceBetweenTables + table.getHeight();
 
 		for (int i = 1; i < nodes.size(); i++) {
-			table = new InfoTable(lang, this, nodes.get(i),
-					(GeometryToolBox.moveCoordinate(tableStartingPont, i
+            table = new InfoTable(lang, this, nodes.get(i),
+                    (GeometryToolBox.moveCoordinate(tableStartingPont, i
                             % numOfTablesX * offsetX, i / numOfTablesX
                             * offsetY)), nodes.size(), cellHighlight);
-			tables.put(nodes.get(i), table);
-		}
+            tables.put(nodes.get(i), table);
+
+        }
 
 	}
 
@@ -217,6 +221,11 @@ public class GUIController implements AODVNodeListener{
         lang.nextStep();
     }
 
+    /**
+     * Updates the Text in the InfoBox
+     * @param update
+     *          Text to be displayed in the InfoBox
+     */
     public void updateInfoBoxText(String update) {
         info.updateText(update);
     }
