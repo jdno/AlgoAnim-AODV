@@ -150,6 +150,8 @@ public class GUIController implements AODVNodeListener{
      */
     public void drawStartPage(){
 
+        lang.nextStep("StartPage");
+
         TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
 
         TextProperties bigTitle = title;
@@ -175,11 +177,13 @@ public class GUIController implements AODVNodeListener{
 
 
     /**
-     * Displays the startPage with description of the algorithm
+     * Displays the end page with the complexity information of the algorithm
      */
     public void drawEndPage(){
 
         lang.hideAllPrimitives();
+
+        lang.nextStep(translator.translateMessage("algoComplexTitle"));
 
         TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
 
