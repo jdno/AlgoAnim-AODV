@@ -14,7 +14,7 @@ public class TextToolBox {
     public static int multipleTextLines(Language lang, Coordinates startPoint, String text, TextProperties props, int lengthOfLine) {
         if (text.length() <= lengthOfLine) {
             System.out.println(lang == null);
-            lang.newText(startPoint, text, "text", null);
+
         } else {
             int charCounter = 0;
             int line = 0;
