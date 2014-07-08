@@ -218,7 +218,6 @@ public class GUIController implements AODVNodeListener{
      */
     public void hideStartPage(){
         lang.hideAllPrimitives();
-        lang.nextStep();
     }
 
     /**
@@ -290,14 +289,24 @@ public class GUIController implements AODVNodeListener{
         graph.highlightEdge(startNode,endNode);
     }
 
+    /**
+     * Tell the language object to insert a new step.
+     */
     @Override
     public void nextStep() {
         lang.nextStep();
     }
 
+    /**
+     * Tell the language object to insert a new step, and set the given label.
+     *
+     * <b>CAUTION</b> The label will NOT be translated!
+     *
+     * @param label The label for the current step
+     */
     @Override
     public void nextStep(String label) {
-        lang.nextStep();
+        lang.nextStep(label);
     }
 
     /**
