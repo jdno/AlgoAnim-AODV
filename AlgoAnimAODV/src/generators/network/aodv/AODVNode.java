@@ -153,6 +153,7 @@ public class AODVNode {
                 }
             }
 
+            cachedMessageSender = "";
             cachedMessage = null;
         }
     }
