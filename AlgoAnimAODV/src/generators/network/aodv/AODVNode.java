@@ -2,6 +2,7 @@ package generators.network.aodv;
 
 import generators.network.aodv.AODVMessage.MessageType;
 import generators.network.aodv.animal.Statistics;
+import translator.Translator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +69,11 @@ public class AODVNode {
     private Statistics stats = Statistics.sharedInstance();
 
     /**
+     * The translator for this project
+     */
+    private Translator translator;
+
+    /**
      * Create a new AODV node with the given node identifier.
      *
      * @param nodeIdentifier The node's identifier
@@ -87,6 +93,7 @@ public class AODVNode {
         this.nodeIdentifier = nodeIdentifier;
         this.index = index;
         this.listener = listener;
+        this.translator = listener.getTranslator();
     }
 
     /**
@@ -119,7 +126,6 @@ public class AODVNode {
      * Process the currently cached message.
      */
     public void process() {
-        // TODO visualize sending of message
         if (cachedMessage != null) {
             highlightNode();
 
@@ -137,7 +143,7 @@ public class AODVNode {
                     AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
                     sendMessageToNeighbor(destinationIdentifier, msg);
-                    updateInfoBox("sendRREP");
+                    updateInfoBox(generateText("sendRREP", null));
                 } else {
                     for (AODVNode neighbor : neighbors) {
                         if (!neighbor.getNodeIdentifier().equals(cachedMessageSender)) {
@@ -145,14 +151,18 @@ public class AODVNode {
                             highlightEdge(neighbor);
                         }
                     }
+                    updateInfoBox(generateText("forwardRREQ", null));
                 }
             } else {
                 if (!cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
                     sendMessageToNeighbor(cachedMessage.getDestinationIdentifier(), cachedMessage);
-                    updateInfoBox("sendRREP");
+                    updateInfoBox(generateText("forwardRREP", null));
+                } else {
+                    updateInfoBox(generateText("receiveRREP", null));
                 }
             }
 
+            cachedMessageSender = "";
             cachedMessage = null;
         }
     }
@@ -179,8 +189,10 @@ public class AODVNode {
      * @param destination The destination for the Route Discovery
      */
     public void startRouteDiscovery(AODVNode destination) {
-        updateInfoBox("startRouteDiscovery");
+        nextStep(generateText("startLabel", new String[]{nodeIdentifier, destination.nodeIdentifier}));
+        updateInfoBox(generateText("startRouteDiscovery", new String[]{destination.getNodeIdentifier()}));
         highlightNode();
+        nextStep();
 
         int identifier = ++originatorSequence;
         String destinationIdentifier = destination.nodeIdentifier;
@@ -219,8 +231,54 @@ public class AODVNode {
         }
 
         markCachedMessageAsRead();
-        updateInfoBox("sendRREQ");
+        updateInfoBox(generateText("sendRREQ", null));
         listener.updateInfoTable(this);
+    }
+
+    /**
+     * This method is used to generate the text for the InfoBox.
+     * @param key The key by which the requested text is identified
+     * @param params The optional parameters for the text
+     * @return A string for the InfoBox
+     */
+    private String generateText(String key, String[] params) {
+        if (key.equals("forwardRREP")) {
+            return translator.translateMessage("node") +
+                    " " + nodeIdentifier + " " +
+                    translator.translateMessage("forwardRREP");
+        } else if (key.equals("forwardRREQ")) {
+            return translator.translateMessage("node") +
+                    " " + nodeIdentifier + " " +
+                    translator.translateMessage("forwardRREQ");
+        } else if (key.equals("receiveRREP")) {
+            return translator.translateMessage("receiveRREP");
+        } else if (key.equals("sendRREP")) {
+            return translator.translateMessage("sendRREP");
+        } else if (key.equals("sendRREQ")) {
+            return translator.translateMessage("sendRREQ");
+        } else if (key.equals("startLabel")) {
+            if (params != null && params.length == 2) {
+                return params[0] + " " + translator.translateMessage("to") + " " + params[1];
+            } else {
+                return nodeIdentifier + " -> ?";
+            }
+        } else if (key.equals("startRouteDiscovery")) {
+            String str = translator.translateMessage("startRouteDiscovery1") +
+                            " " + nodeIdentifier + " " +
+                            translator.translateMessage("startRouteDiscovery2");
+
+            if(params != null && params.length == 1) {
+                str += " " + params[0];
+            }
+
+            str += " " + translator.translateMessage("startRouteDiscovery3");
+
+            return str;
+        } else if (key.equals("")) {
+            return "";
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -275,6 +333,28 @@ public class AODVNode {
     }
 
     /**
+     * Tell the language object to insert a new step.
+     */
+    private void nextStep() {
+        if (listener != null) {
+            listener.nextStep();
+        }
+    }
+
+    /**
+     * Tell the language object to insert a new step, and set the given label.
+     *
+     * <b>CAUTION</b> The label will NOT be translated!
+     *
+     * @param label The label for the current step
+     */
+    private void nextStep(String label) {
+        if (listener != null) {
+            listener.nextStep(label);
+        }
+    }
+
+    /**
      * Auxiliary method used to send a message to a given neighbor.
      *
      * @param destinationIdentifier The neighbor to send to
@@ -304,13 +384,13 @@ public class AODVNode {
     }
 
     /**
-     * Update the text in the InfoBox with the message for the given key.
+     * Update the text in the InfoBox with the given message.
      *
-     * @param messageKey The key of the message to print
+     * @param message The message to print
      */
-    private void updateInfoBox(String messageKey) {
+    private void updateInfoBox(String message) {
         if (listener != null) {
-            listener.updateInfoText(messageKey);
+            listener.updateInfoText(message);
         }
     }
 
