@@ -1,15 +1,15 @@
-algoDesc=AODV ist ein reaktiver Routingalgorithmus für mobile Ad-hoc Netze.
-aodvAnimation=Die Animation zeigt...
-aodvFunc=AODV ist ein reaktiver Routingalgorithmus, der bei Bedarf Routen in Mobilen Netzen berechnet.
+algoDesc=AODV is a reactive routing algorithm for mobile ad-hoc networks.
+aodvAnimation=The animation shows in the right corner the graph on which the algorithm is performed and shows the route establishment from the start to the endnode. The message flooding process is visualized and the routing table of each node is shown in the left corner with updated and highlighted information after each routing step. Initially each node only knows his direct neighbor. 
+aodvFunc=If a node needs a route to a destination node, it first checks if such a route already exists in his own routing table. If not, according to AODV the node floods the network a route-request message (RREQ). Each node which gets this message checks, if it is the desired destination node, if this is not the case either has a route to the destination node or is has to forward the message further in the network. If is the destination node requested by the initial sender, or if it has a route to the requested destination, it answers the sender with a route-reply message (RREP). The message uses the path along the way the initial RREQ traveled earlier. In their own routing table, each node keeps track of the information about routes to all known nodes in the network, for each route it stores a sequence number, a next hop node and a number of hops required to reach the destination node. The sequence number in this routing entry is used to keep only fresh routes and to prevent loops in the flooding process. 
 algoName=Ad-hoc On-demand Distance Vector Routing
-animDesc=Beschreibung des Algorithmus
-
-infoBox=Erläuterung
-
+algoComplexTitle=Complexity of AODV
+algoComplexity=The main goal of AODV is to reduce the amount of necessary messaged inside an ad-hoc network. Therefore routes only get requested on demand. The sequence numbers are an efficient way of keeping information about the freshness of a route and to avoid loops in the flooding process. New nodes can efficiently join the network, because beside the destination and sender node, all other nodes also keep track of requested routes and can therefore answer a RREQ message from a new node directly with an RREP message. 
+animDesc=Ad-hoc On-demand Distance Vector Routing (AODV) is a reactive topology based routing algorithm suitable for mobile ad-hoc networks. Routes get requested on demand and afterwards get stored in routing tables kept by each individual node.  
+infoBox=Explanations
 sendRREP=Der aktuelle Knoten leitet die RREP zum Ziel basierend auf dem Next Hop in seiner Routing Table weiter.
 sendRREQ=Der aktuelle Knoten erhöht den Hop Count des RREQ, bevor er es an seine Nachbarn weiterleitet.
 startAnimation=Animation
-startFunctionality=Funktionsweise
+startFunctionality=Functionality
 startPageTitle=Routing
 startRouteDiscovery=Der Startknoten beginnt die Route Discovery, wenn er in seine Routing Table keine Route zum Ziel findet. Dann erhöht er erst seine eigene Sequence Number um eins, und sendet ein Route Request (RREQ) als Broadcast.
 startRouteReply=Der Zielknote antwortet auf das Route Request (RREQ) mit einem Route Reply (RREQ). Hierfür erhöht er seine eigene Sequence Number um eins, und schickt die Nachricht an den Next Hop auf dem Weg zum Startknoten.
