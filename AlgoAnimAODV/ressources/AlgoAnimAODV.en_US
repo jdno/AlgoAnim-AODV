@@ -13,4 +13,4 @@ startFunctionality=Functionality
 startPageTitle=Routing
 startRouteDiscovery=Der Startknoten beginnt die Route Discovery, wenn er in seine Routing Table keine Route zum Ziel findet. Dann erhöht er erst seine eigene Sequence Number um eins, und sendet ein Route Request (RREQ) als Broadcast.
 startRouteReply=Der Zielknote antwortet auf das Route Request (RREQ) mit einem Route Reply (RREQ). Hierfür erhöht er seine eigene Sequence Number um eins, und schickt die Nachricht an den Next Hop auf dem Weg zum Startknoten.
-statTableTitle=Statistiken
+statTableTitle=Statistics
