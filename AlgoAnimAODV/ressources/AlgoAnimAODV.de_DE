@@ -22,7 +22,7 @@ startPageTitle=Routing
 startRouteDiscovery1=Der Startknoten
 startRouteDiscovery2=beginnt die Route Discovery, wenn er in seiner Routing Table keine Route zum Zielknoten
 startRouteDiscovery3=findet.
-startRouteReply=Der Zielknote antwortet auf das Route Request (RREQ) mit einem Route Reply (RREQ). Hierfür erhöht er seine eigene Sequence Number um eins, und schickt die Nachricht an den Next Hop auf dem Weg zum Startknoten.
+startRouteReply=Der Zielknote antwortet auf das Route Request (RREQ) mit einem Route Reply (RREP). Hierfür erhöht er seine eigene Sequence Number um eins, und schickt die Nachricht an den Next Hop auf dem Weg zum Startknoten.
 statTableTitle=Statistiken
 
 to=to
