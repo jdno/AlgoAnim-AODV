@@ -179,8 +179,8 @@ public class AODVNode {
         if (cachedMessage == null && !messageAlreadyProcessed(message)) {
             cachedMessage = message;
             cachedMessageSender = sender.nodeIdentifier;
-            stats.messageSent();
         }
+        stats.messageSent();
     }
 
     /**
