@@ -159,6 +159,7 @@ public class AODVNode {
                     updateInfoBox(generateText("forwardRREP", null));
                 } else {
                     updateInfoBox(generateText("receiveRREP", null));
+                    stats.routeDiscovered();
                 }
             }
 
