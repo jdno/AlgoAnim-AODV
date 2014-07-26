@@ -31,7 +31,7 @@ public class InfoTable extends GUITable {
 		this.controller = controller;
 		this.ownNode = nodeForThisTable;
 		this.numOFNodes = numOfNodes;
-        title = "Node: " + ownNode.getNodeIdentifier();
+        title = controller.getTranslator().translateMessage("node") + ": " + ownNode.getNodeIdentifier();
         cellHeight = 15;
         cellWidth = 30;
         titles = new String[] { "N", "DS", "HC", "NH" };
