@@ -5,7 +5,7 @@ package generators.network.aodv.animal;
  * of the AODV routing algorithm. This class implements the
  * singleton pattern to act as the one collector for ALL stats.
  *
- * @author Jan David
+ * @author Sascha Bleidner, Jan David Nose
  */
 public class Statistics {
 
@@ -53,7 +53,6 @@ public class Statistics {
      * should always be done using sharedInstance().
      */
     private Statistics() {
-
     }
 
     /**
