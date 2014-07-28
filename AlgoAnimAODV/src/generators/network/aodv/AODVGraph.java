@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Class which represents an AODVGraph
+ *
+ * @author Sascha Bleidner, Jan David Nose
  */
 public class AODVGraph {
 
@@ -16,23 +18,22 @@ public class AODVGraph {
 
     /**
      * Constructor for an AODVGraph object
-     * @param animalGraph
-     *          the loaded animal Graph object
-     * @param listener
-     *          listener to call whenever a node or table updates
+     *
+     * @param animalGraph the loaded animal Graph object
+     * @param listener listener to call whenever a node or table updates
      */
     public AODVGraph(Graph animalGraph,AODVNodeListener listener) {
         initialize(animalGraph,listener);
     }
 
-
     /**
      * Initializes an AODVGraph from the given animalGraph;
-     * @param animalGraph
-     *           Graph object to construct the AODVGraph from
+     *
+     * @param animalGraph Graph object to construct the AODVGraph from
      */
     private void initialize(Graph animalGraph, AODVNodeListener listener) {
         AODVNode aodv;
+
         for (int i = 0; i < animalGraph.getSize(); i++) {
             aodv = new AODVNode(animalGraph.getNodeLabel(i),i,listener);
             aodvNodes.add(aodv);
@@ -40,18 +41,18 @@ public class AODVGraph {
 
         int[] neighbors;
         initializeRoutingTables();
-        
+
 
         for (int i = 0; i < animalGraph.getSize(); i++) {
             neighbors = animalGraph.getEdgesForNode(i);
             aodv = aodvNodes.get(i);
-            
+
             for (int j = 0; j < neighbors.length;j++) {
-            	if (neighbors[j]==1){
-                aodv.addNeighbor(aodvNodes.get(j));
-                aodvNodes.get(j).addNeighbor(aodv);
+                if (neighbors[j]==1){
+                    aodv.addNeighbor(aodvNodes.get(j));
+                    aodvNodes.get(j).addNeighbor(aodv);
+                }
             }
-        }
         }
     }
 
@@ -74,8 +75,8 @@ public class AODVGraph {
 
     /**
      * Returns the list of AODVNodes in this graph
-     * @return
-     *      list of ADOVNodes
+     *
+     * @return list of ADOVNodes
      */
     public ArrayList<AODVNode> getAODVNodes() {
         return aodvNodes;
@@ -83,10 +84,9 @@ public class AODVGraph {
 
     /**
      * Get node by the given node identifier
-     * @param nodeIdentifier
-     *              Identifier of a node
-     * @return
-     *      AODVNode with the given Identifier
+     *
+     * @param nodeIdentifier Identifier of a node
+     * @return AODVNode with the given Identifier
      */
     public AODVNode getNode(String nodeIdentifier) {
         for(AODVNode node: aodvNodes) {
@@ -98,5 +98,4 @@ public class AODVGraph {
         return null;
     }
 
-    
 }
