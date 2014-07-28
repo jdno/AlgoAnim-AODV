@@ -13,8 +13,7 @@ import algoanim.util.Coordinates;
  * This class represents a GUI box where information about the current step in
  * the algorithm can be displayed on the screen
  * 
- * @author sascha
- * 
+ * @author Sascha Bleidner, Jan David Nose
  */
 public class InfoBox extends GUIElement{
 
@@ -23,26 +22,37 @@ public class InfoBox extends GUIElement{
 	 */
 	private ArrayList<Text> textLines;
 
+    /**
+     * Create a new InfoBox. It automatically prints it at the given position.
+     *
+     * @param lang The language object
+     * @param title The title of the box
+     * @param upperLeft The position of the upper-left corner of the box
+     * @param lowerRight The position of the lower-right corner of the box
+     * @param textProps The look & feel of the text
+     * @param rectProps The look & feel of the box
+     */
 	public InfoBox(Language lang, String title, Coordinates upperLeft,
 			Coordinates lowerRight, TextProperties textProps, RectProperties rectProps) {
-    super(lang,upperLeft);
+
+        super(lang,upperLeft);
+
 		lang.newText(upperLeft, title, "Title", null, textProps);
-		lang.newRect(GeometryToolBox.moveCoordinate(upperLeft, 0, 20),
-				lowerRight, "InfoBox", null, rectProps);
+		lang.newRect(GeometryToolBox.moveCoordinate(upperLeft, 0, 20), lowerRight, "InfoBox", null, rectProps);
+
 		this.textLines = new ArrayList<Text>();
-		for (int i = 0; i < 5; i++) {
+
+        for (int i = 0; i < 5; i++) {
 			textLines.add(lang.newText(
-					GeometryToolBox.moveCoordinate(upperLeft, 10, 25+(i*20)), "",
+					GeometryToolBox.moveCoordinate(upperLeft, 10, 25 + (i * 20)), "",
 					"Text", null, textProps));
 		}
 	}
 
-
 	/**
 	 * Updates the text inside the InfoBox
 	 * 
-	 * @param text
-	 *            the text to be displayed
+	 * @param text the text to be displayed
 	 */
 	public void updateText(String text) {
 
@@ -73,13 +83,14 @@ public class InfoBox extends GUIElement{
 				}
 		}
 	}
-	
+
+    /**
+     * Removes the current text and leaves a blank box.
+     */
 	private void removeText(){
 		for (Text text : textLines){
 			text.setText("",null,null);
 		}
 	}
-	
-
 
 }
