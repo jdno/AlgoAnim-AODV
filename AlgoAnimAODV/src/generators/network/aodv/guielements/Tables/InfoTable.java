@@ -31,10 +31,10 @@ public class InfoTable extends GUITable {
 		this.controller = controller;
 		this.ownNode = nodeForThisTable;
 		this.numOFNodes = numOfNodes;
-        title = controller.getTranslator().translateMessage("node") + ": " + ownNode.getNodeIdentifier();
+        tableTitle = controller.getTranslator().translateMessage("node") + ": " + ownNode.getNodeIdentifier();
         cellHeight = 15;
         cellWidth = 30;
-        titles = new String[] { "N", "DS", "HC", "NH" };
+        columnTitles = new String[] { "N", "DS", "HC", "NH" };
 		this.height = cellHeight * (numOFNodes + 1);
 		this.tableEntries = new ArrayList<InfoTableEntry>();
 		initContent();
@@ -89,7 +89,7 @@ public class InfoTable extends GUITable {
 	}
 
 	public int getWidth() {
-		return cellWidth * titles.length;
+		return cellWidth * columnTitles.length;
 	}
 
 }

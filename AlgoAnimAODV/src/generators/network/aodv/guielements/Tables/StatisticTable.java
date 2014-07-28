@@ -19,11 +19,11 @@ public class StatisticTable extends GUITable {
 
     public StatisticTable(Language lang, Coordinates position, String title, RectProperties highlight){
         super(lang,position,highlight);
-        this.title = title;
+        this.tableTitle = title;
         stat = Statistics.sharedInstance();
         cellHeight = 15;
         cellWidth = 150;
-        titles = new String[]{"Messages","RouteDiscoveries","RoutingTableReads","RoutingTableUpdates"};
+        columnTitles = new String[]{"Messages","RouteDiscoveries","RoutingTableReads","RoutingTableUpdates"};
         initContent();
     }
 
