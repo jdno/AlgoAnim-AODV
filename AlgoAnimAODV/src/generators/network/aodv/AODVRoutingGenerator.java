@@ -14,33 +14,69 @@ import java.util.Locale;
 
 /**
  * The class AODVRoutingGenerator represents a generator for the AODV routing algorithm with a concrete language
+ *
+ * @author Sascha Bleidner, Jan David Nose
  */
 public class AODVRoutingGenerator implements Generator{
 
+    /**
+     * The language object
+     */
     private Language lang;
+
+    /**
+     * The GUI controller handling the application
+     */
     private GUIController controller;
+
+    /**
+     * The AODV graph of the application
+     */
     private AODVGraph aodvGraph;
+
+    /**
+     * The list of route discoveries to perform. They should be in the following format:
+     *  [
+     *      ["A", "H"],
+     *      ["C", "A"]
+     *  ]
+     */
     private String[][] routeDiscoveries;
 
-
+    /**
+     * The translator instance
+     */
     private Translator translator;
-    private Locale locale;
 
+    /**
+     * The current locale of the application
+     */
+    private Locale locale;
 
     /**
      * Cunstructs an AODVRoutingGenerator in a concrete language
-     * @param locale
-     *          language for the translation, currently DE and EN are available as a translation
+     *
+     * @param locale language for the translation, currently DE and EN are available as a translation
      */
     public AODVRoutingGenerator(Locale locale){
         translator = new Translator("ressources/AlgoAnimAODV", locale);
         this.locale = locale;
     }
 
+    /**
+     * Initialize the generator
+     */
     public void init() {
         // nothing to be done
     }
 
+    /**
+     * Generate the AODV animation
+     *
+     * @param props The properties to use for the look & feel
+     * @param primitives The preconfigured primitives from the wizard
+     * @return The animation as a string in AnimalScript
+     */
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
 
         lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
@@ -50,7 +86,6 @@ public class AODVRoutingGenerator implements Generator{
 
         Graph loadedGraph = (Graph) primitives.get("graph");
         routeDiscoveries = (String[][]) primitives.get("StartandEndnodes");
-
 
         controller = new GUIController(lang,loadedGraph,translator,props);
 
@@ -84,10 +119,7 @@ public class AODVRoutingGenerator implements Generator{
             }
         }
 
-
-        /**
-         * Draws the end page with the complexity information of AODV
-         */
+        // Draws the end page with the complexity information of AODV
         controller.drawEndPage();
 
         return lang.toString();
@@ -95,10 +127,9 @@ public class AODVRoutingGenerator implements Generator{
 
     /**
      * Starts the AODV Routing Algorithm
-     * @param startNode
-     *          Node which starts a route request to the destination node
-     * @param destinationNode
-     *          Node which is set as the destination for the route request.
+     *
+     * @param startNode Node which starts a route request to the destination node
+     * @param destinationNode Node which is set as the destination for the route request.
      */
     public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
         startNode.startRouteDiscovery(destinationNode);
@@ -128,42 +159,67 @@ public class AODVRoutingGenerator implements Generator{
         }
     }
 
-
+    /**
+     * @return the name
+     */
     public String getName() {
         return translator.translateMessage("algoName");
     }
 
+    /**
+     * @return the algorithm name
+     */
     public String getAlgorithmName() {
         return translator.translateMessage("algoName");
     }
 
+    /**
+     * @return the author
+     */
     public String getAnimationAuthor() {
         return "Sascha Bleidner, Jan David Nose";
     }
 
+    /**
+     * @return the description
+     */
     public String getDescription() {
         return translator.translateMessage("algoDesc");
     }
 
+    /**
+     * @return the code example
+     */
     public String getCodeExample() {
         return "CodeExample";
     }
 
+    /**
+     * @return the file extension
+     */
     public String getFileExtension() {
         return "asu";
     }
 
+    /**
+     * @return the locale
+     */
     public Locale getContentLocale() {
         return locale;
     }
 
+    /**
+     * @return the generator type
+     */
     public GeneratorType getGeneratorType() {
         return new GeneratorType(GeneratorType.GENERATOR_TYPE_NETWORK);
     }
 
+    /**
+     * @return the language
+     */
     public String getOutputLanguage() {
         return Generator.JAVA_OUTPUT;
     }
-
     
 }
