@@ -5,10 +5,11 @@ algoName=Ad-hoc On-demand Distance Vector Routing
 algoComplexTitle=Komplexität von AODV
 algoComplexity=Das Ziel von AODV ist es die Anzahl der zu sendenden Nachrichten innerhalb des Ad-hoc Netzwerkes so gering wie möglich zu halten. Routen werden deshalb erst bei Bedarf angefragt. Die Sequenze Nummern tragen dazu bei möglichst Effizienz die Routen zu verwalten, sowie Loops im Flooding Prozess zu verhindern. Neue Knoten können sehr effizient dem Netzwerk hinzugefügt werden, da neben Start und Zielknoten auch die restlichen Knoten alle Routeninformationen speichern und so auf Routenanfragen zu einem bestimmten Ziel direkt mit einer lokal verfügbaren Route antworten können.
 animDesc=Ad-hoc On-demand Distance Vector Routing (AODV) ist ein reaktiver, topologiebasierter Routing-Algorithmus für mobile Ad-hoc Netze. Die Routen werden von AODV erst bei Bedarf bestimmt und anschließend in einer knoteneigenen Routingtabelle gespeichert.
-infoBox=Erläuterung
 
-forwardRREP=leitet das RREP per Unicast Richtung Zielknoten weiter.
-forwardRREQ=prüft, ob die Seq# des Start- und Zielknoten im RREQ höher sind als die in seiner Routing Table. Wenn ja, aktualisiert er sie. Anschließend leitet er das RREQ als Broadcast an seine Nachbarn weiter.
+forwardRREP=Knoten {0} leitet das RREP per Unicast Richtung Zielknoten weiter.
+forwardRREQ=Knoten {0}  prüft, ob die Seq# des Start- und Zielknoten im RREQ höher sind als die in seiner Routing Table. Wenn ja, aktualisiert er sie. Anschließend leitet er das RREQ als Broadcast an seine Nachbarn weiter.
+
+infoBox=Erläuterung
 
 node=Knoten
 
@@ -19,10 +20,8 @@ sendRREQ=Dazu generiert er ein Route Request (RREQ), in das er seine um 1 erhöh
 startAnimation=Animation
 startFunctionality=Funktionsweise
 startPageTitle=Routing
-startRouteDiscovery1=Der Startknoten
-startRouteDiscovery2=beginnt die Route Discovery, wenn er in seiner Routing Table keine Route zum Zielknoten
-startRouteDiscovery3=findet.
+startRouteDiscovery=Der Startknoten {0} beginnt die Route Discovery, wenn er in seiner Routing Table keine Route zum Zielknoten {1} findet.
 startRouteReply=Der Zielknote antwortet auf das Route Request (RREQ) mit einem Route Reply (RREP). Hierfür erhöht er seine eigene Sequence Number um eins, und schickt die Nachricht an den Next Hop auf dem Weg zum Startknoten.
 statTableTitle=Statistiken
 
-to=to
+to=Von {0} nach {1}

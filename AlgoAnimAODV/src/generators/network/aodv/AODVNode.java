@@ -190,8 +190,8 @@ public class AODVNode {
      * @param destination The destination for the Route Discovery
      */
     public void startRouteDiscovery(AODVNode destination) {
-        nextStep(generateText("startLabel", new String[]{nodeIdentifier, destination.nodeIdentifier}));
-        updateInfoBox(generateText("startRouteDiscovery", new String[]{destination.getNodeIdentifier()}));
+        nextStep(generateText("startLabel", new String[]{nodeIdentifier, destination.getNodeIdentifier()}));
+        updateInfoBox(generateText("startRouteDiscovery", new String[]{nodeIdentifier, destination.getNodeIdentifier()}));
         highlightNode();
         nextStep();
 
@@ -244,13 +244,9 @@ public class AODVNode {
      */
     private String generateText(String key, String[] params) {
         if (key.equals("forwardRREP")) {
-            return translator.translateMessage("node") +
-                    " " + nodeIdentifier + " " +
-                    translator.translateMessage("forwardRREP");
+            return translator.translateMessage("forwardRREP", new String[]{nodeIdentifier});
         } else if (key.equals("forwardRREQ")) {
-            return translator.translateMessage("node") +
-                    " " + nodeIdentifier + " " +
-                    translator.translateMessage("forwardRREQ");
+            return translator.translateMessage("forwardRREQ", new String[]{nodeIdentifier});
         } else if (key.equals("receiveRREP")) {
             return translator.translateMessage("receiveRREP");
         } else if (key.equals("sendRREP")) {
@@ -258,25 +254,9 @@ public class AODVNode {
         } else if (key.equals("sendRREQ")) {
             return translator.translateMessage("sendRREQ");
         } else if (key.equals("startLabel")) {
-            if (params != null && params.length == 2) {
-                return params[0] + " " + translator.translateMessage("to") + " " + params[1];
-            } else {
-                return nodeIdentifier + " -> ?";
-            }
+            return translator.translateMessage("to", params);
         } else if (key.equals("startRouteDiscovery")) {
-            String str = translator.translateMessage("startRouteDiscovery1") +
-                            " " + nodeIdentifier + " " +
-                            translator.translateMessage("startRouteDiscovery2");
-
-            if(params != null && params.length == 1) {
-                str += " " + params[0];
-            }
-
-            str += " " + translator.translateMessage("startRouteDiscovery3");
-
-            return str;
-        } else if (key.equals("")) {
-            return "";
+            return translator.translateMessage("startRouteDiscovery", params);
         } else {
             return "";
         }
