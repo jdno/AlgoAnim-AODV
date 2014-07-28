@@ -11,35 +11,35 @@ import java.util.StringTokenizer;
 
 /**
  * Helper class for displaying text in multiple lines
+ *
+ * @author Sascha Bleidner, Jan David Nose
  */
 public class TextToolBox {
 
     /**
      * Displays the given text in multiple lines starting from the coordinate startPoint
-     * @param lang
-     *          Language object to display the text on
-     * @param startPoint
-     *          StartPoint for the text
-     * @param text
-     *          text to be split in multiple lines
-     * @param props
-     *          text properties for the text
-     * @param lengthOfLine
-     *          length of a single line
-     * @return
+     *
+     * @param lang Language object to display the text on
+     * @param startPoint StartPoint for the text
+     * @param text text to be split in multiple lines
+     * @param props text properties for the text
+     * @param lengthOfLine length of a single line
+     * @return The Y coordinate of the text
      */
     public static int multipleTextLines(Language lang, Coordinates startPoint, String text, TextProperties props, int lengthOfLine) {
 
         Text firstLine = null;
+
         if (text.length() <= lengthOfLine) {
             System.out.println(lang == null);
-
         } else {
             int charCounter = 0;
             int line = 0;
             int lineHeight = 25;
+
             StringBuffer strBuffer = new StringBuffer();
             StringTokenizer strToken = new StringTokenizer(text);
+
             while (strToken.hasMoreElements()) {
                 if (charCounter <= lengthOfLine) {
                     int before = strBuffer.length();
@@ -57,11 +57,15 @@ public class TextToolBox {
                 }
 
             }
+
             if (strBuffer.length() != 0) {
                 lang.newText(GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line), strBuffer.toString(), "text", null,props);
             }
+
             return GeometryToolBox.moveCoordinate(startPoint, 0, lineHeight * line).getY();
         }
+
         return startPoint.getY();
     }
+    
 }
