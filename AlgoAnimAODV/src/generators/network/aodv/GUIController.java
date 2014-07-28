@@ -21,27 +21,42 @@ import generators.network.aodv.guielements.Tables.StatisticTable;
 import generators.network.aodv.guielements.TextToolBox;
 import translator.Translator;
 
+/**
+ * The GUI controller coordinates and manages all GUI elements. It acts as an interface to
+ * other classes to access those elements and perform actions on them.
+ *
+ * @author Sascha Bleidner, Jan David Nose
+ */
 public class GUIController implements AODVNodeListener{
 
+    /**
+     * The language object
+     */
+    private  Language lang;
 
-	private  Language lang;
+    /**
+     * The translator instance
+     */
     private Translator translator;
 
     /**
      * AODV Nodes with corresponding InfoTable objects
      */
-	private HashMap<AODVNode, InfoTable> tables;
-    private ArrayList<InfoTable> lastUpdated;
+    private HashMap<AODVNode, InfoTable> tables;
 
+    /**
+     * A list of InfoTables that were updated since the last check
+     */
+    private ArrayList<InfoTable> lastUpdated;
 
     /**
      * Coordinates for the GUI Elements
      */
-	private final Coordinates infoBoxUpperLeft = new Coordinates(40, 470);
-	private final Coordinates infoBoxLowerRight = new Coordinates(840, 600);
-	private final Coordinates tableStartingPont = new Coordinates(500, 20);
+    private final Coordinates infoBoxUpperLeft = new Coordinates(40, 470);
+    private final Coordinates infoBoxLowerRight = new Coordinates(840, 600);
+    private final Coordinates tableStartingPont = new Coordinates(500, 20);
     private final Coordinates statisticTableStartingPoint = new Coordinates(500,400);
-	private final int distanceBetweenTables = 30;
+    private final int distanceBetweenTables = 30;
     private final AnimationPropertiesContainer props;
 
     /**
@@ -58,60 +73,55 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Constructor for a GUIController
-     * @param language
-     *          object to control animal
-     * @param animalGraph
-     *          from animal loaded graph object
-     * @param translator
-     *          translator instance to translate strings for the GUI
-     * @param props
-     *          properties for the GUI elements
+     * @param language object to control animal
+     * @param animalGraph from animal loaded graph object
+     * @param translator translator instance to translate strings for the GUI
+     * @param props properties for the GUI elements
      */
-	public GUIController(Language language, Graph animalGraph,Translator translator,AnimationPropertiesContainer props) {
-		lang = language;
-		tables = new HashMap<AODVNode, InfoTable>();
-		lastUpdated = new ArrayList<InfoTable>();
+    public GUIController(Language language, Graph animalGraph,Translator translator,AnimationPropertiesContainer props) {
+        lang = language;
+        tables = new HashMap<AODVNode, InfoTable>();
+        lastUpdated = new ArrayList<InfoTable>();
 
         GraphProperties graphProps = (GraphProperties) props.getPropertiesByName("GraphProperties");
 
         graph = new GUIGraph(lang,animalGraph,graphProps);
         this.translator = translator;
         this.props = props;
-	}
+    }
 
     /**
      * Draws the GUIGraph on the screen
      */
-	public void drawGUIGraph(){
+    public void drawGUIGraph(){
         graph.show();
     }
 
 
     /**
      * Draws the InfoTable for the given AODVNodes on the screen
-     * @param nodes
-     *          nodes which are connected to the InfoTables
+     * @param nodes nodes which are connected to the InfoTables
      */
     public void drawInfoTable(ArrayList<AODVNode> nodes) {
 
-		/**
-		 * Check how many tables have to be drawn in a row
-		 */
-		int numOfTablesX = (int) Math.round((nodes.size() + 0.5) / 2);
+        /**
+         * Check how many tables have to be drawn in a row
+         */
+        int numOfTablesX = (int) Math.round((nodes.size() + 0.5) / 2);
 
         RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
 
-		/**
-		 * Draw initial table in order to get the width and height for the
-		 * following tables
-		 */
-		InfoTable table = new InfoTable(lang, this, nodes.get(0),
-				tableStartingPont, nodes.size(), cellHighlight);
+        /**
+         * Draw initial table in order to get the width and height for the
+         * following tables
+         */
+        InfoTable table = new InfoTable(lang, this, nodes.get(0),
+                tableStartingPont, nodes.size(), cellHighlight);
 
-		int offsetX = distanceBetweenTables + table.getWidth();
-		int offsetY = distanceBetweenTables + table.getHeight();
+        int offsetX = distanceBetweenTables + table.getWidth();
+        int offsetY = distanceBetweenTables + table.getHeight();
 
-		for (int i = 1; i < nodes.size(); i++) {
+        for (int i = 1; i < nodes.size(); i++) {
             table = new InfoTable(lang, this, nodes.get(i),
                     (GeometryToolBox.moveCoordinate(tableStartingPont, i
                             % numOfTablesX * offsetX, i / numOfTablesX
@@ -120,12 +130,11 @@ public class GUIController implements AODVNodeListener{
 
         }
 
-	}
+    }
 
     /**
      * Draws the statistic table on the screen
-     * @param title
-     *          title for the Statistic to draw
+     * @param title title for the Statistic to draw
      */
     public void drawStatisticTable(String title){
         RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("highlightColor");
@@ -135,15 +144,14 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Draws the InfoBox on the screen
-     * @param title
-     *          title for the InfoBox
+     * @param title title for the InfoBox
      */
-	public void drawInfoBox(String title) {
+    public void drawInfoBox(String title) {
         TextProperties textProps = (TextProperties) props.getPropertiesByName("InfoBoxText");
         RectProperties cellHighlight = (RectProperties) props.getPropertiesByName("BackgroundColor");
-		info = new InfoBox(lang, title, infoBoxUpperLeft,
-				infoBoxLowerRight,textProps,cellHighlight);
-	}
+        info = new InfoBox(lang, title, infoBoxUpperLeft,
+                infoBoxLowerRight,textProps,cellHighlight);
+    }
 
 
 
@@ -157,18 +165,16 @@ public class GUIController implements AODVNodeListener{
         TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
 
         TextProperties bigTitle = title;
-        bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
-                Font.SANS_SERIF, Font.PLAIN, 25));
+        bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(Font.SANS_SERIF, Font.PLAIN, 25));
 
         TextProperties text = (TextProperties) props.getPropertiesByName("DescriptionText");
-
-
 
         String[][] textElements = new String[][]{{"algoName","animDesc"},{"startFunctionality","aodvFunc"},{"startAnimation","aodvAnimation"}};
 
         int startCoordinates = 20;
         int endOfText =  startCoordinates;
         int distanceTitleToText = 20;
+
         for (String[] currentText: textElements){
             lang.newText(new Coordinates(50,endOfText+40),translator.translateMessage(currentText[0]),"algoName",null,title);
             endOfText = TextToolBox.multipleTextLines(lang, new Coordinates(50, endOfText+distanceTitleToText+40), translator.translateMessage(currentText[1]), text, 100);
@@ -176,7 +182,6 @@ public class GUIController implements AODVNodeListener{
 
         lang.nextStep();
     }
-
 
     /**
      * Displays the end page with the complexity information of the algorithm
@@ -190,26 +195,23 @@ public class GUIController implements AODVNodeListener{
         TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
 
         TextProperties bigTitle = title;
-        bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(
-                Font.SANS_SERIF, Font.PLAIN, 25));
+        bigTitle.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font(Font.SANS_SERIF, Font.PLAIN, 25));
 
         TextProperties text = (TextProperties) props.getPropertiesByName("DescriptionText");
-
 
         String[][] textElements = new String[][]{{"algoComplexTitle","algoComplexity"}};
 
         int startCoordinates = 20;
         int endOfText =  startCoordinates;
         int distanceTitleToText = 20;
+
         for (String[] currentText: textElements){
             lang.newText(new Coordinates(50,endOfText+40),translator.translateMessage(currentText[0]),"algoName",null,title);
             endOfText = TextToolBox.multipleTextLines(lang, new Coordinates(50, endOfText+distanceTitleToText+40), translator.translateMessage(currentText[1]), text, 100);
         }
+
         lang.nextStep();
     }
-
-
-
 
     /**
      * Hides the start page
@@ -220,8 +222,8 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Updates the Text in the InfoBox
-     * @param update
-     *          Text to be displayed in the InfoBox
+     *
+     * @param update Text to be displayed in the InfoBox
      */
     public void updateInfoBoxText(String update) {
         info.updateText(update);
@@ -229,8 +231,8 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Marks table as updated. Should be called whenever a table gets updated
-     * @param table
-     *          table which was updated
+     *
+     * @param table table which was updated
      */
     public void tableUpdated(InfoTable table) {
         lastUpdated.add(table);
@@ -243,14 +245,15 @@ public class GUIController implements AODVNodeListener{
         for (InfoTable table : lastUpdated) {
             table.refresh();
         }
+
         lastUpdated.clear();
     }
 
 
     /**
      * Returns the animalGraph from te AODVGraph object
-     * @return
-     *      Graph as an Graph object
+     *
+     * @return Graph as an Graph object
      */
     public Graph getAnimalGraph(){
         return graph.getAnimalGraph();
@@ -267,8 +270,8 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Highlights the given AODVNode on the screen
-     * @param node
-     *          Node to be highlighted
+     *
+     * @param node Node to be highlighted
      */
     @Override
     public void highlightNode(AODVNode node) {
@@ -277,10 +280,9 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Highlights the edge from the given startnode to the given endnode
-     * @param startNode
-     *          node from which the edge starts
-     * @param endNode
-     *          node to which the edge leads
+     *
+     * @param startNode node from which the edge starts
+     * @param endNode node to which the edge leads
      */
     @Override
     public void highlightEgde(AODVNode startNode, AODVNode endNode) {
@@ -317,8 +319,8 @@ public class GUIController implements AODVNodeListener{
 
     /**
      * Updates the InfoTable for the given AODVNode
-     * @param node
-     *          Node for which the table needs to be updated
+     *
+     * @param node Node for which the table needs to be updated
      */
     @Override
     public void updateInfoTable(AODVNode node) {
@@ -339,4 +341,5 @@ public class GUIController implements AODVNodeListener{
     public void updateInfoText(String message) {
         updateInfoBoxText(message);
     }
+
 }
