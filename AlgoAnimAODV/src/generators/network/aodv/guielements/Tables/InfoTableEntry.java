@@ -8,30 +8,69 @@ import algoanim.util.Coordinates;
 import generators.network.aodv.guielements.GUIElement;
 import generators.network.aodv.guielements.GeometryToolBox;
 
+/**
+ * This class represents a row in the InfoTable. A row has four columns: node identifier,
+ * the node's destination sequence, the hop count and the next hop to the node.
+ *
+ * @author Sascha Bleidner, Jan David Nose
+ */
 public class InfoTableEntry extends GUIElement {
 
+    /**
+     * The cell for the node identifier
+     */
 	private TableCell nodeIDCell;
+
+    /**
+     * The cell for the destination sequence
+     */
 	private TableCell destSeqCell;
+
+    /**
+     * The cell for the hop count
+     */
 	private TableCell hopCountCell;
+
+    /**
+     * The cell for the next hop
+     */
 	private TableCell nextHopCell;
 
+    /**
+     * Create a new instance of InfoTableEntry.
+     *
+     * @param lang The language object
+     * @param position The position of the row
+     * @param entry The routing table entry to print
+     * @param columnWidth The width of a column
+     * @param rowHeight The height of a row
+     * @param highlight The look & feel of the table
+     */
 	public InfoTableEntry(Language lang, Coordinates position, RoutingTableEntry entry,
-			int coloumnWidth, int rowHeight, RectProperties highlight) {
-		super(lang, position);
+			int columnWidth, int rowHeight, RectProperties highlight) {
+
+        super(lang, position);
 
 		this.nodeIDCell = new TableCell(lang, entry.getIdentifier(), position,
-				coloumnWidth, rowHeight,highlight);
+				columnWidth, rowHeight,highlight);
 		this.destSeqCell = new TableCell(lang, Integer.toString(entry.getDestinationSequence()),
-				GeometryToolBox.moveCoordinate(position, coloumnWidth, 0),
-				coloumnWidth, rowHeight,highlight);
+				GeometryToolBox.moveCoordinate(position, columnWidth, 0),
+				columnWidth, rowHeight,highlight);
 		this.hopCountCell = new TableCell(lang, "inf",
-				GeometryToolBox.moveCoordinate(position, coloumnWidth * 2, 0),
-				coloumnWidth, rowHeight,highlight);
+				GeometryToolBox.moveCoordinate(position, columnWidth * 2, 0),
+				columnWidth, rowHeight,highlight);
 		this.nextHopCell = new TableCell(lang, entry.getNextHop(),
-				GeometryToolBox.moveCoordinate(position, coloumnWidth * 3, 0),
-				coloumnWidth, rowHeight,highlight);
+				GeometryToolBox.moveCoordinate(position, columnWidth * 3, 0),
+				columnWidth, rowHeight,highlight);
 	}
 
+    /**
+     * Update the InfoTableEntry. This checks if anything has changed, updates it accordingly and
+     * highlights the cell.
+     *
+     * @param entry The routing table entry to print
+     * @return True if any changes were made, false otherwise
+     */
 	public boolean updateInfoTableEntry(RoutingTableEntry entry) {
 		boolean updated = false;
 
@@ -67,6 +106,14 @@ public class InfoTableEntry extends GUIElement {
 
 	}
 
+    /**
+     * Checks whether the content of a cell has changed. If so, it automatically
+     * updates it!
+     *
+     * @param text The current text in the routing table entry
+     * @param cell The cell to highlight if anything changed
+     * @return True if changes were made, false otherwise
+     */
 	private boolean checkCellForUpdate(String text, TableCell cell) {
 		if (!text.equals(cell.getText())) {
 			cell.setText(text);
@@ -76,6 +123,9 @@ public class InfoTableEntry extends GUIElement {
 		return false;
 	}
 
+    /**
+     * Reset all hightligts
+     */
 	public void unhighlight() {
 		nodeIDCell.unhighlightCell();
 		destSeqCell.unhighlightCell();
