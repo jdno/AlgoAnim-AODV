@@ -14,6 +14,8 @@ import java.util.ArrayList;
 /**
  * This class is a wrapper around AnimalScript's graph object. It provides several
  * additional methods to highlight elements on the graph.
+ *
+ * @author Sascha Bleidner, Jan David Nose
  */
 public class GUIGraph extends GUIElement{
 
@@ -43,7 +45,7 @@ public class GUIGraph extends GUIElement{
      *
      * @param lang language object to draw the graph on
      * @param animalGraph animalGraph to load the GUIGraph from
-     * @param graphProperties proerties for the graph object
+     * @param graphProperties properties for the graph object
      */
     public GUIGraph(Language lang, Graph animalGraph, GraphProperties graphProperties){
         super(lang,new Coordinates(0,0));
@@ -53,6 +55,7 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Transforms given Graph object to a new object and adding internal properties to this new Graph object
+     *
      * @param loadedGraph Graph to be extracted
      */
     private void transformGraph(Graph loadedGraph) {
@@ -77,6 +80,7 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Transforms the adjacency matrix from the given graph to an matrix of an bidirectional connected graph
+     *
      * @param loadedGraph Graph to extract the adjacency matrix from
      * @return new adjacency matrix
      */
@@ -95,6 +99,7 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Highlight a given AODVNode in the Graph;
+     *
      * @param node node to be highlighted
      */
     public void highlightNode(AODVNode node){
@@ -104,6 +109,7 @@ public class GUIGraph extends GUIElement{
 
     /**
      * Highlights an edge from the given start node to the end node
+     *
      * @param startNode start node of the edge
      * @param endNode end node of the edge
      */
@@ -181,5 +187,7 @@ public class GUIGraph extends GUIElement{
         public AODVNode getEndNode() {
             return endNode;
         }
+
     }
+
 }
