@@ -156,7 +156,7 @@
                 </AnimationPropertyItem>
                 <AnimationPropertyItem type="BooleanPropertyItem">
                     <name>directed</name>
-                    <isEditable value="true" />
+                    <isEditable value="false" />
                     <label></label>
                     <value><boolean value="false" /></value>
                 </AnimationPropertyItem>
