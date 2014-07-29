@@ -191,12 +191,10 @@ public class AODVNode {
      */
     public void startRouteDiscovery(AODVNode destination) {
         nextStep(generateText("startLabel", new String[]{nodeIdentifier, destination.getNodeIdentifier()}));
-        updateInfoBox(generateText("startRouteDiscovery", new String[]{nodeIdentifier, destination.getNodeIdentifier()}));
         highlightNode();
-        nextStep();
 
         int identifier = ++originatorSequence;
-        String destinationIdentifier = destination.nodeIdentifier;
+        String destinationIdentifier = destination.getNodeIdentifier();
         int destinationSequence = -1;
 
         for (RoutingTableEntry entry : routingTable) {
@@ -205,7 +203,14 @@ public class AODVNode {
             }
 
             if (entry.getIdentifier().equals(destinationIdentifier)) {
-                destinationSequence = entry.getDestinationSequence();
+                if (entry.getDestinationSequence() != 0) {
+                    updateInfoBox(generateText("routeExists", new String[]{nodeIdentifier, destinationIdentifier}));
+                    nextStep();
+                    return;
+                } else {
+                    updateInfoBox(generateText("startRouteDiscovery", new String[]{nodeIdentifier, destinationIdentifier}));
+                    nextStep();
+                }
             }
         }
 
@@ -234,6 +239,8 @@ public class AODVNode {
         markCachedMessageAsRead();
         updateInfoBox(generateText("sendRREQ", null));
         listener.updateInfoTable(this);
+
+        nextStep();
     }
 
     /**
@@ -249,6 +256,8 @@ public class AODVNode {
             return translator.translateMessage("forwardRREQ", new String[]{nodeIdentifier});
         } else if (key.equals("receiveRREP")) {
             return translator.translateMessage("receiveRREP");
+        } else if (key.equals("routeExists")) {
+            return translator.translateMessage("routeExists", params);
         } else if (key.equals("sendRREP")) {
             return translator.translateMessage("sendRREP");
         } else if (key.equals("sendRREQ")) {
@@ -497,8 +506,8 @@ public class AODVNode {
     public String getNeighborsAsString(){
     	StringBuffer strBuff = new StringBuffer();
     	strBuff.append("Node: ").append(getNodeIdentifier()).append(" has neighbors: ");
-    	for (AODVNode neigbhor: neighbors){
-    		strBuff.append(neigbhor.getNodeIdentifier()).append("; ");
+    	for (AODVNode neighbor: neighbors){
+    		strBuff.append(neighbor.getNodeIdentifier()).append("; ");
     	}
     	return strBuff.toString();
     }

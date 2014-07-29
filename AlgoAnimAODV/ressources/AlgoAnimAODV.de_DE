@@ -19,6 +19,7 @@ infoBox=Erläuterung
 node=Knoten
 
 receiveRREP=Der Startknoten erhält das RREP, und kennt nun die Route zum Ziel. Bevor er Daten sendet, wird er das RREP noch mit einem ACK bestätigen, die Route ist jetzt aber gefunden.
+routeExists=Der Startknoten {0} hat schon eine Route zu Knoten {1}, und muss keine Route Discovery ausführen. Stattdessen sendet er direkt Daten über die bekannte Route.
 
 sendRREP=Der Zielknoten erhält das RREQ, und antwortet darauf mit einem Route Reply (RREP). In dieses schreibt auch er seine um 1 erhöhte Seq#, bevor er es per Unicast an den Startknoten sendet.
 sendRREQ=Dazu generiert er ein Route Request (RREQ), in das er seine um 1 erhöhte Sequence Number (Seq#) schreibt. Dieses RREQ wird dann per Broadcast an alle Nachbarn gesendet.
