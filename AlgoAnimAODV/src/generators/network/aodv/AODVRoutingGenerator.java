@@ -102,19 +102,15 @@ public class AODVRoutingGenerator implements Generator{
         AODVNode startNode;
         AODVNode destinationNode;
 
-        if (routeDiscoveries.length % 2 != 0) {
-            System.err.println("Start and end nodes not properly declared");
-        } else {
-            for (String[] startEndNodes : routeDiscoveries){
-                if (startEndNodes.length != 2 ){
-                    System.err.println("Start and end nodes not properly declared");
-                } else {
-                    startNode = aodvGraph.getNode(startEndNodes[0]);
-                    destinationNode = aodvGraph.getNode(startEndNodes[1]);
-                    if (startNode != null && destinationNode != null) {
-                        startAodvRouting(startNode, destinationNode);
-                        controller.unhighlightAll();
-                    }
+        for (String[] startEndNodes : routeDiscoveries){
+            if (startEndNodes.length != 2 ){
+                System.err.println("Start and end nodes not properly declared");
+            } else {
+                startNode = aodvGraph.getNode(startEndNodes[0]);
+                destinationNode = aodvGraph.getNode(startEndNodes[1]);
+                if (startNode != null && destinationNode != null) {
+                    startAodvRouting(startNode, destinationNode);
+                    controller.unhighlightAll();
                 }
             }
         }
