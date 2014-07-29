@@ -149,6 +149,13 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
         }
     }
 
+    /**
+     * Validates the properties and constructs thereby Objects for the later animation generation
+     * @param animationPropertieses
+     * @param stringObjectHashtable
+     * @return false if the properties are not valid
+     * @throws IllegalArgumentException
+     */
     @Override
     public boolean validateInput(AnimationPropertiesContainer animationPropertieses, Hashtable<String, Object> stringObjectHashtable) throws IllegalArgumentException {
 
@@ -165,7 +172,6 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
         controller = new GUIController(lang, loadedGraph, translator, animationPropertieses);
 
         aodvGraph = new AODVGraph(controller.getAnimalGraph(), controller);
-
 
 
         for (String[] startEndNodes : routeDiscoveries) {
@@ -191,6 +197,10 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
     }
 
 
+    /**
+     * Displays an error message on the screen as a JOptionPane
+     * @param message message to be displayed to help the user investigating on the error
+     */
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null,
                 message,
