@@ -5,7 +5,9 @@ import algoanim.primitives.Graph;
 import algoanim.primitives.generators.Language;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
+import generators.framework.ValidatingGenerator;
 import generators.framework.properties.AnimationPropertiesContainer;
+import generators.network.aodv.animal.Statistics;
 import translator.Translator;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.Locale;
  *
  * @author Sascha Bleidner, Jan David Nose
  */
-public class AODVRoutingGenerator implements Generator{
+public class AODVRoutingGenerator implements ValidatingGenerator {
 
     /**
      * The language object
@@ -118,6 +120,7 @@ public class AODVRoutingGenerator implements Generator{
             }
         }
 
+
         // Draws the end page with the complexity information of AODV
         controller.drawEndPage();
 
@@ -156,6 +159,15 @@ public class AODVRoutingGenerator implements Generator{
                 lang.nextStep();
             }
         }
+    }
+
+    @Override
+    public boolean validateInput(AnimationPropertiesContainer animationPropertieses, Hashtable<String, Object> stringObjectHashtable) throws IllegalArgumentException {
+
+        // TODO check if start and end node are part of the graph
+        // TODO check if the graph is valid
+
+        return false;
     }
 
     /**
@@ -220,5 +232,5 @@ public class AODVRoutingGenerator implements Generator{
     public String getOutputLanguage() {
         return Generator.JAVA_OUTPUT;
     }
-    
+
 }
