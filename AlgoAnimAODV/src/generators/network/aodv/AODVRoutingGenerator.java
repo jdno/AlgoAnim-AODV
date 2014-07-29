@@ -82,10 +82,6 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
      */
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
 
-
-
-
-
         controller.drawStartPage();
         controller.hideStartPage();
 

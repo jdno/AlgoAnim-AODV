@@ -5,6 +5,7 @@ import algoanim.properties.AnimationPropertiesKeys;
 import algoanim.properties.GraphProperties;
 import algoanim.properties.RectProperties;
 import algoanim.properties.TextProperties;
+import algoanim.primitives.Text;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -58,6 +59,12 @@ public class GUIController implements AODVNodeListener{
     private final Coordinates statisticTableStartingPoint = new Coordinates(500,400);
     private final int distanceBetweenTables = 30;
     private final AnimationPropertiesContainer props;
+
+    /**
+     * Text Elements
+     */
+    Text textDestinationNode;
+    Text textStartNode;
 
     /**
      * GUI Elements
@@ -134,6 +141,11 @@ public class GUIController implements AODVNodeListener{
 
     }
 
+    /**
+     * Draws the startnode and endnode information on the screen
+     * @param startNode startNode to be displayed
+     * @param endNode endNode to be displayed
+     */
     public void drawNodeInfo(AODVNode startNode, AODVNode endNode){
 
         TextProperties textProps = (TextProperties) props.getPropertiesByName("InfoBoxText");
@@ -142,15 +154,22 @@ public class GUIController implements AODVNodeListener{
         sBuffer.append(translator.translateMessage("startNode")).append(":").append(" ");
         sBuffer.append(startNode.getNodeIdentifier());
 
-        lang.newText(new Coordinates(860,500),sBuffer.toString(),"nodeInfo1",null,textProps);
+        if (textStartNode != null){
+            textStartNode.hide();
+        }
+        textStartNode = lang.newText(new Coordinates(860,500),sBuffer.toString(),"nodeInfo1",null,textProps);
 
 
         sBuffer = new StringBuffer();
         sBuffer.append(translator.translateMessage("endNode")).append(":").append(" ");
         sBuffer.append(endNode.getNodeIdentifier());
 
-        lang.newText(new Coordinates(860,530),sBuffer.toString(),"nodeInfo2",null,textProps);
+        if (textDestinationNode != null){
+            textDestinationNode.hide();
+        }
+        textDestinationNode = lang.newText(new Coordinates(860,530),sBuffer.toString(),"nodeInfo2",null,textProps);
     }
+
 
     /**
      * Draws the statistic table on the screen
