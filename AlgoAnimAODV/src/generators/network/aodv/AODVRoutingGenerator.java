@@ -109,7 +109,6 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
             }
         }
 
-
         // Draws the end page with the complexity information of AODV
         controller.drawEndPage();
 

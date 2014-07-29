@@ -226,8 +226,6 @@ public class GUIController implements AODVNodeListener{
 
         lang.hideAllPrimitives();
 
-        lang.nextStep(translator.translateMessage("algoComplexTitle"));
-
         TextProperties title = (TextProperties) props.getPropertiesByName("TitleText");
 
         TextProperties bigTitle = title;
