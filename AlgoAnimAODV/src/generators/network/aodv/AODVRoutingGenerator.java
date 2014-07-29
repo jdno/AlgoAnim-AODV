@@ -135,7 +135,6 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
      */
     public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
         startNode.startRouteDiscovery(destinationNode);
-        lang.nextStep();
 
         int idleNodes = 0;
         ArrayList<AODVNode> workingNodes = new ArrayList<AODVNode>(aodvGraph.getAODVNodes().size());

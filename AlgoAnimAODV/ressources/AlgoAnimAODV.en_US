@@ -14,6 +14,7 @@ infoBox=Explanations
 node=Node
 
 receiveRREP=The start node receives the RREQ, and with that knows the route to the destination. Before actually sending data, it acknowledges the RREQ with an ACK, but it knows the route now.
+routeExists=The start node {0} already knows a route to node {1}. For this reason, it is not necessary to perform a new route discovery. Node {0} starts to send data immediately using the known route.
 
 sendRREP=The current node forwards the RREP to the destination based on the information (next hop) in its routing table.
 sendRREQ=The current node increases the hop count of the RREQ, and broadcasts it to its neighbors.
