@@ -23,5 +23,6 @@ startPageTitle=Routing
 startRouteDiscovery=The start node {0} initializes the route discovery when it cannot find a route to the destination node {1} in its routing table.
 startRouteReply=The destination node replies to a Route Request (RREQ) with a Route Reply (RREP). It increments its sequence number by one, and sends the RREP back to the start node using unicast.
 statTableTitle=Statistics
-
+startNode=Source Node
+endNode=Destination Node
 to=From {0} to {1}
