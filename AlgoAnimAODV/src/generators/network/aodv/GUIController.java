@@ -117,14 +117,17 @@ public class GUIController implements AODVNodeListener{
         InfoTable table = new InfoTable(lang, this, nodes.get(0),
                 tableStartingPont, nodes.size(), cellHighlight);
 
+        tables.put(nodes.get(0),table);
+
         int offsetX = distanceBetweenTables + table.getWidth();
         int offsetY = distanceBetweenTables + table.getHeight();
 
-        for (int i = 0; i < nodes.size(); i++) {
+        for (int i = 1; i < nodes.size(); i++) {
             table = new InfoTable(lang, this, nodes.get(i),
                     (GeometryToolBox.moveCoordinate(tableStartingPont, i
                             % numOfTablesX * offsetX, i / numOfTablesX
                             * offsetY)), nodes.size(), cellHighlight);
+
             tables.put(nodes.get(i), table);
 
         }
