@@ -97,7 +97,6 @@ public class GUIController implements AODVNodeListener{
         graph.show();
     }
 
-
     /**
      * Draws the InfoTable for the given AODVNodes on the screen
      * @param nodes nodes which are connected to the InfoTables
@@ -121,7 +120,7 @@ public class GUIController implements AODVNodeListener{
         int offsetX = distanceBetweenTables + table.getWidth();
         int offsetY = distanceBetweenTables + table.getHeight();
 
-        for (int i = 1; i < nodes.size(); i++) {
+        for (int i = 0; i < nodes.size(); i++) {
             table = new InfoTable(lang, this, nodes.get(i),
                     (GeometryToolBox.moveCoordinate(tableStartingPont, i
                             % numOfTablesX * offsetX, i / numOfTablesX
@@ -141,7 +140,6 @@ public class GUIController implements AODVNodeListener{
         statTable = new StatisticTable(lang,statisticTableStartingPoint, title, cellHighlight);
     }
 
-
     /**
      * Draws the InfoBox on the screen
      * @param title title for the InfoBox
@@ -152,8 +150,6 @@ public class GUIController implements AODVNodeListener{
         info = new InfoBox(lang, title, infoBoxUpperLeft,
                 infoBoxLowerRight,textProps,cellHighlight);
     }
-
-
 
     /**
      * Displays the startPage with description of the algorithm
@@ -248,7 +244,6 @@ public class GUIController implements AODVNodeListener{
 
         lastUpdated.clear();
     }
-
 
     /**
      * Returns the animalGraph from te AODVGraph object
