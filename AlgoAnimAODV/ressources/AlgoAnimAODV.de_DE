@@ -6,6 +6,11 @@ algoComplexTitle=Komplexität von AODV
 algoComplexity=Das Ziel von AODV ist es die Anzahl der zu sendenden Nachrichten innerhalb des Ad-hoc Netzwerkes so gering wie möglich zu halten. Routen werden deshalb erst bei Bedarf angefragt. Die Sequenze Nummern tragen dazu bei möglichst Effizienz die Routen zu verwalten, sowie Loops im Flooding Prozess zu verhindern. Neue Knoten können sehr effizient dem Netzwerk hinzugefügt werden, da neben Start und Zielknoten auch die restlichen Knoten alle Routeninformationen speichern und so auf Routenanfragen zu einem bestimmten Ziel direkt mit einer lokal verfügbaren Route antworten können.
 animDesc=Ad-hoc On-demand Distance Vector Routing (AODV) ist ein reaktiver, topologiebasierter Routing-Algorithmus für mobile Ad-hoc Netze. Die Routen werden von AODV erst bei Bedarf bestimmt und anschließend in einer knoteneigenen Routingtabelle gespeichert.
 
+
+errorMessageTitle=Fehler beim Validieren der Properties
+errorMessageWrongNumberNodes=Start- und Endknoten sind nicht korrekt gesetzt
+errorMessageStartNodeNotFound=Angegebener Startknoten ist nicht Teil des Graphen
+errorMessageDestinationNodeNotFound=Angegebener Zielknoten ist nicht Teil des Graphen
 forwardRREP=Knoten {0} leitet das RREP per Unicast Richtung Zielknoten weiter.
 forwardRREQ=Knoten {0}  prüft, ob die Seq# des Start- und Zielknoten im RREQ höher sind als die in seiner Routing Table. Wenn ja, aktualisiert er sie. Anschließend leitet er das RREQ als Broadcast an seine Nachbarn weiter.
 

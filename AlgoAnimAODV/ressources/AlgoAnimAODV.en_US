@@ -6,6 +6,10 @@ algoComplexTitle=Complexity of AODV
 algoComplexity=The main goal of AODV is to reduce the amount of necessary messaged inside an ad-hoc network. Therefore routes only get requested on demand. The sequence numbers are an efficient way of keeping information about the freshness of a route and to avoid loops in the flooding process. New nodes can efficiently join the network, because beside the destination and sender node, all other nodes also keep track of requested routes and can therefore answer a RREQ message from a new node directly with an RREP message. 
 animDesc=Ad-hoc On-demand Distance Vector Routing (AODV) is a reactive topology based routing algorithm suitable for mobile ad-hoc networks. Routes get requested on demand and afterwards get stored in routing tables kept by each individual node.  
 
+errorMessageTitle=Error during validation of properties
+errorMessageWrongNumberNodes=Source and Destination Node are not properly configured
+errorMessageStartNodeNotFound=Given Source node is not part of the given graph
+errorMessageDestinationNodeNotFound=Destination node is not part of the given graph
 forwardRREP=Node {0} forwards the RREP in the direction of the destination node, using unicast.
 forwardRREQ=Node {0} checks, whether the seq# of start or destination node in the RREQ are higher than in its routing table. If this is the case, it updates them. Then, it broadcasts the RREQ to its neighbors.
 

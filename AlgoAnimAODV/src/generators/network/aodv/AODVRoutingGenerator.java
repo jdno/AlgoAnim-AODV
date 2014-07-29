@@ -10,6 +10,7 @@ import generators.framework.properties.AnimationPropertiesContainer;
 import generators.network.aodv.animal.Statistics;
 import translator.Translator;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -38,10 +39,10 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
 
     /**
      * The list of route discoveries to perform. They should be in the following format:
-     *  [
-     *      ["A", "H"],
-     *      ["C", "A"]
-     *  ]
+     * [
+     * ["A", "H"],
+     * ["C", "A"]
+     * ]
      */
     private String[][] routeDiscoveries;
 
@@ -60,7 +61,7 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
      *
      * @param locale language for the translation, currently DE and EN are available as a translation
      */
-    public AODVRoutingGenerator(Locale locale){
+    public AODVRoutingGenerator(Locale locale) {
         translator = new Translator("ressources/AlgoAnimAODV", locale);
         this.locale = locale;
     }
@@ -75,27 +76,22 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
     /**
      * Generate the AODV animation
      *
-     * @param props The properties to use for the look & feel
+     * @param props      The properties to use for the look & feel
      * @param primitives The preconfigured primitives from the wizard
      * @return The animation as a string in AnimalScript
      */
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
 
-        lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
-                "Sascha Bleidner, Jan David Nose", 1200, 800);
 
-        lang.setStepMode(true);
 
-        Graph loadedGraph = (Graph) primitives.get("graph");
-        routeDiscoveries = (String[][]) primitives.get("StartandEndnodes");
 
-        controller = new GUIController(lang,loadedGraph,translator,props);
 
         controller.drawStartPage();
         controller.hideStartPage();
 
+
         controller.drawGUIGraph();
-        aodvGraph = new AODVGraph(controller.getAnimalGraph(),controller);
+
 
         controller.drawInfoTable(aodvGraph.getAODVNodes());
         controller.drawStatisticTable(translator.translateMessage("statTableTitle"));
@@ -107,16 +103,13 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
         // Reset the statistics
         Statistics.sharedInstance().reset();
 
-        for (String[] startEndNodes : routeDiscoveries){
-            if (startEndNodes.length != 2 ){
-                System.err.println("Start and end nodes not properly declared");
-            } else {
-                startNode = aodvGraph.getNode(startEndNodes[0]);
-                destinationNode = aodvGraph.getNode(startEndNodes[1]);
-                if (startNode != null && destinationNode != null) {
-                    startAodvRouting(startNode, destinationNode);
-                    controller.unhighlightAll();
-                }
+        for (String[] startEndNodes : routeDiscoveries) {
+            startNode = aodvGraph.getNode(startEndNodes[0]);
+            destinationNode = aodvGraph.getNode(startEndNodes[1]);
+            if (startNode != null && destinationNode != null) {
+                controller.drawNodeInfo(startNode, destinationNode);
+                startAodvRouting(startNode, destinationNode);
+                controller.unhighlightAll();
             }
         }
 
@@ -130,7 +123,7 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
     /**
      * Starts the AODV Routing Algorithm
      *
-     * @param startNode Node which starts a route request to the destination node
+     * @param startNode       Node which starts a route request to the destination node
      * @param destinationNode Node which is set as the destination for the route request.
      */
     public void startAodvRouting(AODVNode startNode, AODVNode destinationNode) {
@@ -153,7 +146,7 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
                 }
             }
 
-            for(AODVNode node : workingNodes) {
+            for (AODVNode node : workingNodes) {
                 controller.unhighlightAll();
                 node.process();
                 lang.nextStep();
@@ -164,11 +157,53 @@ public class AODVRoutingGenerator implements ValidatingGenerator {
     @Override
     public boolean validateInput(AnimationPropertiesContainer animationPropertieses, Hashtable<String, Object> stringObjectHashtable) throws IllegalArgumentException {
 
-        // TODO check if start and end node are part of the graph
-        // TODO check if the graph is valid
 
-        return false;
+        lang = new AnimalScript("Ad-hoc Optimized Vector Routing",
+                "Sascha Bleidner, Jan David Nose", 1200, 800);
+
+        lang.setStepMode(true);
+
+
+        routeDiscoveries = (String[][]) stringObjectHashtable.get("StartandEndnodes");
+
+        Graph loadedGraph = (Graph) stringObjectHashtable.get("graph");
+        controller = new GUIController(lang, loadedGraph, translator, animationPropertieses);
+
+        aodvGraph = new AODVGraph(controller.getAnimalGraph(), controller);
+
+
+
+        for (String[] startEndNodes : routeDiscoveries) {
+            if (startEndNodes.length != 2) {
+                showErrorMessage(translator.translateMessage("errorMessageWrongNumberNodes"));
+                return false;
+            } else {
+                AODVNode startNode = aodvGraph.getNode(startEndNodes[0]);
+                AODVNode destinationNode = aodvGraph.getNode(startEndNodes[1]);
+                if (startNode == null || !aodvGraph.containsNode(startNode)) {
+                    showErrorMessage(translator.translateMessage("errorMessageStartNodeNotFound"));
+                    return false;
+                } else {
+                    if (destinationNode == null || !aodvGraph.containsNode(destinationNode)) {
+                        showErrorMessage(translator.translateMessage("errorMessageDestinationNodeNotFound"));
+                        return false;
+                    }
+                }
+
+            }
+        }
+        return true;
     }
+
+
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(null,
+                message,
+                translator.translateMessage("errorMessageTitle"),
+                JOptionPane.ERROR_MESSAGE);
+
+    }
+
 
     /**
      * @return the name

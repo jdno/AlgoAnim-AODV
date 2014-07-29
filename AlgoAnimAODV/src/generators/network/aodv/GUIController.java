@@ -134,6 +134,24 @@ public class GUIController implements AODVNodeListener{
 
     }
 
+    public void drawNodeInfo(AODVNode startNode, AODVNode endNode){
+
+        TextProperties textProps = (TextProperties) props.getPropertiesByName("InfoBoxText");
+
+        StringBuffer sBuffer = new StringBuffer();
+        sBuffer.append(translator.translateMessage("startNode")).append(":").append(" ");
+        sBuffer.append(startNode.getNodeIdentifier());
+
+        lang.newText(new Coordinates(860,500),sBuffer.toString(),"nodeInfo1",null,textProps);
+
+
+        sBuffer = new StringBuffer();
+        sBuffer.append(translator.translateMessage("endNode")).append(":").append(" ");
+        sBuffer.append(endNode.getNodeIdentifier());
+
+        lang.newText(new Coordinates(860,530),sBuffer.toString(),"nodeInfo2",null,textProps);
+    }
+
     /**
      * Draws the statistic table on the screen
      * @param title title for the Statistic to draw

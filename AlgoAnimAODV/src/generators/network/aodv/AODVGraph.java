@@ -98,4 +98,18 @@ public class AODVGraph {
         return null;
     }
 
+    /**
+     * Checks if the given AODVNode node is part of the AODVGraph
+     * @param node node to be checked if its in the graph
+     * @return true if node is part of the graph, otherwise false
+     */
+    public boolean containsNode(AODVNode node){
+        for (AODVNode graphNode: aodvNodes) {
+            if (graphNode.getNodeIdentifier().equals(node.getNodeIdentifier())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
