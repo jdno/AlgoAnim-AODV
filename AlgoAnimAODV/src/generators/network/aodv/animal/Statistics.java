@@ -63,6 +63,16 @@ public class Statistics {
     }
 
     /**
+     * Reset the statistics.
+     */
+    public void reset() {
+        messageCount = 0;
+        routesDiscoveredCount = 0;
+        routingTableReadsCount = 0;
+        routingTableUpdatesCount = 0;
+    }
+
+    /**
      * Increment the number of routes that were successfully discovered.
      */
     public void routeDiscovered() {

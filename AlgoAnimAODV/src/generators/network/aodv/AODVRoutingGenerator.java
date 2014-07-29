@@ -102,6 +102,9 @@ public class AODVRoutingGenerator implements Generator{
         AODVNode startNode;
         AODVNode destinationNode;
 
+        // Reset the statistics
+        Statistics.sharedInstance().reset();
+
         for (String[] startEndNodes : routeDiscoveries){
             if (startEndNodes.length != 2 ){
                 System.err.println("Start and end nodes not properly declared");
