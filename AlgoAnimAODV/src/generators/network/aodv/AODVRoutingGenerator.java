@@ -191,7 +191,7 @@ public class AODVRoutingGenerator implements Generator{
      * @return the code example
      */
     public String getCodeExample() {
-        return "CodeExample";
+        return "StartNode.startRouteDiscovery do\n\tflood RREQ\nend\n\nNodes.each do\n\tif Node != DestinationNode\n\t\tflood RREQ\n\telse\n\t\treply RREP\n\tend\nend\n";
     }
 
     /**
