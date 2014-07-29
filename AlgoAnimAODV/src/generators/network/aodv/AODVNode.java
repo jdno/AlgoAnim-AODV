@@ -354,8 +354,6 @@ public class AODVNode {
                         break;
                     }
                 }
-            } else {
-                System.err.println("No route to message destination found.");
             }
 
             if (messageSent) break;
