@@ -135,10 +135,21 @@ public class AODVNode {
             cachedMessage.incrementHopCount();
 
             if (cachedMessage.getType() == MessageType.RREQ) {
-                if (cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
+                String destinationIdentifier = cachedMessage.getOriginatorIdentifier();
+                int destinationSequence = cachedMessage.getOriginatorSequence();
+
+                RoutingTableEntry entry = getRoutingTableEntry(cachedMessage.getDestinationIdentifier());
+
+                if (entry != null && entry.getDestinationSequence() != 0) {
+                    int identifier = entry.getDestinationSequence();
+
+                    AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, entry.getIdentifier(), entry.getDestinationSequence());
+                    msg.setHopCount(entry.getHopCount() + 1);
+
+                    sendMessageToNeighbor(destinationIdentifier, msg);
+                    updateInfoBox(generateText("sendFastRREP", new String[]{nodeIdentifier, cachedMessage.getDestinationIdentifier()}));
+                } else if (cachedMessage.getDestinationIdentifier().equals(nodeIdentifier)) {
                     int identifier = ++originatorSequence;
-                    String destinationIdentifier = cachedMessage.getOriginatorIdentifier();
-                    int destinationSequence = cachedMessage.getOriginatorSequence();
 
                     AODVMessage msg = new AODVMessage(MessageType.RREP, identifier, destinationIdentifier, destinationSequence, nodeIdentifier, originatorSequence);
 
@@ -177,10 +188,18 @@ public class AODVNode {
      * @param message The message to process later
      */
     public void receiveMessage(AODVNode sender, AODVMessage message) {
-        if (cachedMessage == null && !messageAlreadyProcessed(message)) {
-            cachedMessage = message;
-            cachedMessageSender = sender.nodeIdentifier;
+        if (message.getType() == MessageType.RREQ) {
+            if (cachedMessage == null && !messageAlreadyProcessed(message)) {
+                cachedMessage = message;
+                cachedMessageSender = sender.getNodeIdentifier();
+            }
+        } else {
+            if (cachedMessage == null) {
+                cachedMessage = message;
+                cachedMessageSender = sender.getNodeIdentifier();
+            }
         }
+
         stats.messageSent();
     }
 
@@ -258,6 +277,8 @@ public class AODVNode {
             return translator.translateMessage("receiveRREP");
         } else if (key.equals("routeExists")) {
             return translator.translateMessage("routeExists", params);
+        } else if (key.equals("sendFastRREP")) {
+            return translator.translateMessage("sendFastRREP", params);
         } else if (key.equals("sendRREP")) {
             return translator.translateMessage("sendRREP");
         } else if (key.equals("sendRREQ")) {
@@ -269,6 +290,22 @@ public class AODVNode {
         } else {
             return "";
         }
+    }
+
+    /**
+     * Returns the routing table entry for a given node identifier.
+     *
+     * @param identifier The node's identifier
+     * @return The entry for this node
+     */
+    private RoutingTableEntry getRoutingTableEntry(String identifier) {
+        for (RoutingTableEntry entry: routingTable) {
+            if (entry.getIdentifier().equals(identifier)) {
+                return entry;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -393,15 +430,16 @@ public class AODVNode {
         for (RoutingTableEntry entry : routingTable) {
             if (entry.getIdentifier().equals(message.getOriginatorIdentifier())) {
                 // Update originator if its sequence number is more up to date
-                if (entry.getDestinationSequence() < message.getOriginatorSequence()) {
-                    entry.setDestinationSequence(message.getOriginatorSequence());
-                    entry.setNextHop(cachedMessageSender);
-                    entry.setHopCount(message.getHopCount());
+                if (entry.getDestinationSequence() <= message.getOriginatorSequence()) {
+                    if (entry.getHopCount() > message.getHopCount()) {
+                        entry.setDestinationSequence(message.getOriginatorSequence());
+                        entry.setNextHop(cachedMessageSender);
+                        entry.setHopCount(message.getHopCount());
 
-                    listener.updateInfoTable(this);
+                        listener.updateInfoTable(this);
 
-
-                    updated = true;
+                        updated = true;
+                    }
                 }
             }
             if (entry.getIdentifier().equals(message.getDestinationIdentifier())) {
@@ -410,7 +448,6 @@ public class AODVNode {
                     entry.setDestinationSequence(message.getDestinationSequence());
 
                     listener.updateInfoTable(this);
-
 
                     updated = true;
                 }
@@ -498,20 +535,10 @@ public class AODVNode {
             }
         }
     }
-    
-    /**
-     * Returns the node ID and all his neighbors as a string for console testing
-     * @return
-     */
-    public String getNeighborsAsString(){
-    	StringBuffer strBuff = new StringBuffer();
-    	strBuff.append("Node: ").append(getNodeIdentifier()).append(" has neighbors: ");
-    	for (AODVNode neighbor: neighbors){
-    		strBuff.append(neighbor.getNodeIdentifier()).append("; ");
-    	}
-    	return strBuff.toString();
-    }
 
+    /**
+     * @return the index
+     */
     public int getIndex(){
         return index;
     }
